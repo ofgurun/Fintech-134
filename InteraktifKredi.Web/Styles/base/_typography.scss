@@ -1,0 +1,280 @@
+// ============================================================================
+// TYPOGRAPHY - İNTERAKTİF KREDİ
+// ============================================================================
+// Modern, okunaklı ve responsive tipografi sistemi
+// Font Family: Inter (Google Fonts)
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// HEADING STYLES (H1 - H6)
+// ----------------------------------------------------------------------------
+
+h1, .h1 {
+  @include heading($font_size_4xl, $font_weight_bold);
+  
+  @include respond_to(md) {
+    font-size: $font_size_4xl * 1.2; // 56px
+  }
+}
+
+h2, .h2 {
+  @include heading($font_size_3xl, $font_weight_bold);
+  
+  @include respond_to(md) {
+    font-size: $font_size_3xl * 1.1; // 40px
+  }
+}
+
+h3, .h3 {
+  @include heading($font_size_2xl, $font_weight_semibold);
+  
+  @include respond_to(md) {
+    font-size: $font_size_2xl * 1.1; // 33px
+  }
+}
+
+h4, .h4 {
+  @include heading($font_size_xl, $font_weight_semibold);
+}
+
+h5, .h5 {
+  @include heading($font_size_lg, $font_weight_semibold);
+}
+
+h6, .h6 {
+  @include heading($font_size_base, $font_weight_semibold);
+  text-transform: uppercase;
+  letter-spacing: $letter_spacing_wide;
+}
+
+// ----------------------------------------------------------------------------
+// PARAGRAPH & BODY TEXT
+// ----------------------------------------------------------------------------
+
+p {
+  @include body_text;
+  margin-bottom: $spacing_4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  &.lead {
+    font-size: $font_size_lg;
+    font-weight: $font_weight_regular;
+    color: $text_main;
+    line-height: $line_height_relaxed;
+  }
+  
+  &.small {
+    font-size: $font_size_sm;
+    color: $text_light;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// TEXT UTILITY CLASSES
+// ----------------------------------------------------------------------------
+
+// Font Sizes
+.text-xs { font-size: $font_size_xs; }
+.text-sm { font-size: $font_size_sm; }
+.text-base { font-size: $font_size_base; }
+.text-md { font-size: $font_size_md; }
+.text-lg { font-size: $font_size_lg; }
+.text-xl { font-size: $font_size_xl; }
+.text-2xl { font-size: $font_size_2xl; }
+.text-3xl { font-size: $font_size_3xl; }
+.text-4xl { font-size: $font_size_4xl; }
+
+// Font Weights
+.font-light { font-weight: $font_weight_light; }
+.font-regular { font-weight: $font_weight_regular; }
+.font-medium { font-weight: $font_weight_medium; }
+.font-semibold { font-weight: $font_weight_semibold; }
+.font-bold { font-weight: $font_weight_bold; }
+.font-extrabold { font-weight: $font_weight_extrabold; }
+
+// Text Colors
+.text-dark { color: $text_dark; }
+.text-main { color: $text_main; }
+.text-light { color: $text_light; }
+.text-lighter { color: $text_lighter; }
+.text-muted { color: $text_muted; }
+.text-primary { color: $primary_color; }
+.text-secondary { color: $secondary_color; }
+.text-success { color: $success_color; }
+.text-danger { color: $danger_color; }
+.text-warning { color: $warning_color; }
+.text-info { color: $info_color; }
+.text-white { color: $bg_white; }
+
+// Text Alignment
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+// Text Transform
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+.text-normal { text-transform: none; }
+
+// Text Decoration
+.text-underline { text-decoration: underline; }
+.text-line-through { text-decoration: line-through; }
+.text-no-underline { text-decoration: none; }
+
+// Text Truncate
+.text-truncate {
+  @include truncate;
+}
+
+.line-clamp-1 { @include line_clamp(1); }
+.line-clamp-2 { @include line_clamp(2); }
+.line-clamp-3 { @include line_clamp(3); }
+.line-clamp-4 { @include line_clamp(4); }
+
+// Line Heights
+.leading-tight { line-height: $line_height_tight; }
+.leading-normal { line-height: $line_height_normal; }
+.leading-relaxed { line-height: $line_height_relaxed; }
+.leading-loose { line-height: $line_height_loose; }
+
+// Letter Spacing
+.tracking-tight { letter-spacing: $letter_spacing_tight; }
+.tracking-normal { letter-spacing: $letter_spacing_normal; }
+.tracking-wide { letter-spacing: $letter_spacing_wide; }
+.tracking-wider { letter-spacing: $letter_spacing_wider; }
+
+// ----------------------------------------------------------------------------
+// LINKS
+// ----------------------------------------------------------------------------
+
+a {
+  &.link-primary {
+    color: $primary_color;
+    font-weight: $font_weight_medium;
+    
+    &:hover {
+      color: $primary_color_dark;
+      text-decoration: underline;
+    }
+  }
+  
+  &.link-underline {
+    text-decoration: underline;
+    
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  
+  &.link-muted {
+    color: $text_light;
+    
+    &:hover {
+      color: $text_dark;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LISTS
+// ----------------------------------------------------------------------------
+
+ul, ol {
+  &.list-styled {
+    list-style: initial;
+    padding-left: $spacing_6;
+    
+    li {
+      margin-bottom: $spacing_2;
+      padding-left: $spacing_2;
+      
+      &::marker {
+        color: $primary_color;
+      }
+    }
+  }
+  
+  &.list-disc {
+    list-style-type: disc;
+    padding-left: $spacing_6;
+  }
+  
+  &.list-decimal {
+    list-style-type: decimal;
+    padding-left: $spacing_6;
+  }
+  
+  &.list-none {
+    list-style: none;
+    padding-left: 0;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// BLOCKQUOTE
+// ----------------------------------------------------------------------------
+
+blockquote {
+  margin: $spacing_6 0;
+  padding: $spacing_4 $spacing_6;
+  border-left: 4px solid $primary_color;
+  background-color: $bg_lighter;
+  font-style: italic;
+  color: $text_main;
+  border-radius: $border_radius_md;
+  
+  p:last-child {
+    margin-bottom: 0;
+  }
+  
+  cite {
+    display: block;
+    margin-top: $spacing_2;
+    font-size: $font_size_sm;
+    font-style: normal;
+    color: $text_light;
+    
+    &::before {
+      content: '— ';
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// CODE & PRE (Already styled in reset, just utilities)
+// ----------------------------------------------------------------------------
+
+.code-block {
+  margin: $spacing_4 0;
+  
+  pre {
+    margin: 0;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// TEXT SELECTION
+// ----------------------------------------------------------------------------
+
+::selection {
+  background-color: $primary_color_lighter;
+  color: $primary_color_dark;
+}
+
+::-moz-selection {
+  background-color: $primary_color_lighter;
+  color: $primary_color_dark;
+}
+
+// ============================================================================
+// END OF TYPOGRAPHY
+// ============================================================================
+

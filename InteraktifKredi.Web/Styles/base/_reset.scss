@@ -1,0 +1,369 @@
+// ============================================================================
+// MODERN CSS RESET
+// ============================================================================
+// Modern, performanslı ve semantik CSS reset
+// Based on: Josh Comeau's Modern CSS Reset & Normalize.css
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+
+// ----------------------------------------------------------------------------
+// UNIVERSAL BOX SİZİNG
+// ----------------------------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// ----------------------------------------------------------------------------
+// ROOT & HTML
+// ----------------------------------------------------------------------------
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+// ----------------------------------------------------------------------------
+// BODY
+// ----------------------------------------------------------------------------
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font_family_base;
+  font-size: $font_size_base;
+  font-weight: $font_weight_regular;
+  line-height: $line_height_normal;
+  color: $text_main;
+  background-color: $bg_white;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+// ----------------------------------------------------------------------------
+// TYPOGRAPHY RESET
+// ----------------------------------------------------------------------------
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  font-weight: $font_weight_semibold;
+  line-height: $line_height_tight;
+  color: $text_dark;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+// ----------------------------------------------------------------------------
+// LINK RESET
+// ----------------------------------------------------------------------------
+a {
+  color: $primary_color;
+  text-decoration: none;
+  background-color: transparent;
+  transition: $transition_colors;
+
+  &:hover {
+    color: $primary_color_dark;
+  }
+
+  &:focus {
+    outline: 2px solid $primary_color;
+    outline-offset: 2px;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// BUTTON RESET
+// ----------------------------------------------------------------------------
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  appearance: button;
+  background-color: transparent;
+  background-image: none;
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:focus {
+    outline: 2px solid $primary_color;
+    outline-offset: 2px;
+  }
+}
+
+button:disabled,
+[type="button"]:disabled,
+[type="reset"]:disabled,
+[type="submit"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+// ----------------------------------------------------------------------------
+// FORM ELEMENTS RESET
+// ----------------------------------------------------------------------------
+input,
+textarea,
+select {
+  border: 1px solid $border_color;
+  background-color: $bg_white;
+  
+  &:focus {
+    outline: none;
+    border-color: $input_focus_border_color;
+    box-shadow: $input_focus_shadow;
+  }
+
+  &::placeholder {
+    color: $text_lighter;
+    opacity: 1;
+  }
+}
+
+// Remove default number input spinners
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+// Remove default search input styling
+input[type="search"] {
+  -webkit-appearance: textfield;
+  appearance: textfield;
+  outline-offset: -2px;
+}
+
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+// ----------------------------------------------------------------------------
+// LİST RESET
+// ----------------------------------------------------------------------------
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// ----------------------------------------------------------------------------
+// IMAGE & MEDİA RESET
+// ----------------------------------------------------------------------------
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+img {
+  border-style: none;
+}
+
+svg {
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+// ----------------------------------------------------------------------------
+// TABLE RESET
+// ----------------------------------------------------------------------------
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 0;
+  text-align: left;
+}
+
+// ----------------------------------------------------------------------------
+// HR RESET
+// ----------------------------------------------------------------------------
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+  border: 0;
+  border-top: 1px solid $border_color;
+  margin: $spacing_4 0;
+}
+
+// ----------------------------------------------------------------------------
+// ABBR & DFN
+// ----------------------------------------------------------------------------
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+b,
+strong {
+  font-weight: $font_weight_bold;
+}
+
+small {
+  font-size: 80%;
+}
+
+// ----------------------------------------------------------------------------
+// CODE & PRE
+// ----------------------------------------------------------------------------
+code,
+kbd,
+samp,
+pre {
+  font-family: $font_family_mono;
+  font-size: 1em;
+}
+
+code {
+  padding: 0.125rem 0.25rem;
+  background-color: $bg_lighter;
+  border-radius: $border_radius_sm;
+  color: $text_dark;
+}
+
+pre {
+  overflow: auto;
+  padding: $spacing_4;
+  background-color: $bg_lighter;
+  border-radius: $border_radius_base;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+// ----------------------------------------------------------------------------
+// FIELDSET & LEGEND
+// ----------------------------------------------------------------------------
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+// ----------------------------------------------------------------------------
+// PROGRESS
+// ----------------------------------------------------------------------------
+progress {
+  vertical-align: baseline;
+}
+
+// ----------------------------------------------------------------------------
+// TEMPLATE & HIDDEN
+// ----------------------------------------------------------------------------
+[hidden],
+template {
+  display: none !important;
+}
+
+// ----------------------------------------------------------------------------
+// SUMMARY
+// ----------------------------------------------------------------------------
+summary {
+  display: list-item;
+  cursor: pointer;
+}
+
+// ----------------------------------------------------------------------------
+// IFRAME
+// ----------------------------------------------------------------------------
+iframe {
+  border: 0;
+}
+
+// ----------------------------------------------------------------------------
+// ACCESSIBILITY & UTİLİTY
+// ----------------------------------------------------------------------------
+
+// Screen reader only
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Focus visible (keyboard navigation)
+:focus-visible {
+  outline: 2px solid $primary_color;
+  outline-offset: 2px;
+}
+
+// Remove focus outline for mouse users
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ============================================================================
+// END OF RESET
+// ============================================================================
+

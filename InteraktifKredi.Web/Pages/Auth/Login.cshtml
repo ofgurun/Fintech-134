@@ -1,0 +1,48 @@
+@page
+@model InteraktifKredi.Web.Pages.Auth.LoginModel
+@{
+    ViewData["Title"] = "Giriş";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="VerifyRequest.TCKN" class="form-label">TC Kimlik No</label>
+                            <input asp-for="VerifyRequest.TCKN" class="form-control" placeholder="11 haneli TCKN giriniz" maxlength="11" />
+                            <span asp-validation-for="VerifyRequest.TCKN" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VerifyRequest.GSM" class="form-label">GSM Numarası</label>
+                            <input asp-for="VerifyRequest.GSM" class="form-control" placeholder="5XXXXXXXXX" maxlength="10" />
+                            <span asp-validation-for="VerifyRequest.GSM" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Giriş Yap</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

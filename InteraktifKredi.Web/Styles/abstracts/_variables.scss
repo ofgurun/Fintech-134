@@ -1,0 +1,224 @@
+// ============================================================================
+// İNTERAKTİF KREDİ - KURUMSAL KİMLİK VARIABLES
+// ============================================================================
+// Proje: Fintech-Jam-134 | İnteraktif Kredi Başvuru Sistemi
+// Version: 1.0.0
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// GOOGLE FONTS IMPORT
+// ----------------------------------------------------------------------------
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+// ----------------------------------------------------------------------------
+// RENK PALETİ - İNTERAKTİF KREDİ KURUMSAL KİMLİK
+// ----------------------------------------------------------------------------
+
+// PRIMARY COLORS (Ana Marka Renkleri)
+$primary_color: #2563EB;              // Canlı Mavi - Logo & Test Et butonu
+$primary_color_dark: #1E40AF;         // Koyu Mavi - Hover states
+$primary_color_light: #3B82F6;        // Açık Mavi - Light states
+$primary_color_lighter: #DBEAFE;      // Çok Açık Mavi - Backgrounds
+
+// SECONDARY COLORS (Destekleyici Renkler)
+$secondary_color: #60A5FA;            // Gökyüzü Mavisi - Logo ikonlar
+$secondary_color_light: #93C5FD;      // Açık Gökyüzü Mavisi
+$secondary_color_lighter: #BFDBFE;    // Çok Açık Gökyüzü Mavisi
+
+// NEUTRAL COLORS (Nötr Renkler)
+$text_dark: #1F2937;                  // Koyu Antrasit - Ana metinler
+$text_main: #374151;                  // Orta Koyu - Paragraflar
+$text_light: #6B7280;                 // Hafif Gri - Yardımcı metinler
+$text_lighter: #9CA3AF;               // Daha Açık Gri - Placeholder
+$text_muted: #D1D5DB;                 // Soluk Gri - Disabled
+
+// BACKGROUND COLORS (Arka Plan Renkleri)
+$bg_white: #FFFFFF;                   // Tam Beyaz
+$bg_light: #F3F4F6;                   // Çok Açık Gri - Ana arka plan
+$bg_lighter: #F9FAFB;                 // Ultra Açık Gri - Card backgrounds
+$bg_dark: #111827;                    // Koyu Arka Plan (dark mode için)
+
+// BORDER COLORS (Kenar Renkleri)
+$border_color: #E5E7EB;               // Standart border
+$border_light: #F3F4F6;               // Açık border
+$border_dark: #D1D5DB;                // Koyu border
+
+// STATE COLORS (Durum Renkleri)
+$success_color: #10B981;              // Yeşil - Başarılı işlemler
+$success_light: #D1FAE5;              // Açık Yeşil - Başarı arka planı
+$danger_color: #DC3545;               // Kırmızı - Hata mesajları
+$danger_light: #FEE2E2;               // Açık Kırmızı - Hata arka planı
+$warning_color: #F59E0B;              // Turuncu - Uyarılar
+$warning_light: #FEF3C7;              // Açık Turuncu - Uyarı arka planı
+$info_color: #3B82F6;                 // Mavi - Bilgilendirme
+$info_light: #DBEAFE;                 // Açık Mavi - Bilgi arka planı
+
+// ----------------------------------------------------------------------------
+// TİPOGRAFİ
+// ----------------------------------------------------------------------------
+
+// FONT FAMİLİES
+$font_family_base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+$font_family_heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font_family_mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+// FONT SİZES (Responsive Typography)
+$font_size_xs: 0.75rem;               // 12px - Küçük notlar
+$font_size_sm: 0.875rem;              // 14px - Yardımcı metinler
+$font_size_base: 1rem;                // 16px - Ana metin boyutu
+$font_size_md: 1.125rem;              // 18px - Orta metinler
+$font_size_lg: 1.25rem;               // 20px - Büyük metinler
+$font_size_xl: 1.5rem;                // 24px - H4
+$font_size_2xl: 1.875rem;             // 30px - H3
+$font_size_3xl: 2.25rem;              // 36px - H2
+$font_size_4xl: 3rem;                 // 48px - H1
+
+// FONT WEİGHTS
+$font_weight_light: 300;              // Light
+$font_weight_regular: 400;            // Regular
+$font_weight_medium: 500;             // Medium
+$font_weight_semibold: 600;           // Semibold
+$font_weight_bold: 700;               // Bold
+$font_weight_extrabold: 800;          // Extrabold
+
+// LİNE HEİGHTS
+$line_height_tight: 1.25;             // Başlıklar için
+$line_height_normal: 1.5;             // Normal metinler
+$line_height_relaxed: 1.75;           // Rahat okuma için
+$line_height_loose: 2;                // Geniş satır arası
+
+// LETTER SPACİNG
+$letter_spacing_tight: -0.025em;      // Dar karakter arası
+$letter_spacing_normal: 0;            // Normal
+$letter_spacing_wide: 0.025em;        // Geniş karakter arası
+$letter_spacing_wider: 0.05em;        // Çok geniş
+
+// ----------------------------------------------------------------------------
+// SPACING (Boşluklar)
+// ----------------------------------------------------------------------------
+$spacing_0: 0;                        // 0px
+$spacing_1: 0.25rem;                  // 4px
+$spacing_2: 0.5rem;                   // 8px
+$spacing_3: 0.75rem;                  // 12px
+$spacing_4: 1rem;                     // 16px
+$spacing_5: 1.25rem;                  // 20px
+$spacing_6: 1.5rem;                   // 24px
+$spacing_8: 2rem;                     // 32px
+$spacing_10: 2.5rem;                  // 40px
+$spacing_12: 3rem;                    // 48px
+$spacing_16: 4rem;                    // 64px
+$spacing_20: 5rem;                    // 80px
+$spacing_24: 6rem;                    // 96px
+
+// ----------------------------------------------------------------------------
+// BORDER RADİUS (Kenar Yuvarlaklığı)
+// ----------------------------------------------------------------------------
+$border_radius_none: 0;               // Keskin köşeler
+$border_radius_sm: 0.25rem;           // 4px - Küçük elemanlar
+$border_radius_base: 0.375rem;        // 6px - Standart
+$border_radius_md: 0.5rem;            // 8px - Orta elemanlar
+$border_radius_lg: 0.75rem;           // 12px - Büyük kartlar
+$border_radius_xl: 1rem;              // 16px - Çok büyük kartlar
+$border_radius_2xl: 1.5rem;           // 24px - Hero sections
+$border_radius_full: 9999px;          // Tam yuvarlak
+
+// ----------------------------------------------------------------------------
+// SHADOWS (Gölgeler)
+// ----------------------------------------------------------------------------
+$shadow_sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow_base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$shadow_md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow_lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow_xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow_2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+$shadow_inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+$shadow_none: none;
+
+// BRAND SHADOWS (Marka Renkleriyle Gölgeler)
+$shadow_primary: 0 4px 14px 0 rgba(37, 99, 235, 0.20);
+$shadow_primary_hover: 0 6px 20px 0 rgba(37, 99, 235, 0.30);
+
+// ----------------------------------------------------------------------------
+// TRANSİTİONS (Geçiş Efektleri)
+// ----------------------------------------------------------------------------
+$transition_fast: 150ms ease-in-out;
+$transition_base: 200ms ease-in-out;
+$transition_slow: 300ms ease-in-out;
+$transition_slower: 500ms ease-in-out;
+
+// Spesifik transition'lar
+$transition_colors: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+$transition_shadow: box-shadow 200ms ease-in-out;
+$transition_transform: transform 200ms ease-in-out;
+$transition_all: all 200ms ease-in-out;
+
+// ----------------------------------------------------------------------------
+// BREAKPOİNTS (Responsive Tasarım Kırılma Noktaları)
+// ----------------------------------------------------------------------------
+$breakpoint_xs: 375px;                // Extra small - Mobile portrait
+$breakpoint_sm: 640px;                // Small - Mobile landscape
+$breakpoint_md: 768px;                // Medium - Tablets
+$breakpoint_lg: 1024px;               // Large - Desktop
+$breakpoint_xl: 1280px;               // Extra large - Large desktop
+$breakpoint_2xl: 1536px;              // 2X Extra large - Very large screens
+
+// ----------------------------------------------------------------------------
+// Z-INDEX LAYERS (Katman Sıralaması)
+// ----------------------------------------------------------------------------
+$z_index_dropdown: 1000;
+$z_index_sticky: 1020;
+$z_index_fixed: 1030;
+$z_index_modal_backdrop: 1040;
+$z_index_modal: 1050;
+$z_index_popover: 1060;
+$z_index_tooltip: 1070;
+$z_index_toast: 1080;
+
+// ----------------------------------------------------------------------------
+// COMPONENT SPECİFİC VARİABLES
+// ----------------------------------------------------------------------------
+
+// BUTTONS
+$button_height_sm: 2rem;              // 32px
+$button_height_base: 2.5rem;          // 40px
+$button_height_lg: 3rem;              // 48px
+$button_padding_x_sm: 1rem;           // 16px
+$button_padding_x_base: 1.5rem;       // 24px
+$button_padding_x_lg: 2rem;           // 32px
+
+// INPUTS
+$input_height_sm: 2rem;               // 32px
+$input_height_base: 2.5rem;           // 40px
+$input_height_lg: 3rem;               // 48px
+$input_padding_x: 1rem;               // 16px
+$input_border_width: 1px;
+$input_focus_border_color: $primary_color;
+$input_focus_shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+
+// CARDS
+$card_padding: $spacing_6;            // 24px
+$card_padding_sm: $spacing_4;         // 16px
+$card_padding_lg: $spacing_8;         // 32px
+$card_border_width: 1px;
+$card_border_color: $border_color;
+$card_shadow: $shadow_base;
+$card_hover_shadow: $shadow_lg;
+
+// CONTAINER
+$container_max_width: 1280px;
+$container_padding_x: $spacing_4;     // 16px
+$container_padding_x_lg: $spacing_6;  // 24px
+
+// ----------------------------------------------------------------------------
+// BRAND SPECİFİC (İnteraktif Kredi Özel)
+// ----------------------------------------------------------------------------
+$brand_blue: $primary_color;          // Ana marka mavisi
+$brand_light_blue: $secondary_color;  // İkon mavisi
+$loan_success: $success_color;        // Onay rengi
+$loan_pending: $warning_color;        // Beklemede
+$loan_rejected: $danger_color;        // Ret rengi
+
+// ============================================================================
+// END OF VARIABLES
+// ============================================================================
+

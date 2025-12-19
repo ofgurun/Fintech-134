@@ -1,0 +1,202 @@
+// ============================================================================
+// MAIN SCSS - İNTERAKTİF KREDİ
+// ============================================================================
+// Proje: Fintech-Jam-134 | İnteraktif Kredi Başvuru Sistemi
+// Version: 1.0.0
+// Framework: .NET 8 Razor Pages
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// 1. ABSTRACTS
+// ----------------------------------------------------------------------------
+// Variables ve Mixins - Diğer tüm dosyalarda kullanılacak
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// 2. BASE
+// ----------------------------------------------------------------------------
+// CSS Reset ve Temel Tipografi
+@use 'base/reset';
+@use 'base/typography';
+
+// ----------------------------------------------------------------------------
+// 3. COMPONENTS
+// ----------------------------------------------------------------------------
+// Yeniden kullanılabilir UI bileşenleri
+@use 'components/buttons';
+@use 'components/forms';
+@use 'components/cards';
+
+// ----------------------------------------------------------------------------
+// 4. PAGES
+// ----------------------------------------------------------------------------
+// Sayfa spesifik stiller
+@use 'pages/login';
+@use 'pages/dashboard';
+@use 'pages/loan_wizard';
+
+// ============================================================================
+// GLOBAL UTILITIES (Optional - Gerekirse eklenebilir)
+// ============================================================================
+
+// Container
+.container {
+  @include container;
+}
+
+// Spacing Utilities (Tailwind-like)
+@each $name, $value in (
+  '0': $spacing_0,
+  '1': $spacing_1,
+  '2': $spacing_2,
+  '3': $spacing_3,
+  '4': $spacing_4,
+  '5': $spacing_5,
+  '6': $spacing_6,
+  '8': $spacing_8,
+  '10': $spacing_10,
+  '12': $spacing_12,
+  '16': $spacing_16,
+  '20': $spacing_20,
+  '24': $spacing_24
+) {
+  .m-#{$name} { margin: $value; }
+  .mt-#{$name} { margin-top: $value; }
+  .mr-#{$name} { margin-right: $value; }
+  .mb-#{$name} { margin-bottom: $value; }
+  .ml-#{$name} { margin-left: $value; }
+  .mx-#{$name} { margin-left: $value; margin-right: $value; }
+  .my-#{$name} { margin-top: $value; margin-bottom: $value; }
+  
+  .p-#{$name} { padding: $value; }
+  .pt-#{$name} { padding-top: $value; }
+  .pr-#{$name} { padding-right: $value; }
+  .pb-#{$name} { padding-bottom: $value; }
+  .pl-#{$name} { padding-left: $value; }
+  .px-#{$name} { padding-left: $value; padding-right: $value; }
+  .py-#{$name} { padding-top: $value; padding-bottom: $value; }
+}
+
+// Display Utilities
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline { display: inline; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+.d-inline-flex { display: inline-flex; }
+.d-grid { display: grid; }
+
+// Flex Utilities
+.flex-row { flex-direction: row; }
+.flex-column { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.items-center { align-items: center; }
+.items-baseline { align-items: baseline; }
+.items-stretch { align-items: stretch; }
+
+// Gap Utilities
+.gap-1 { gap: $spacing_1; }
+.gap-2 { gap: $spacing_2; }
+.gap-3 { gap: $spacing_3; }
+.gap-4 { gap: $spacing_4; }
+.gap-5 { gap: $spacing_5; }
+.gap-6 { gap: $spacing_6; }
+.gap-8 { gap: $spacing_8; }
+
+// Width & Height
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.h-full { height: 100%; }
+.h-auto { height: auto; }
+.h-screen { height: 100vh; }
+
+// Position
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+// Overflow
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+
+// Border Radius
+.rounded-none { border-radius: $border_radius_none; }
+.rounded-sm { border-radius: $border_radius_sm; }
+.rounded { border-radius: $border_radius_base; }
+.rounded-md { border-radius: $border_radius_md; }
+.rounded-lg { border-radius: $border_radius_lg; }
+.rounded-xl { border-radius: $border_radius_xl; }
+.rounded-2xl { border-radius: $border_radius_2xl; }
+.rounded-full { border-radius: $border_radius_full; }
+
+// Shadow
+.shadow-none { box-shadow: $shadow_none; }
+.shadow-sm { box-shadow: $shadow_sm; }
+.shadow { box-shadow: $shadow_base; }
+.shadow-md { box-shadow: $shadow_md; }
+.shadow-lg { box-shadow: $shadow_lg; }
+.shadow-xl { box-shadow: $shadow_xl; }
+.shadow-2xl { box-shadow: $shadow_2xl; }
+
+// Background Colors
+.bg-white { background-color: $bg_white; }
+.bg-light { background-color: $bg_light; }
+.bg-lighter { background-color: $bg_lighter; }
+.bg-primary { background-color: $primary_color; color: $bg_white; }
+.bg-secondary { background-color: $secondary_color; color: $bg_white; }
+.bg-success { background-color: $success_color; color: $bg_white; }
+.bg-danger { background-color: $danger_color; color: $bg_white; }
+.bg-warning { background-color: $warning_color; color: $text_dark; }
+.bg-info { background-color: $info_color; color: $bg_white; }
+
+// Border
+.border { border: 1px solid $border_color; }
+.border-0 { border: none; }
+.border-t { border-top: 1px solid $border_color; }
+.border-r { border-right: 1px solid $border_color; }
+.border-b { border-bottom: 1px solid $border_color; }
+.border-l { border-left: 1px solid $border_color; }
+
+// Cursor
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+.cursor-default { cursor: default; }
+
+// User Select
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+.select-all { user-select: all; }
+
+// Pointer Events
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+// Visibility
+.visible { visibility: visible; }
+.invisible { visibility: hidden; }
+
+// Opacity
+.opacity-0 { opacity: 0; }
+.opacity-25 { opacity: 0.25; }
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
+
+// ============================================================================
+// END OF MAIN SCSS
+// ============================================================================
+
