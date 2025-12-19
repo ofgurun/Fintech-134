@@ -1,2 +1,429 @@
-// Buttons
+// ============================================================================
+// BUTTONS - İNTERAKTİF KREDİ (Figma Spec)
+// ============================================================================
+// Modern button components - Pill shape ve full-width design
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// PRIMARY BUTTON (Ana Aksiyon Butonu)
+// ----------------------------------------------------------------------------
+
+/*
+HTML Kullanım Örneği:
+
+<!-- Primary Button (Default) -->
+<button class="btn_primary">Devam Et</button>
+
+<!-- Primary Button (Loading) -->
+<button class="btn_primary btn_primary--loading" disabled>
+  <span class="btn_primary__spinner"></span>
+  Yükleniyor...
+</button>
+
+<!-- Primary Button (Disabled) -->
+<button class="btn_primary" disabled>Devre Dışı</button>
+
+<!-- Primary Button (Small) -->
+<button class="btn_primary btn_primary--sm">Küçük Buton</button>
+
+<!-- Primary Button (Large) -->
+<button class="btn_primary btn_primary--lg">Büyük Buton</button>
+
+<!-- Primary Button (With Icon) -->
+<button class="btn_primary">
+  <svg>...</svg>
+  İkon ile Buton
+</button>
+*/
+
+.btn_primary {
+  // Layout & Sizing
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;                          // Full width (Figma Spec - Mobil uyum)
+  height: 56px;
+  padding: 0 $spacing_6;
+  gap: $spacing_2;
+  
+  // Typography (Figma Spec)
+  font-family: $font_main;              // Poppins
+  font-size: $font_button;              // 14px
+  font-weight: $font_weight_semibold;   // Semi-Bold (600)
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  
+  // Colors (Figma Spec)
+  color: $button_primary_text;          // White (#FFFFFF)
+  background-color: $button_primary_bg; // Primary Blue (#0055FF)
+  
+  // Border & Radius
+  border: none;
+  border-radius: $border_radius_lg;     // 12px - Yuvarlaklık (Figma Spec)
+  
+  // Effects
+  box-shadow: 0 2px 8px rgba($color_primary, 0.2);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  
+  // Transitions
+  transition: $transition_all;
+  
+  // ----------------------------------------------------------------------------
+  // HOVER STATE
+  // ----------------------------------------------------------------------------
+  &:hover:not(:disabled) {
+    background-color: $primary_color_dark;  // Koyu mavi (#003DD6)
+    box-shadow: 0 4px 12px rgba($color_primary, 0.3);
+    transform: translateY(-1px);
+  }
+  
+  // ----------------------------------------------------------------------------
+  // ACTIVE STATE (Tıklama anı)
+  // ----------------------------------------------------------------------------
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba($color_primary, 0.2);
+  }
+  
+  // ----------------------------------------------------------------------------
+  // FOCUS STATE (Keyboard navigation)
+  // ----------------------------------------------------------------------------
+  &:focus:not(:disabled) {
+    outline: 2px solid $color_primary;
+    outline-offset: 2px;
+  }
+  
+  // ----------------------------------------------------------------------------
+  // DISABLED STATE
+  // ----------------------------------------------------------------------------
+  &:disabled {
+    background-color: $bg_light;
+    color: $text_muted;
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+    transform: none;
+  }
+  
+  // ----------------------------------------------------------------------------
+  // LOADING STATE
+  // ----------------------------------------------------------------------------
+  &--loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba($color_white, 0.3);
+      border-top-color: $color_white;
+      border-radius: $border_radius_full;
+      animation: btn_spinner 0.6s linear infinite;
+    }
+  }
+  
+  // ----------------------------------------------------------------------------
+  // SIZE VARIANTS
+  // ----------------------------------------------------------------------------
+  
+  // Small Button
+  &--sm {
+    height: 44px;
+    font-size: $font_size_sm;
+    padding: 0 $spacing_4;
+  }
+  
+  // Large Button
+  &--lg {
+    height: 64px;
+    font-size: $font_size_md;
+    padding: 0 $spacing_8;
+  }
+  
+  // ----------------------------------------------------------------------------
+  // WIDTH VARIANTS
+  // ----------------------------------------------------------------------------
+  
+  // Auto width (içerik kadar)
+  &--auto {
+    width: auto;
+  }
+  
+  // Fixed widths
+  &--fit {
+    width: fit-content;
+  }
+  
+  // ----------------------------------------------------------------------------
+  // ICON SUPPORT
+  // ----------------------------------------------------------------------------
+  svg,
+  i {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  
+  // Icon only (square button)
+  &--icon {
+    width: 56px;
+    padding: 0;
+    
+    &.btn_primary--sm {
+      width: 44px;
+    }
+    
+    &.btn_primary--lg {
+      width: 64px;
+    }
+  }
+}
+
+// Spinner Animation
+@keyframes btn_spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// SECONDARY BUTTON (İkincil Aksiyon)
+// ----------------------------------------------------------------------------
+
+.btn_secondary {
+  @extend .btn_primary;
+  
+  background-color: $color_secondary;   // Açık mavi (#4B8EFF)
+  box-shadow: 0 2px 8px rgba($color_secondary, 0.2);
+  
+  &:hover:not(:disabled) {
+    background-color: darken($color_secondary, 8%);
+    box-shadow: 0 4px 12px rgba($color_secondary, 0.3);
+  }
+  
+  &:focus:not(:disabled) {
+    outline-color: $color_secondary;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OUTLINE BUTTON (Çerçeveli Buton)
+// ----------------------------------------------------------------------------
+
+.btn_outline {
+  @extend .btn_primary;
+  
+  background-color: transparent;
+  color: $color_primary;
+  border: 2px solid $color_primary;
+  box-shadow: none;
+  
+  &:hover:not(:disabled) {
+    background-color: $color_primary;
+    color: $color_white;
+    border-color: $color_primary;
+    box-shadow: 0 4px 12px rgba($color_primary, 0.2);
+  }
+  
+  &:disabled {
+    background-color: transparent;
+    color: $text_muted;
+    border-color: $border_color;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// GHOST BUTTON (Sadece Metin)
+// ----------------------------------------------------------------------------
+
+.btn_ghost {
+  @extend .btn_primary;
+  
+  background-color: transparent;
+  color: $color_primary;
+  box-shadow: none;
+  
+  &:hover:not(:disabled) {
+    background-color: rgba($color_primary, 0.1);
+    transform: none;
+  }
+  
+  &:disabled {
+    background-color: transparent;
+    color: $text_muted;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// TEXT BUTTON (Link gibi)
+// ----------------------------------------------------------------------------
+
+.btn_text {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing_1;
+  padding: $spacing_2 $spacing_3;
+  
+  font-family: $font_main;
+  font-size: $font_size_sm;
+  font-weight: $font_weight_medium;
+  color: $color_primary;
+  
+  background: transparent;
+  border: none;
+  border-radius: $border_radius_sm;
+  cursor: pointer;
+  transition: $transition_colors;
+  
+  &:hover:not(:disabled) {
+    color: $primary_color_dark;
+    background-color: rgba($color_primary, 0.05);
+  }
+  
+  &:disabled {
+    color: $text_muted;
+    cursor: not-allowed;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// DANGER BUTTON (Tehlikeli Aksiyon - Sil, İptal vb.)
+// ----------------------------------------------------------------------------
+
+.btn_danger {
+  @extend .btn_primary;
+  
+  background-color: $danger_color;
+  box-shadow: 0 2px 8px rgba($danger_color, 0.2);
+  
+  &:hover:not(:disabled) {
+    background-color: darken($danger_color, 8%);
+    box-shadow: 0 4px 12px rgba($danger_color, 0.3);
+  }
+  
+  &:focus:not(:disabled) {
+    outline-color: $danger_color;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// SUCCESS BUTTON (Başarı Aksiyonu)
+// ----------------------------------------------------------------------------
+
+.btn_success {
+  @extend .btn_primary;
+  
+  background-color: $success_color;
+  box-shadow: 0 2px 8px rgba($success_color, 0.2);
+  
+  &:hover:not(:disabled) {
+    background-color: darken($success_color, 8%);
+    box-shadow: 0 4px 12px rgba($success_color, 0.3);
+  }
+  
+  &:focus:not(:disabled) {
+    outline-color: $success_color;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// BUTTON GROUP (Yan yana butonlar)
+// ----------------------------------------------------------------------------
+
+.btn_group {
+  display: flex;
+  gap: $spacing_3;
+  
+  @include respond_to_max(sm) {
+    flex-direction: column;
+  }
+  
+  .btn_primary,
+  .btn_secondary,
+  .btn_outline {
+    flex: 1;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// BUTTON WITH BADGE (Bildirim rozeti ile)
+// ----------------------------------------------------------------------------
+
+.btn_with_badge {
+  position: relative;
+  
+  .btn_badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 0.625rem;
+    font-weight: $font_weight_bold;
+    color: $color_white;
+    
+    background-color: $danger_color;
+    border-radius: $border_radius_full;
+    border: 2px solid $color_white;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// PILL BUTTON (Tam yuvarlak - Alternative)
+// ----------------------------------------------------------------------------
+
+.btn_pill {
+  &.btn_primary,
+  &.btn_secondary,
+  &.btn_outline {
+    border-radius: $border_radius_full;  // Tam yuvarlak (50px)
+  }
+}
+
+// ----------------------------------------------------------------------------
+// RESPONSIVE UTILITIES
+// ----------------------------------------------------------------------------
+
+// Mobile'da full-width
+@include respond_to_max(sm) {
+  .btn_primary,
+  .btn_secondary,
+  .btn_outline,
+  .btn_ghost {
+    &:not(.btn_primary--auto):not(.btn_primary--fit) {
+      width: 100%;
+    }
+  }
+}
+
+// Desktop'ta auto-width (optional)
+.btn_desktop_auto {
+  @include respond_to(md) {
+    width: auto;
+    min-width: 200px;
+  }
+}
+
+// ============================================================================
+// END OF BUTTONS
+// ============================================================================
 

@@ -1,2 +1,418 @@
-// Forms
+// ============================================================================
+// FORMS - İNTERAKTİF KREDİ (Figma Spec)
+// ============================================================================
+// Modern form input yapısı - Label inside input style
+// Kullanım örnekleri en altta HTML comment olarak verilmiştir
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// INPUT GROUP - MODERN OUTLINED INPUT (Figma Design)
+// ----------------------------------------------------------------------------
+
+/*
+HTML Kullanım Örneği:
+
+<!-- Varsayılan Input -->
+<div class="input_group">
+  <input type="text" id="name" class="input_group__field" placeholder=" " />
+  <label for="name" class="input_group__label">Adınız</label>
+</div>
+
+<!-- Dolu Input (Value ile) -->
+<div class="input_group">
+  <input type="text" id="phone" class="input_group__field" value="555 123 4567" placeholder=" " />
+  <label for="phone" class="input_group__label">Telefon</label>
+</div>
+
+<!-- Focus State (Otomatik - tıklayınca aktif olur) -->
+<div class="input_group input_group--focus">
+  <input type="text" id="email" class="input_group__field" placeholder=" " />
+  <label for="email" class="input_group__label">E-Posta</label>
+</div>
+
+<!-- Error State -->
+<div class="input_group input_group--error">
+  <input type="text" id="tckn" class="input_group__field" value="12345" placeholder=" " />
+  <label for="tckn" class="input_group__label">TC Kimlik No</label>
+  <span class="input_group__error">TCKN 11 haneli olmalıdır</span>
+</div>
+
+<!-- Disabled Input -->
+<div class="input_group input_group--disabled">
+  <input type="text" id="disabled" class="input_group__field" disabled placeholder=" " />
+  <label for="disabled" class="input_group__label">Devre Dışı</label>
+</div>
+
+<!-- Success State -->
+<div class="input_group input_group--success">
+  <input type="text" id="success" class="input_group__field" value="Doğru değer" placeholder=" " />
+  <label for="success" class="input_group__label">Başarılı</label>
+  <span class="input_group__success">Bilgiler doğrulandı</span>
+</div>
+
+<!-- Textarea -->
+<div class="input_group">
+  <textarea id="note" class="input_group__field input_group__field--textarea" placeholder=" "></textarea>
+  <label for="note" class="input_group__label">Notunuz</label>
+</div>
+*/
+
+// Base Input Group Container
+.input_group {
+  position: relative;
+  margin-bottom: $spacing_5;
+  width: 100%;
+  
+  // Input Field
+  &__field {
+    width: 100%;
+    height: 56px;
+    padding: 24px $spacing_4 8px $spacing_4;
+    font-family: $font_main;
+    font-size: 1rem;                    // 16px - Value size (Figma Spec)
+    font-weight: $font_weight_regular;
+    line-height: 1.5;
+    color: $text_dark;
+    background-color: $color_white;
+    border: 2px solid $border_color;    // Varsayılan gri kenarlık
+    border-radius: $border_radius_md;   // 8px
+    outline: none;
+    transition: $transition_all;
+    appearance: none;
+    
+    // Placeholder (gizli - sadece :placeholder-shown için)
+    &::placeholder {
+      color: transparent;
+      opacity: 0;
+    }
+    
+    // Focus State
+    &:focus {
+      border-color: $color_primary;     // Mavi kenarlık (Figma Spec)
+      border-width: 2px;
+      box-shadow: 0 0 0 4px rgba($color_primary, 0.1);
+    }
+    
+    // Hover State
+    &:hover:not(:focus):not(:disabled) {
+      border-color: $border_dark;
+    }
+    
+    // Disabled State
+    &:disabled {
+      background-color: $bg_light;
+      color: $text_muted;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    // Textarea variant
+    &--textarea {
+      min-height: 120px;
+      padding-top: 28px;
+      resize: vertical;
+    }
+  }
+  
+  // Label (Floating inside input)
+  &__label {
+    position: absolute;
+    top: 8px;
+    left: $spacing_4;
+    font-family: $font_main;
+    font-size: 0.75rem;                 // 12px - Label size (Figma Spec)
+    font-weight: $font_weight_bold;     // Bold (Figma Spec)
+    color: $text_light;
+    pointer-events: none;
+    transition: $transition_all;
+    background-color: transparent;
+    padding: 0 2px;
+    line-height: 1;
+    
+    // When input is focused or has value
+    .input_group__field:focus ~ &,
+    .input_group__field:not(:placeholder-shown) ~ & {
+      top: 8px;
+      font-size: 0.75rem;               // 12px
+      color: $color_primary;
+    }
+  }
+  
+  // Error Message
+  &__error {
+    display: block;
+    margin-top: $spacing_2;
+    font-size: $font_size_xs;           // 12px
+    font-weight: $font_weight_regular;
+    color: $color_error;                // Kırmızı (Figma Spec)
+    line-height: 1.4;
+  }
+  
+  // Success Message
+  &__success {
+    display: block;
+    margin-top: $spacing_2;
+    font-size: $font_size_xs;
+    font-weight: $font_weight_regular;
+    color: $success_color;
+    line-height: 1.4;
+  }
+  
+  // Helper Text
+  &__helper {
+    display: block;
+    margin-top: $spacing_2;
+    font-size: $font_size_xs;
+    font-weight: $font_weight_regular;
+    color: $text_light;
+    line-height: 1.4;
+  }
+  
+  // ----------------------------------------------------------------------------
+  // STATE MODIFIERS
+  // ----------------------------------------------------------------------------
+  
+  // Focus State (Active)
+  &--focus {
+    .input_group__field {
+      border-color: $color_primary;
+      border-width: 2px;
+      box-shadow: 0 0 0 4px rgba($color_primary, 0.1);
+    }
+    
+    .input_group__label {
+      color: $color_primary;
+    }
+  }
+  
+  // Error State
+  &--error {
+    .input_group__field {
+      border-color: $color_error;       // Kırmızı kenarlık (Figma Spec)
+      border-width: 2px;
+      
+      &:focus {
+        border-color: $color_error;
+        box-shadow: 0 0 0 4px rgba($color_error, 0.1);
+      }
+    }
+    
+    .input_group__label {
+      color: $color_error;
+    }
+  }
+  
+  // Success State
+  &--success {
+    .input_group__field {
+      border-color: $success_color;
+      border-width: 2px;
+      
+      &:focus {
+        border-color: $success_color;
+        box-shadow: 0 0 0 4px rgba($success_color, 0.1);
+      }
+    }
+    
+    .input_group__label {
+      color: $success_color;
+    }
+  }
+  
+  // Disabled State
+  &--disabled {
+    .input_group__field {
+      background-color: $bg_light;
+      cursor: not-allowed;
+    }
+    
+    .input_group__label {
+      color: $text_muted;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// INPUT GROUP SIZES
+// ----------------------------------------------------------------------------
+
+.input_group--sm {
+  .input_group__field {
+    height: 48px;
+    padding: 20px $spacing_3 6px $spacing_3;
+    font-size: $font_size_sm;
+  }
+  
+  .input_group__label {
+    font-size: 0.625rem;                // 10px
+  }
+}
+
+.input_group--lg {
+  .input_group__field {
+    height: 64px;
+    padding: 28px $spacing_5 10px $spacing_5;
+    font-size: $font_size_lg;
+  }
+  
+  .input_group__label {
+    font-size: $font_size_sm;           // 14px
+  }
+}
+
+// ----------------------------------------------------------------------------
+// CLASSIC INPUT (Optional - Standart input style)
+// ----------------------------------------------------------------------------
+
+.form_input {
+  @include input_base;
+  
+  &--sm { @include input_sm; }
+  &--lg { @include input_lg; }
+  &--error { @include input_error; }
+  &--success { @include input_success; }
+}
+
+// ----------------------------------------------------------------------------
+// SELECT DROPDOWN
+// ----------------------------------------------------------------------------
+
+.input_group__select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing_4 center;
+  padding-right: $spacing_10;
+}
+
+// ----------------------------------------------------------------------------
+// CHECKBOX & RADIO (Modern Style)
+// ----------------------------------------------------------------------------
+
+.form_checkbox,
+.form_radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  
+  input[type="checkbox"],
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    
+    &:checked ~ .form_checkbox__box,
+    &:checked ~ .form_radio__box {
+      background-color: $color_primary;
+      border-color: $color_primary;
+    }
+    
+    &:checked ~ .form_checkbox__box::after {
+      display: block;
+    }
+    
+    &:focus ~ .form_checkbox__box,
+    &:focus ~ .form_radio__box {
+      box-shadow: 0 0 0 3px rgba($color_primary, 0.1);
+    }
+  }
+  
+  &__box {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $border_color;
+    border-radius: $border_radius_sm;
+    background-color: $color_white;
+    transition: $transition_all;
+    flex-shrink: 0;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid $color_white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+  
+  &__label {
+    margin-left: $spacing_2;
+    font-size: $font_size_sm;
+    color: $text_dark;
+  }
+}
+
+.form_radio {
+  .form_radio__box {
+    border-radius: $border_radius_full;
+    
+    &::after {
+      left: 4px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: $border_radius_full;
+      background-color: $color_white;
+      border: none;
+      transform: none;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// FORM GROUP (Multiple inputs container)
+// ----------------------------------------------------------------------------
+
+.form_group {
+  margin-bottom: $spacing_6;
+  
+  &__title {
+    font-size: $font_size_base;
+    font-weight: $font_weight_semibold;
+    color: $text_dark;
+    margin-bottom: $spacing_3;
+  }
+  
+  &__description {
+    font-size: $font_size_sm;
+    color: $text_light;
+    margin-bottom: $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// FORM ROW (Horizontal layout)
+// ----------------------------------------------------------------------------
+
+.form_row {
+  @include flex(flex-start, stretch, row);
+  gap: $spacing_4;
+  margin-bottom: $spacing_5;
+  
+  @include respond_to_max(md) {
+    flex-direction: column;
+  }
+  
+  .input_group {
+    flex: 1;
+    margin-bottom: 0;
+  }
+}
+
+// ============================================================================
+// END OF FORMS
+// ============================================================================
 

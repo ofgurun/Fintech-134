@@ -6,24 +6,33 @@
 // ============================================================================
 
 // ----------------------------------------------------------------------------
-// GOOGLE FONTS IMPORT
+// GOOGLE FONTS IMPORT - POPPINS
 // ----------------------------------------------------------------------------
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 // ----------------------------------------------------------------------------
 // RENK PALETİ - İNTERAKTİF KREDİ KURUMSAL KİMLİK
 // ----------------------------------------------------------------------------
 
-// PRIMARY COLORS (Ana Marka Renkleri)
-$primary_color: #2563EB;              // Canlı Mavi - Logo & Test Et butonu
-$primary_color_dark: #1E40AF;         // Koyu Mavi - Hover states
-$primary_color_light: #3B82F6;        // Açık Mavi - Light states
-$primary_color_lighter: #DBEAFE;      // Çok Açık Mavi - Backgrounds
+// PRIMARY COLORS (Ana Marka Renkleri - Figma Spec)
+$color_primary: #0055FF;              // Canlı Mavi - Ana butonlar & CTA
+$primary_color: #0055FF;              // Alias (backward compatibility)
+$color_primary_dark: #1E255E;         // Koyu Lacivert - Başlıklar & Sol menü
+$primary_color_dark: #003DD6;         // Hover states için daha koyu mavi
+$color_primary_light: #3D7EFF;        // Açık Mavi - Light states
+$primary_color_light: #3D7EFF;        // Alias
+$color_primary_lighter: #E5EFFF;      // Çok Açık Mavi - Backgrounds
 
-// SECONDARY COLORS (Destekleyici Renkler)
-$secondary_color: #60A5FA;            // Gökyüzü Mavisi - Logo ikonlar
-$secondary_color_light: #93C5FD;      // Açık Gökyüzü Mavisi
-$secondary_color_lighter: #BFDBFE;    // Çok Açık Gökyüzü Mavisi
+// SECONDARY COLORS (Destekleyici Renkler - Figma Spec)
+$color_secondary: #4B8EFF;            // Açık Mavi - İkonlar & Vurgular
+$secondary_color: #4B8EFF;            // Alias
+$secondary_color_light: #7FA9FF;      // Daha Açık Mavi
+$secondary_color_lighter: #B3CEFF;    // Çok Açık Mavi
+
+// NAVY BLUE (Koyu Lacivert - Başlıklar ve UI Elementleri)
+$color_navy: #1E255E;                 // Koyu Lacivert - H1, H2, Sidebar
+$color_navy_dark: #151B45;            // Daha Koyu Lacivert
+$color_navy_light: #2E3570;           // Açık Lacivert
 
 // NEUTRAL COLORS (Nötr Renkler)
 $text_dark: #1F2937;                  // Koyu Antrasit - Ana metinler
@@ -32,9 +41,11 @@ $text_light: #6B7280;                 // Hafif Gri - Yardımcı metinler
 $text_lighter: #9CA3AF;               // Daha Açık Gri - Placeholder
 $text_muted: #D1D5DB;                 // Soluk Gri - Disabled
 
-// BACKGROUND COLORS (Arka Plan Renkleri)
-$bg_white: #FFFFFF;                   // Tam Beyaz
-$bg_light: #F3F4F6;                   // Çok Açık Gri - Ana arka plan
+// BACKGROUND COLORS (Arka Plan Renkleri - Figma Spec)
+$color_white: #FFFFFF;                // Tam Beyaz
+$bg_white: #FFFFFF;                   // Alias
+$color_bg_light: #F3F4F6;             // Çok Açık Gri - Sayfa arka planı (Figma)
+$bg_light: #F3F4F6;                   // Alias
 $bg_lighter: #F9FAFB;                 // Ultra Açık Gri - Card backgrounds
 $bg_dark: #111827;                    // Koyu Arka Plan (dark mode için)
 
@@ -47,6 +58,7 @@ $border_dark: #D1D5DB;                // Koyu border
 $success_color: #10B981;              // Yeşil - Başarılı işlemler
 $success_light: #D1FAE5;              // Açık Yeşil - Başarı arka planı
 $danger_color: #DC3545;               // Kırmızı - Hata mesajları
+$color_error: #DC3545;                // Alias - Error state
 $danger_light: #FEE2E2;               // Açık Kırmızı - Hata arka planı
 $warning_color: #F59E0B;              // Turuncu - Uyarılar
 $warning_light: #FEF3C7;              // Açık Turuncu - Uyarı arka planı
@@ -57,29 +69,32 @@ $info_light: #DBEAFE;                 // Açık Mavi - Bilgi arka planı
 // TİPOGRAFİ
 // ----------------------------------------------------------------------------
 
-// FONT FAMİLİES
-$font_family_base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
-$font_family_heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+// FONT FAMİLİES (Figma Spec - Poppins)
+$font_main: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+$font_family_base: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font_family_heading: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 $font_family_mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
 
-// FONT SİZES (Responsive Typography)
+// FONT SİZES (Figma Spec - Exact Sizes)
 $font_size_xs: 0.75rem;               // 12px - Küçük notlar
-$font_size_sm: 0.875rem;              // 14px - Yardımcı metinler
-$font_size_base: 1rem;                // 16px - Ana metin boyutu
+$font_body: 0.875rem;                 // 14px - Ana metin (Figma Spec)
+$font_size_sm: 0.875rem;              // 14px - Alias
+$font_button: 0.875rem;               // 14px - Buton metni (Figma Spec)
+$font_size_base: 1rem;                // 16px - Standart metin
 $font_size_md: 1.125rem;              // 18px - Orta metinler
-$font_size_lg: 1.25rem;               // 20px - Büyük metinler
+$font_h2: 1.25rem;                    // 20px - H2 (Figma Spec)
+$font_size_lg: 1.25rem;               // 20px - Alias
 $font_size_xl: 1.5rem;                // 24px - H4
-$font_size_2xl: 1.875rem;             // 30px - H3
-$font_size_3xl: 2.25rem;              // 36px - H2
-$font_size_4xl: 3rem;                 // 48px - H1
+$font_h1: 1.75rem;                    // 28px - H1 (Figma Spec)
+$font_size_2xl: 1.75rem;              // 28px - Alias
+$font_size_3xl: 2.25rem;              // 36px - H2 (Large screens)
+$font_size_4xl: 3rem;                 // 48px - Hero H1
 
-// FONT WEİGHTS
-$font_weight_light: 300;              // Light
-$font_weight_regular: 400;            // Regular
-$font_weight_medium: 500;             // Medium
-$font_weight_semibold: 600;           // Semibold
-$font_weight_bold: 700;               // Bold
-$font_weight_extrabold: 800;          // Extrabold
+// FONT WEİGHTS (Figma Spec - Poppins Weights)
+$font_weight_regular: 400;            // Regular - Body text (Figma Spec)
+$font_weight_medium: 500;             // Medium - Emphasis
+$font_weight_semibold: 600;           // Semi-Bold - Buttons & H2 (Figma Spec)
+$font_weight_bold: 700;               // Bold - H1 & Headings (Figma Spec)
 
 // LİNE HEİGHTS
 $line_height_tight: 1.25;             // Başlıklar için
@@ -210,13 +225,20 @@ $container_padding_x: $spacing_4;     // 16px
 $container_padding_x_lg: $spacing_6;  // 24px
 
 // ----------------------------------------------------------------------------
-// BRAND SPECİFİC (İnteraktif Kredi Özel)
+// BRAND SPECİFİC (İnteraktif Kredi Özel - Figma Spec)
 // ----------------------------------------------------------------------------
-$brand_blue: $primary_color;          // Ana marka mavisi
-$brand_light_blue: $secondary_color;  // İkon mavisi
+$brand_blue: $color_primary;          // Ana marka mavisi (#0055FF)
+$brand_navy: $color_navy;             // Koyu lacivert (#1E255E)
+$brand_light_blue: $color_secondary;  // İkon mavisi (#4B8EFF)
 $loan_success: $success_color;        // Onay rengi
 $loan_pending: $warning_color;        // Beklemede
 $loan_rejected: $danger_color;        // Ret rengi
+
+// FIGMA COMPONENT SPECİFİC
+$button_primary_bg: $color_primary;   // Buton arka plan (#0055FF)
+$button_primary_text: $color_white;   // Buton metin (Beyaz)
+$heading_color: $color_navy;          // Başlık rengi (#1E255E)
+$body_text_color: $text_main;         // Gövde metni rengi
 
 // ============================================================================
 // END OF VARIABLES
