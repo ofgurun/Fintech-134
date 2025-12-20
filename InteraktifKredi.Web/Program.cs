@@ -3,9 +3,20 @@ using InteraktifKredi.Web.Models.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Bind API settings from configuration
-var apiSettings = builder.Configuration.GetSection("ApiSettings").Get<ApiSettings>() ?? new ApiSettings();
+// Configure API Settings from appsettings.json
+// This will read ApiSettings section and make it available via IOptions<ApiSettings>
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+
+// Get API settings for HttpClient configuration
+var apiSettings = builder.Configuration.GetSection("ApiSettings").Get<ApiSettings>() ?? new ApiSettings();
+
+// Register HttpClient with IApiService (Dependency Injection)
+// Keep it simple - no custom headers that might cause issues
+builder.Services.AddHttpClient<IApiService, ApiService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(apiSettings.Timeout);
+    // Don't set custom headers - let the API service handle it
+});
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -16,14 +27,6 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-});
-
-// Register HttpClient with IApiService
-builder.Services.AddHttpClient<IApiService, ApiService>(client =>
-{
-    client.BaseAddress = new Uri(apiSettings.BaseUrl);
-    client.Timeout = TimeSpan.FromSeconds(apiSettings.Timeout);
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
 var app = builder.Build();

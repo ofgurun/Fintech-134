@@ -265,13 +265,13 @@ blockquote {
 // ----------------------------------------------------------------------------
 
 ::selection {
-  background-color: $primary_color_lighter;
-  color: $primary_color_dark;
+  background-color: $color_primary_lighter;
+  color: $color_primary_dark;
 }
 
 ::-moz-selection {
-  background-color: $primary_color_lighter;
-  color: $primary_color_dark;
+  background-color: $color_primary_lighter;
+  color: $color_primary_dark;
 }
 
 // ============================================================================

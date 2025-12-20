@@ -91,10 +91,12 @@ $font_size_3xl: 2.25rem;              // 36px - H2 (Large screens)
 $font_size_4xl: 3rem;                 // 48px - Hero H1
 
 // FONT WEİGHTS (Figma Spec - Poppins Weights)
+$font_weight_light: 300;              // Light - Thin text (optional)
 $font_weight_regular: 400;            // Regular - Body text (Figma Spec)
 $font_weight_medium: 500;             // Medium - Emphasis
 $font_weight_semibold: 600;           // Semi-Bold - Buttons & H2 (Figma Spec)
 $font_weight_bold: 700;               // Bold - H1 & Headings (Figma Spec)
+$font_weight_extrabold: 800;          // Extra Bold - Hero text (optional)
 
 // LİNE HEİGHTS
 $line_height_tight: 1.25;             // Başlıklar için

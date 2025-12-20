@@ -2,47 +2,119 @@
 @model InteraktifKredi.Web.Pages.Auth.LoginModel
 @{
     ViewData["Title"] = "Giriş";
+    Layout = null;
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">@ViewData["Title"]</h3>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - İnteraktif Kredi</title>
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+<body>
+    <div class="auth_page">
+        <!-- Sol Taraf: Görsel (Mobilde Gizli) -->
+        <div class="auth_image">
+            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&h=1600&fit=crop&crop=faces,center" 
+                 alt="Finans Görseli" 
+                 class="auth_image__img" />
+        </div>
+
+        <!-- Sağ Taraf: Form Container -->
+        <div class="auth_container">
+            <div class="auth_content">
+                <!-- Logo ve Başlık -->
+                <div class="auth_header">
+                    <img src="~/img/logo.svg" alt="İnteraktif Kredi Logo" class="auth_header__logo" />
+                    <h2 class="auth_header__title">Bireysel İnteraktif Şube Girişi</h2>
                 </div>
-                <div class="card-body">
-                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            @Model.ErrorMessage
-                        </div>
-                    }
 
-                    <form method="post">
-                        <div class="mb-3">
-                            <label asp-for="VerifyRequest.TCKN" class="form-label">TC Kimlik No</label>
-                            <input asp-for="VerifyRequest.TCKN" class="form-control" placeholder="11 haneli TCKN giriniz" maxlength="11" />
-                            <span asp-validation-for="VerifyRequest.TCKN" class="text-danger"></span>
-                        </div>
+                <!-- Hata Mesajı -->
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert--error">
+                        @Model.ErrorMessage
+                    </div>
+                }
 
-                        <div class="mb-3">
-                            <label asp-for="VerifyRequest.GSM" class="form-label">GSM Numarası</label>
-                            <input asp-for="VerifyRequest.GSM" class="form-control" placeholder="5XXXXXXXXX" maxlength="10" />
-                            <span asp-validation-for="VerifyRequest.GSM" class="text-danger"></span>
-                        </div>
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Giriş Yap</button>
-                        </div>
-                    </form>
-                </div>
+                <!-- Giriş Formu -->
+                <form method="post" class="auth_form" novalidate>
+                    <!-- TCKN Input -->
+                    <div class="input_group" id="tckn_group">
+                        <input asp-for="VerifyRequest.TCKN" 
+                               type="text" 
+                               id="tckn" 
+                               class="input_group__field" 
+                               placeholder=" " 
+                               maxlength="11" 
+                               autocomplete="off"
+                               inputmode="numeric"
+                               pattern="[0-9]*" />
+                        <label for="tckn" class="input_group__label">TCKN / Müşteri No</label>
+                        <span asp-validation-for="VerifyRequest.TCKN" class="input_group__error"></span>
+                    </div>
+
+                    <!-- GSM Input -->
+                    <div class="input_group" id="gsm_group">
+                        <input asp-for="VerifyRequest.GSM" 
+                               type="tel" 
+                               id="gsm" 
+                               class="input_group__field" 
+                               placeholder=" " 
+                               maxlength="10" 
+                               autocomplete="tel"
+                               inputmode="numeric"
+                               pattern="[0-9]*" />
+                        <label for="gsm" class="input_group__label">GSM</label>
+                        <span asp-validation-for="VerifyRequest.GSM" class="input_group__error"></span>
+                    </div>
+
+                    <!-- Devam Et Butonu -->
+                    <button type="submit" class="btn_primary">
+                        Devam Et
+                    </button>
+
+                    <!-- Alt Linkler -->
+                    <div class="auth_footer">
+                        <label class="form_checkbox">
+                            <input type="checkbox" name="remember_me" />
+                            <span class="form_checkbox__box"></span>
+                            <span class="form_checkbox__label">Beni Hatırla</span>
+                        </label>
+
+                        <a href="#" class="auth_footer__link">Parolamı unuttum</a>
+                    </div>
+
+                    <!-- Google ile Giriş -->
+                    <button type="button" class="btn_google">
+                        <svg class="btn_google__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M19.8055 10.2285C19.8055 9.51823 19.7477 8.83594 19.6388 8.18164H10.2V12.0494H15.6014C15.3763 13.2911 14.6872 14.3494 13.6444 15.0673V17.5766H16.8589C18.7534 15.8348 19.8055 13.2722 19.8055 10.2285Z" fill="#4285F4"/>
+                            <path d="M10.2 19.9996C12.897 19.9996 15.1714 19.1044 16.8589 17.5767L13.6444 15.0674C12.7647 15.6685 11.6104 16.023 10.2 16.023C7.59474 16.023 5.38947 14.2634 4.61053 11.8994H1.29474V14.4907C2.97474 17.8289 6.31053 19.9996 10.2 19.9996Z" fill="#34A853"/>
+                            <path d="M4.61053 11.8995C4.41579 11.2984 4.30526 10.6596 4.30526 9.99955C4.30526 9.3395 4.41579 8.70065 4.61053 8.09955V5.50824H1.29474C0.6 6.88929 0.2 8.40824 0.2 9.99955C0.2 11.5909 0.6 13.1098 1.29474 14.4909L4.61053 11.8995Z" fill="#FBBC05"/>
+                            <path d="M10.2 3.97727C11.7436 3.97727 13.1284 4.48182 14.2094 5.51818L17.0757 2.65182C15.1714 0.86 12.897 0 10.2 0C6.31053 0 2.97474 2.17091 1.29474 5.50909L4.61053 8.10045C5.38947 5.73636 7.59474 3.97727 10.2 3.97727Z" fill="#EA4335"/>
+                        </svg>
+                        Google ile Giriş Yap
+                    </button>
+
+                    <!-- Henüz Üye Değil Misin? -->
+                    <div class="auth_register">
+                        <span class="auth_register__text">Henüz üye değil misin?</span>
+                        <a href="#" class="auth_register__link">Kayıt Ol</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/login.js"></script>
+</body>
+</html>
 

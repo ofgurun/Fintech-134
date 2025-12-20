@@ -1,2 +1,406 @@
-// Login Page
+// ============================================================================
+// LOGIN PAGE - İNTERAKTİF KREDİ
+// ============================================================================
+// Split Layout: Sol taraf görsel, sağ taraf form
+// Responsive: Mobilde sadece form görünür
+// ============================================================================
 
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// AUTH PAGE - ANA CONTAINER (100vh Full Screen)
+// ----------------------------------------------------------------------------
+
+.auth_page {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $bg_white;
+  
+  // Mobil: Dikey stack
+  @include respond_to_max(md) {
+    flex-direction: column;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// AUTH IMAGE - SOL TARAF (Görsel Alan - %50)
+// ----------------------------------------------------------------------------
+
+.auth_image {
+  flex: 0 0 50%;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, $color_primary_dark 0%, $color_primary 100%);
+  
+  // Mobilde gizle
+  @include respond_to_max(md) {
+    display: none;
+  }
+  
+  // Görsel
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.85;
+    mix-blend-mode: multiply;
+  }
+  
+  // Overlay (İsteğe bağlı - görsel üzerine koyu katman)
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba($color_primary_dark, 0.3) 0%,
+      rgba($color_primary, 0.5) 100%
+    );
+    pointer-events: none;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// AUTH CONTAINER - SAĞ TARAF (Form Alan - %50)
+// ----------------------------------------------------------------------------
+
+.auth_container {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing_8 $spacing_6;
+  background-color: $bg_white;
+  overflow-y: auto;
+  
+  // Mobilde tam genişlik
+  @include respond_to_max(md) {
+    flex: 1;
+    padding: $spacing_6 $spacing_4;
+    min-height: 100vh;
+  }
+  
+  // Tablet
+  @include respond_to_max(lg) {
+    padding: $spacing_6 $spacing_5;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// AUTH CONTENT - İçerik Wrapper
+// ----------------------------------------------------------------------------
+
+.auth_content {
+  width: 100%;
+  max-width: 440px;
+  
+  @include respond_to_max(md) {
+    max-width: 100%;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// AUTH HEADER - Logo ve Başlık
+// ----------------------------------------------------------------------------
+
+.auth_header {
+  text-align: center;
+  margin-bottom: $spacing_8;
+  
+  @include respond_to_max(md) {
+    margin-bottom: $spacing_6;
+  }
+  
+  // Logo
+  &__logo {
+    width: 180px;
+    height: auto;
+    margin-bottom: $spacing_5;
+    
+    @include respond_to_max(md) {
+      width: 140px;
+      margin-bottom: $spacing_4;
+    }
+  }
+  
+  // Başlık
+  &__title {
+    font-family: $font_family_heading;
+    font-size: $font_h2;
+    font-weight: $font_weight_semibold;
+    color: $color_navy;
+    line-height: $line_height_tight;
+    margin: 0;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_base;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// AUTH FORM - Form Container
+// ----------------------------------------------------------------------------
+
+.auth_form {
+  width: 100%;
+  
+  // Input grupları arası boşluk
+  .input_group {
+    margin-bottom: $spacing_5;
+    
+    // Validation State Animations
+    transition: $transition_all;
+    
+    // Error State
+    &.input_group--error {
+      .input_group__field {
+        border-color: $color_error;
+        
+        &:focus {
+          border-color: $color_error;
+          box-shadow: 0 0 0 4px rgba($color_error, 0.1);
+        }
+      }
+      
+      .input_group__label {
+        color: $color_error;
+      }
+    }
+    
+    // Success State
+    &.input_group--success {
+      .input_group__field {
+        border-color: $success_color;
+        
+        &:focus {
+          border-color: $success_color;
+          box-shadow: 0 0 0 4px rgba($success_color, 0.1);
+        }
+      }
+      
+      .input_group__label {
+        color: $success_color;
+      }
+    }
+    
+    // Focus State
+    &.input_group--focus {
+      .input_group__field {
+        border-color: $color_primary;
+        box-shadow: 0 0 0 4px rgba($color_primary, 0.1);
+      }
+      
+      .input_group__label {
+        color: $color_primary;
+      }
+    }
+  }
+  
+  // Validation Error Messages
+  .input_group__error {
+    display: block;
+    margin-top: $spacing_2;
+    font-size: $font_size_xs;
+    font-weight: $font_weight_regular;
+    color: $color_error;
+    line-height: 1.4;
+    animation: slide_in_down 0.3s ease-out;
+  }
+  
+  // Buton
+  .btn_primary {
+    margin-top: $spacing_6;
+    margin-bottom: $spacing_4;
+  }
+}
+
+// Animation for error messages
+@keyframes slide_in_down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// AUTH FOOTER - Alt Linkler (Beni Hatırla & Parolamı Unuttum)
+// ----------------------------------------------------------------------------
+
+.auth_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing_6;
+  gap: $spacing_3;
+  
+  @include respond_to_max(md) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing_3;
+  }
+  
+  // Beni Hatırla Checkbox
+  .form_checkbox {
+    margin: 0;
+  }
+  
+  // Parolamı Unuttum Linki
+  &__link {
+    font-size: $font_size_sm;
+    font-weight: $font_weight_medium;
+    color: $color_primary;
+    text-decoration: none;
+    transition: $transition_colors;
+    white-space: nowrap;
+    
+    &:hover {
+      color: $primary_color_dark;
+      text-decoration: underline;
+    }
+    
+    @include respond_to_max(md) {
+      align-self: flex-end;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// AUTH REGISTER - Henüz Üye Değil Misin?
+// ----------------------------------------------------------------------------
+
+.auth_register {
+  text-align: center;
+  margin-top: $spacing_6;
+  padding-top: $spacing_6;
+  border-top: 1px solid $border_color;
+  
+  &__text {
+    font-size: $font_size_sm;
+    color: $text_light;
+    margin-right: $spacing_2;
+  }
+  
+  &__link {
+    font-size: $font_size_sm;
+    font-weight: $font_weight_semibold;
+    color: $color_primary;
+    text-decoration: none;
+    transition: $transition_colors;
+    
+    &:hover {
+      color: $primary_color_dark;
+      text-decoration: underline;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// GOOGLE BUTTON (Özel Stil)
+// ----------------------------------------------------------------------------
+
+.btn_google {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing_3;
+  padding: 0 $spacing_6;
+  font-family: $font_main;
+  font-size: $font_button;
+  font-weight: $font_weight_medium;
+  color: $text_dark;
+  background-color: $bg_white;
+  border: 2px solid $border_color;
+  border-radius: $border_radius_md;
+  cursor: pointer;
+  transition: $transition_all;
+  outline: none;
+  
+  &:hover {
+    background-color: $bg_lighter;
+    border-color: $border_dark;
+    box-shadow: $shadow_sm;
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+  
+  &__icon {
+    flex-shrink: 0;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// ALERT (Hata Mesajı)
+// ----------------------------------------------------------------------------
+
+.alert {
+  padding: $spacing_4;
+  border-radius: $border_radius_md;
+  margin-bottom: $spacing_5;
+  font-size: $font_size_sm;
+  line-height: $line_height_normal;
+  animation: slide_in_down 0.3s ease-out;
+  
+  // Hide if empty (for validation summary)
+  &:empty {
+    display: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  &--error {
+    background-color: $danger_light;
+    color: $danger_color;
+    border: 1px solid rgba($danger_color, 0.2);
+  }
+  
+  &--success {
+    background-color: $success_light;
+    color: $success_color;
+    border: 1px solid rgba($success_color, 0.2);
+  }
+  
+  &--info {
+    background-color: $info_light;
+    color: $info_color;
+    border: 1px solid rgba($info_color, 0.2);
+  }
+  
+  &--warning {
+    background-color: $warning_light;
+    color: $warning_color;
+    border: 1px solid rgba($warning_color, 0.2);
+  }
+  
+  // Validation Summary içindeki liste
+  ul {
+    margin: 0;
+    padding-left: $spacing_5;
+    
+    li {
+      margin-bottom: $spacing_1;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// END OF LOGIN PAGE
+// ============================================================================
