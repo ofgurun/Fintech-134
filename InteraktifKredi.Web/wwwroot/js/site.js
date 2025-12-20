@@ -15,6 +15,7 @@
     $(document).ready(function() {
         init_header();
         init_user_menu();
+        init_dashboard_dropdown();
     });
 
     // ------------------------------------------------------------------------
@@ -137,6 +138,71 @@
         
         function close_user_dropdown() {
             $user_dropdown.removeClass('header__user_dropdown--open');
+            is_open = false;
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // DASHBOARD DROPDOWN MENU
+    // ------------------------------------------------------------------------
+    
+    function init_dashboard_dropdown() {
+        // Selector caching
+        var $dashboard_toggle = $('#dashboard_menu_toggle');
+        var $dashboard_dropdown = $('#dashboard_dropdown');
+        var is_open = false;
+        
+        // Desktop: hover ile açılır
+        if ($(window).width() > 768) {
+            $dashboard_toggle.parent().on('mouseenter', function() {
+                open_dashboard_dropdown();
+            });
+            
+            $dashboard_toggle.parent().on('mouseleave', function() {
+                close_dashboard_dropdown();
+            });
+        }
+        
+        // Mobile: click ile açılır
+        $dashboard_toggle.on('click', function(e) {
+            if ($(window).width() <= 768) {
+                e.preventDefault();
+                
+                if (is_open) {
+                    close_dashboard_dropdown();
+                } else {
+                    open_dashboard_dropdown();
+                }
+            }
+        });
+        
+        // Dropdown link click - mobilde dropdown'ı kapat
+        $dashboard_dropdown.on('click', '.header__nav_dropdown_link', function() {
+            if ($(window).width() <= 768) {
+                close_dashboard_dropdown();
+            }
+        });
+        
+        // Window resize - desktop'a geçildiğinde dropdown'ı kapat
+        $(window).on('resize', function() {
+            if ($(window).width() > 768) {
+                close_dashboard_dropdown();
+            }
+        });
+        
+        // --------------------------------------------------------------------
+        // HELPER FUNCTIONS
+        // --------------------------------------------------------------------
+        
+        function open_dashboard_dropdown() {
+            $dashboard_dropdown.addClass('header__nav_dropdown--open');
+            $dashboard_toggle.find('.header__nav_link_arrow').css('transform', 'rotate(180deg)');
+            is_open = true;
+        }
+        
+        function close_dashboard_dropdown() {
+            $dashboard_dropdown.removeClass('header__nav_dropdown--open');
+            $dashboard_toggle.find('.header__nav_link_arrow').css('transform', 'rotate(0deg)');
             is_open = false;
         }
     }

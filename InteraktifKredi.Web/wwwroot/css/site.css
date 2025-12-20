@@ -803,6 +803,11 @@ blockquote cite::before {
     border-bottom: 1px solid #F3F4F6;
   }
 }
+@media (max-width: 767px) {
+  .header__nav_item--dropdown {
+    border-bottom: none;
+  }
+}
 .header__nav_link {
   display: flex;
   justify-content: center;
@@ -837,6 +842,78 @@ blockquote cite::before {
   height: 20px;
   flex-shrink: 0;
   fill: currentColor;
+}
+.header__nav_link_arrow {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-left: 0.25rem;
+  transition: transform 200ms ease-in-out;
+  fill: currentColor;
+}
+.header__nav_dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 220px;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 200ms ease-in-out;
+  z-index: 1000;
+  list-style: none;
+  margin: 0;
+}
+.header__nav_dropdown--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.header__nav_dropdown_item {
+  margin-bottom: 0.25rem;
+}
+.header__nav_dropdown_item:last-child {
+  margin-bottom: 0;
+}
+.header__nav_dropdown_link {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+}
+.header__nav_dropdown_link:hover {
+  background-color: #E5EFFF;
+  color: #0055FF;
+}
+@media (max-width: 767px) {
+  .header__nav_dropdown {
+    position: static;
+    display: none;
+    min-width: 100%;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    margin-top: 0.5rem;
+    background-color: #F9FAFB;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .header__nav_dropdown--open {
+    display: block;
+  }
 }
 .header__user {
   display: flex;
@@ -905,7 +982,7 @@ blockquote cite::before {
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
-  min-width: 200px;
+  min-width: 240px;
   background-color: #FFFFFF;
   border: 1px solid #E5E7EB;
   border-radius: 0.5rem;
@@ -921,6 +998,26 @@ blockquote cite::before {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+.header__user_dropdown_section {
+  margin-bottom: 0.5rem;
+}
+.header__user_dropdown_section:last-child {
+  margin-bottom: 0;
+}
+.header__user_dropdown_title {
+  padding: 0.5rem 1rem;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.header__user_dropdown_divider {
+  height: 1px;
+  background-color: #F3F4F6;
+  margin: 0.5rem 0;
 }
 .header__user_dropdown_item {
   display: block;

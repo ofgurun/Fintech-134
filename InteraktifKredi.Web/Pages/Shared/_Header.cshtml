@@ -17,6 +17,7 @@
     var isLoanActive = IsActivePage("/Loan");
     var isAccountActive = IsActivePage("/Account");
     var isAuthActive = IsActivePage("/Auth/Login") || IsActivePage("/Auth/OtpVerify");
+    var isHelpActive = IsActivePage("/FAQ");
 }
 
 <header class="header">
@@ -32,51 +33,45 @@
             @* Navigation Menu *@
             <nav class="header__nav" id="header_nav" aria-label="Ana Navigasyon">
                 <ul class="header__nav_list">
-                    <li class="header__nav_item">
+                    @* Kullanıcı Anasayfası (Dashboard) - Dropdown *@
+                    <li class="header__nav_item header__nav_item--dropdown">
                         <a href="/Dashboard" 
                            class="header__nav_link"
-                           aria-label="Ana Ekran">
+                           aria-label="Ana Ekran"
+                           id="dashboard_menu_toggle">
                             <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
                             </svg>
                             <span>Ana Ekran</span>
-                        </a>
-                    </li>
-                    <li class="header__nav_item">
-                        <a href="/Services" 
-                           class="header__nav_link"
-                           aria-label="Hizmetler">
-                            <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
+                            <svg class="header__nav_link_arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
-                            <span>Hizmetler</span>
                         </a>
+                        <ul class="header__nav_dropdown" id="dashboard_dropdown">
+                            <li class="header__nav_dropdown_item">
+                                <a href="/Dashboard/Reports" class="header__nav_dropdown_link">Rapor Detayları</a>
+                            </li>
+                            <li class="header__nav_dropdown_item">
+                                <a href="/Dashboard/Invoices" class="header__nav_dropdown_link">Faturalar</a>
+                            </li>
+                            <li class="header__nav_dropdown_item">
+                                <a href="/Dashboard/LoanOffers" class="header__nav_dropdown_link">Kredi Teklifleri (Kişiye Özel)</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="header__nav_item">
-                        <a href="/Loan/Apply" 
-                           class="header__nav_link"
-                           aria-label="Kredi Hesaplama">
-                            <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="1" x2="12" y2="23"></line>
-                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                            </svg>
-                            <span>Kredi Hesaplama</span>
-                        </a>
-                    </li>
+                    
+                    @* Yardım & Destek Merkezi *@
                     <li class="header__nav_item">
                         <a href="/FAQ" 
                            class="header__nav_link"
-                           aria-label="Sık Sorulan Sorular">
+                           aria-label="Yardım & Destek">
                             <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
                             </svg>
-                            <span>SSS</span>
+                            <span>Yardım & Destek</span>
                         </a>
                     </li>
                 </ul>
@@ -92,9 +87,19 @@
                 </div>
                 <div class="header__user_menu">
                     <div class="header__user_dropdown" id="user_dropdown">
-                        <a href="/Account/Profile" class="header__user_dropdown_item">
-                            Profil Ayarları
-                        </a>
+                        <div class="header__user_dropdown_section">
+                            <div class="header__user_dropdown_title">Profil & Hesap Ayarları</div>
+                            <a href="/Account/Profile" class="header__user_dropdown_item">
+                                Profil Ayarları
+                            </a>
+                            <a href="/Account/Address" class="header__user_dropdown_item">
+                                Adres / İletişim Bilgileri
+                            </a>
+                            <a href="/Account/JobIncome" class="header__user_dropdown_item">
+                                Meslek & Gelir Bilgileri
+                            </a>
+                        </div>
+                        <div class="header__user_dropdown_divider"></div>
                         <a href="/Auth/Logout" class="header__user_dropdown_item header__user_dropdown_item--danger">
                             Çıkış Yap
                         </a>
