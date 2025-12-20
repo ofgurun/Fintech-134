@@ -34,12 +34,15 @@
 @use 'components/buttons';
 @use 'components/forms';
 @use 'components/cards';
+@use 'components/modal';
 
 // ----------------------------------------------------------------------------
 // 5. PAGES
 // ----------------------------------------------------------------------------
 // Sayfa spesifik stiller
 @use 'pages/login';
+@use 'pages/otp_verify';
+@use 'pages/loan_apply';
 @use 'pages/dashboard';
 @use 'pages/loan_wizard';
 @use 'pages/terms';

@@ -1,5 +1,6 @@
 using InteraktifKredi.Web.Services;
 using InteraktifKredi.Web.Models.Api;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,21 @@ builder.Services.AddHttpClient<IApiService, ApiService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(apiSettings.Timeout);
     // Don't set custom headers - let the API service handle it
+});
+
+// Add Cookie Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.LogoutPath = "/Auth/Logout";
+        options.AccessDeniedPath = "/Auth/Login";
+        options.ExpireTimeSpan = TimeSpan.FromHours(24);
+        options.SlidingExpiration = true;
+        options.Cookie.Name = "InteraktifKredi.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
 });
 
 // Add services to the container.
@@ -45,6 +61,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+
+// Add Authentication & Authorization middleware
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

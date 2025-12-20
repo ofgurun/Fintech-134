@@ -1,0 +1,333 @@
+// ============================================================================
+// OTP VERIFY PAGE - İNTERAKTİF KREDİ
+// ============================================================================
+// Modal Card Layout: Ortada duran beyaz kart, blur arka plan
+// Timer: 180 saniye countdown
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// OTP PAGE - ANA CONTAINER (100vh Full Screen with Blur Background)
+// ----------------------------------------------------------------------------
+
+.otp_page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: $spacing_6;
+  overflow: hidden;
+  
+  @include respond_to_max(md) {
+    padding: $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP BACKGROUND - Blur Image Background
+// ----------------------------------------------------------------------------
+
+.otp_background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, $color_primary_dark 0%, $color_primary 50%, $color_primary_light 100%);
+  background-size: cover;
+  background-position: center;
+  filter: blur(80px);
+  opacity: 0.3;
+  z-index: 0;
+  
+  // Animated gradient overlay
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at center,
+      rgba($color_primary, 0.4) 0%,
+      rgba($color_primary_dark, 0.2) 50%,
+      transparent 100%
+    );
+    animation: rotate_gradient 20s linear infinite;
+  }
+}
+
+@keyframes rotate_gradient {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP MODAL - Centered White Card
+// ----------------------------------------------------------------------------
+
+.otp_modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background-color: $bg_white;
+  border-radius: $border_radius_xl;
+  box-shadow: $shadow_xl;
+  padding: $spacing_8;
+  animation: modal_fade_in 0.4s ease-out;
+  
+  @include respond_to_max(md) {
+    max-width: 100%;
+    padding: $spacing_6;
+  }
+  
+  // Glass morphism effect (optional)
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(white, 0.3);
+}
+
+@keyframes modal_fade_in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP CONTENT - Inner Container
+// ----------------------------------------------------------------------------
+
+.otp_content {
+  width: 100%;
+  text-align: center;
+}
+
+// ----------------------------------------------------------------------------
+// OTP ILLUSTRATION - Phone Icon
+// ----------------------------------------------------------------------------
+
+.otp_illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $spacing_6;
+  
+  &__icon {
+    width: 120px;
+    height: 120px;
+    animation: phone_bounce 2s ease-in-out infinite;
+    
+    @include respond_to_max(md) {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+@keyframes phone_bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP TITLE
+// ----------------------------------------------------------------------------
+
+.otp_title {
+  font-family: $font_family_heading;
+  font-size: $font_size_xl; // 24px (Daha büyük başlık için)
+  font-weight: $font_weight_bold;
+  color: $color_navy;
+  margin: 0 0 $spacing_4 0;
+  line-height: $line_height_tight;
+  
+  @include respond_to_max(md) {
+    font-size: $font_size_lg; // 20px (Mobil için)
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP DESCRIPTION
+// ----------------------------------------------------------------------------
+
+.otp_description {
+  font-size: $font_size_sm;
+  color: $text_light;
+  line-height: $line_height_relaxed;
+  margin: 0 0 $spacing_6 0;
+  
+  strong {
+    color: $text_dark;
+    font-weight: $font_weight_semibold;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP FORM
+// ----------------------------------------------------------------------------
+
+.otp_form {
+  width: 100%;
+  
+  // Input group spacing
+  .input_group {
+    margin-bottom: $spacing_3;
+    text-align: left;
+    
+    // Center align the input text for OTP code
+    &__field {
+      text-align: center;
+      font-size: $font_size_xl;
+      font-weight: $font_weight_semibold;
+      letter-spacing: 0.5em;
+      padding-left: 0.25em; // Compensate letter-spacing
+    }
+    
+    &__label {
+      text-align: left;
+    }
+  }
+  
+  // Button spacing
+  .btn_primary {
+    margin-top: $spacing_6;
+    margin-bottom: $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP TIMER - Countdown Display
+// ----------------------------------------------------------------------------
+
+.otp_timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing_2;
+  margin-bottom: $spacing_2;
+  font-size: $font_size_xs;
+  color: $text_light;
+  
+  &__icon {
+    flex-shrink: 0;
+    color: $color_primary;
+  }
+  
+  &__text {
+    line-height: 1;
+    
+    #timer_value {
+      font-weight: $font_weight_semibold;
+      color: $color_primary;
+    }
+  }
+  
+  // Timer expired state
+  &--expired {
+    color: $color_error;
+    
+    .otp_timer__icon {
+      color: $color_error;
+    }
+    
+    #timer_value {
+      color: $color_error;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP RESEND - Tekrar Gönder Link
+// ----------------------------------------------------------------------------
+
+.otp_resend {
+  text-align: center;
+  margin-top: $spacing_5;
+  padding-top: $spacing_5;
+  border-top: 1px solid $border_color;
+  
+  &__text {
+    font-size: $font_size_xs;
+    color: $text_light;
+    margin-right: $spacing_2;
+  }
+  
+  &__link {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: $font_size_xs;
+    font-weight: $font_weight_semibold;
+    color: $color_primary;
+    text-decoration: none;
+    cursor: pointer;
+    transition: $transition_colors;
+    
+    &:hover:not(:disabled) {
+      color: $primary_color_dark;
+      text-decoration: underline;
+    }
+    
+    &:disabled {
+      color: $text_lighter;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// OTP BACK - Geri Dön Linki
+// ----------------------------------------------------------------------------
+
+.otp_back {
+  text-align: center;
+  margin-top: $spacing_6;
+  
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing_2;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_medium;
+    color: $text_light;
+    text-decoration: none;
+    transition: $transition_colors;
+    
+    svg {
+      flex-shrink: 0;
+      transition: $transition_all;
+    }
+    
+    &:hover {
+      color: $color_primary;
+      
+      svg {
+        transform: translateX(-4px);
+      }
+    }
+  }
+}
+
+// ============================================================================
+// END OF OTP VERIFY PAGE
+// ============================================================================
+

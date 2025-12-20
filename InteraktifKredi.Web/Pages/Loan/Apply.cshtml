@@ -2,58 +2,69 @@
 @model InteraktifKredi.Web.Pages.Loan.ApplyModel
 @{
     ViewData["Title"] = "Kredi Başvurusu";
+    Layout = "_Layout";
 }
 
-<div class="loan_page_container">
-    <h1 class="loan_page_title">@ViewData["Title"]</h1>
+<div class="loan_apply_page">
+    <div class="loan_apply_container">
+        <div class="loan_apply_header">
+            <h2 class="loan_apply_header__title">Kredi Başvurusu</h2>
+            <p class="loan_apply_header__subtitle">Lütfen aşağıdaki bilgileri eksiksiz doldurun</p>
+        </div>
 
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
-        <div class="loan_alert loan_alert--error">
+            <div class="alert alert--error">
             @Model.ErrorMessage
         </div>
     }
 
-    <form method="post" id="loan_application_form" class="loan_form">
+        <form method="post" id="loan_application_form" class="loan_apply_form" novalidate>
         <!-- Kredi Türü -->
-        <div class="form_selectbox @(ViewData.ModelState["LoanRequest.LoanType"]?.Errors.Count > 0 ? "form_selectbox--error" : "")">
-            <select asp-for="LoanRequest.LoanType" id="loan_type" class="form_selectbox__field" required>
+            <div class="input_group" id="loan_type_group">
+                <select asp-for="LoanRequest.LoanType" 
+                        id="loan_type" 
+                        class="input_group__field input_group__field--select" 
+                        required>
                 <option value="">Seçiniz</option>
                 <option value="ihtiyac">İhtiyaç Kredisi</option>
                 <option value="tasit">Taşıt Kredisi</option>
                 <option value="konut">Konut Kredisi</option>
                 <option value="ticari">Ticari Kredi</option>
             </select>
-            <label for="loan_type" class="form_selectbox__label">Kredi Türü</label>
-            <span asp-validation-for="LoanRequest.LoanType" class="form_selectbox__error"></span>
+                <label for="loan_type" class="input_group__label">Kredi Türü</label>
+                <span asp-validation-for="LoanRequest.LoanType" class="input_group__error"></span>
         </div>
 
         <!-- Kredi Tutarı - Slider -->
-        <div class="loan_form__slider_group @(ViewData.ModelState["LoanRequest.LoanAmount"]?.Errors.Count > 0 ? "loan_form__slider_group--error" : "")">
-            <label for="loan_amount_slider" class="loan_form__slider_label">Kredi Tutarı (TL)</label>
-            <div class="loan_form__slider_container">
+            <div class="input_group" id="loan_amount_group">
+                <label for="loan_amount_slider" class="input_group__label input_group__label--static">
+                    Kredi Tutarı
+                </label>
+                <div class="input_group__slider_display">
+                    <span id="loan_amount_display">100.000</span> TL
+                </div>
                 <input type="range" 
                        id="loan_amount_slider" 
-                       class="loan_form__slider"
+                       class="input_group__slider"
                        min="10000" 
                        max="1000000" 
                        step="1000"
                        value="100000" />
-                <div class="loan_form__slider_value">
-                    <span id="loan_amount_display">100.000</span> TL
-                </div>
-            </div>
             <input type="hidden" 
                    asp-for="LoanRequest.LoanAmount" 
                    id="loan_amount" 
                    value="100000" />
-            <span asp-validation-for="LoanRequest.LoanAmount" class="loan_form__slider_error"></span>
-            <span class="loan_form__slider_helper">Minimum: 10.000 TL, Maksimum: 1.000.000 TL</span>
+                <span asp-validation-for="LoanRequest.LoanAmount" class="input_group__error"></span>
+                <span class="input_group__helper">Minimum: 10.000 TL, Maksimum: 1.000.000 TL</span>
         </div>
 
         <!-- Kredi Vadesi -->
-        <div class="form_selectbox @(ViewData.ModelState["LoanRequest.LoanTerm"]?.Errors.Count > 0 ? "form_selectbox--error" : "")">
-            <select asp-for="LoanRequest.LoanTerm" id="loan_term" class="form_selectbox__field" required>
+            <div class="input_group" id="loan_term_group">
+                <select asp-for="LoanRequest.LoanTerm" 
+                        id="loan_term" 
+                        class="input_group__field input_group__field--select" 
+                        required>
                 <option value="">Seçiniz</option>
                 <option value="12">12 ay</option>
                 <option value="24">24 ay</option>
@@ -61,250 +72,69 @@
                 <option value="48">48 ay</option>
                 <option value="60">60 ay</option>
             </select>
-            <label for="loan_term" class="form_selectbox__label">Kredi Vadesi</label>
-            <span asp-validation-for="LoanRequest.LoanTerm" class="form_selectbox__error"></span>
+                <label for="loan_term" class="input_group__label">Kredi Vadesi</label>
+                <span asp-validation-for="LoanRequest.LoanTerm" class="input_group__error"></span>
         </div>
 
         <!-- Meslek -->
-        <div class="form_selectbox">
-            <select asp-for="LoanRequest.JobId" id="job_id" class="form_selectbox__field">
+            <div class="input_group" id="job_id_group">
+                <select asp-for="LoanRequest.JobId" 
+                        id="job_id" 
+                        class="input_group__field input_group__field--select">
                 <option value="">Seçiniz</option>
             </select>
-            <label for="job_id" class="form_selectbox__label">Meslek</label>
+                <label for="job_id" class="input_group__label">Meslek</label>
         </div>
 
         <!-- Dinamik Form - Kamu Çalışanı için ek alanlar -->
-        <div id="public_employee_fields" class="loan_form__dynamic_fields">
-            <div class="form_input_group">
+            <div id="public_employee_fields" class="loan_apply_form__dynamic_fields" style="display: none;">
+                <div class="input_group">
                 <input type="text" 
                        asp-for="LoanRequest.InstitutionName" 
                        id="institution_name" 
-                       class="form_input_group__field" 
+                           class="input_group__field" 
                        placeholder=" " 
                        maxlength="200" />
-                <label for="institution_name" class="form_input_group__label">Kurum Adı</label>
-                <span class="form_input_group__helper">Çalıştığınız kurumun adını giriniz</span>
+                    <label for="institution_name" class="input_group__label">Kurum Adı</label>
+                    <span class="input_group__helper">Çalıştığınız kurumun adını giriniz</span>
             </div>
 
-            <div class="form_input_group">
+                <div class="input_group">
                 <input type="text" 
                        asp-for="LoanRequest.Position" 
                        id="position" 
-                       class="form_input_group__field" 
+                           class="input_group__field" 
                        placeholder=" " 
                        maxlength="100" />
-                <label for="position" class="form_input_group__label">Görev</label>
-                <span class="form_input_group__helper">Görev unvanınızı giriniz</span>
+                    <label for="position" class="input_group__label">Görev</label>
+                    <span class="input_group__helper">Görev unvanınızı giriniz</span>
             </div>
         </div>
 
         <!-- Açıklama (Opsiyonel) -->
-        <div class="form_input_group">
+            <div class="input_group">
             <textarea asp-for="LoanRequest.Description" 
                       id="loan_description" 
-                      class="form_input_group__field form_input_group__field--textarea" 
+                          class="input_group__field input_group__field--textarea" 
                       placeholder=" " 
                       maxlength="500"
                       rows="4"></textarea>
-            <label for="loan_description" class="form_input_group__label">Açıklama (Opsiyonel)</label>
-            <span class="form_input_group__helper">Maksimum 500 karakter</span>
-            <span class="form_input_group__helper loan_form__char_count" id="char_count">0/500</span>
+                <label for="loan_description" class="input_group__label">Açıklama (Opsiyonel)</label>
+                <span class="input_group__helper">Maksimum 500 karakter (<span id="char_count">0</span>/500)</span>
         </div>
 
         <!-- Submit Button -->
-        <div class="loan_form__submit_container">
-            <button type="submit" id="submit_btn" class="loan_form__submit_btn">
+            <button type="submit" id="submit_btn" class="btn_primary">
                 <span id="submit_btn_text">Devam Et</span>
-                <span id="submit_btn_loading" class="loan_form__loading_hidden">
-                    <span class="loan_form__spinner"></span>
+                <span id="submit_btn_loading" style="display: none;">
                     Lütfen Bekleyin...
                 </span>
             </button>
+        </form>
         </div>
-    </form>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function() {
-            var $form = $('#loan_application_form');
-            var $submit_btn = $('#submit_btn');
-            var $submit_btn_text = $('#submit_btn_text');
-            var $submit_btn_loading = $('#submit_btn_loading');
-            var $loan_amount_slider = $('#loan_amount_slider');
-            var $loan_amount = $('#loan_amount');
-            var $loan_amount_display = $('#loan_amount_display');
-            var $loan_description = $('#loan_description');
-            var $char_count = $('#char_count');
-            var $job_id = $('#job_id');
-            var $public_employee_fields = $('#public_employee_fields');
-
-            // Kredi tutarı slider formatlama
-            function format_loan_amount(value) {
-                return new Intl.NumberFormat('tr-TR').format(value);
-            }
-
-            // Slider progress hesaplama
-            function update_slider_progress() {
-                var min = parseInt($loan_amount_slider.attr('min'));
-                var max = parseInt($loan_amount_slider.attr('max'));
-                var value = parseInt($loan_amount_slider.val());
-                var progress = ((value - min) / (max - min)) * 100;
-                $loan_amount_slider[0].style.setProperty('--slider-progress', progress + '%');
-            }
-
-            $loan_amount_slider.on('input', function() {
-                var value = parseInt($(this).val());
-                $loan_amount.val(value);
-                $loan_amount_display.text(format_loan_amount(value));
-                update_slider_progress();
-            });
-
-            // İlk yüklemede progress'i ayarla
-            update_slider_progress();
-
-            // job_id.json'dan meslekleri yükle
-            $.getJSON('/data/job_id.json', function(jobs) {
-                $.each(jobs, function(index, job) {
-                    $job_id.append($('<option>', {
-                        value: job.id,
-                        text: job.name
-                    }));
-                });
-            }).fail(function() {
-                console.error('Meslek listesi yüklenemedi');
-            });
-
-            // Meslek seçimi değiştiğinde dinamik form kontrolü
-            $job_id.on('change', function() {
-                var selected_job_id = $(this).val();
-                var selected_text = $(this).find('option:selected').text();
-                
-                // Kamu Çalışanı seçildiğinde (id: 1 veya text: "Kamu Çalışanı")
-                if (selected_job_id == '1' || selected_text === 'Kamu Çalışanı') {
-                    $public_employee_fields.slideDown(300);
-                    $('#institution_name').prop('required', true);
-                    $('#position').prop('required', true);
-                } else {
-                    $public_employee_fields.slideUp(300);
-                    $('#institution_name').prop('required', false);
-                    $('#position').prop('required', false);
-                    $('#institution_name').val('');
-                    $('#position').val('');
-                }
-            });
-
-            // Karakter sayacı
-            $loan_description.on('input', function() {
-                var length = $(this).val().length;
-                $char_count.text(length + '/500');
-                
-                if (length > 500) {
-                    $(this).val($(this).val().substring(0, 500));
-                    $char_count.text('500/500');
-                }
-            });
-
-            // Form submit
-            $form.on('submit', function(e) {
-                var is_valid = true;
-
-                // Kredi türü kontrolü
-                var $loan_type = $('#loan_type');
-                if (!$loan_type.val()) {
-                    $loan_type.closest('.form_selectbox').addClass('form_selectbox--error');
-                    if ($loan_type.siblings('.form_selectbox__error').length === 0) {
-                        $loan_type.after('<span class="form_selectbox__error">*Kredi türünü seçmelisiniz</span>');
-                    }
-                    is_valid = false;
-                } else {
-                    $loan_type.closest('.form_selectbox').removeClass('form_selectbox--error');
-                    $loan_type.siblings('.form_selectbox__error').remove();
-                }
-
-                // Kredi tutarı kontrolü
-                var amount_value = parseInt($loan_amount.val());
-                if (!amount_value || amount_value < 10000 || amount_value > 1000000) {
-                    $loan_amount_slider.closest('.loan_form__slider_group').addClass('loan_form__slider_group--error');
-                    if ($loan_amount_slider.siblings('.loan_form__slider_error').length === 0) {
-                        $loan_amount_slider.after('<span class="loan_form__slider_error">*Kredi tutarını seçmelisiniz (10.000 - 1.000.000 TL)</span>');
-                    }
-                    is_valid = false;
-                } else {
-                    $loan_amount_slider.closest('.loan_form__slider_group').removeClass('loan_form__slider_group--error');
-                    $loan_amount_slider.siblings('.loan_form__slider_error').remove();
-                }
-
-                // Kredi vadesi kontrolü
-                var $loan_term = $('#loan_term');
-                if (!$loan_term.val()) {
-                    $loan_term.closest('.form_selectbox').addClass('form_selectbox--error');
-                    if ($loan_term.siblings('.form_selectbox__error').length === 0) {
-                        $loan_term.after('<span class="form_selectbox__error">*Kredi vadesini seçmelisiniz</span>');
-                    }
-                    is_valid = false;
-                } else {
-                    $loan_term.closest('.form_selectbox').removeClass('form_selectbox--error');
-                    $loan_term.siblings('.form_selectbox__error').remove();
-                }
-
-                // Kamu Çalışanı için kurum ve görev kontrolü
-                if ($public_employee_fields.is(':visible')) {
-                    var institution_name = $('#institution_name').val().trim();
-                    var position = $('#position').val().trim();
-                    
-                    if (!institution_name) {
-                        $('#institution_name').closest('.form_input_group').addClass('form_input_group--error');
-                        if ($('#institution_name').siblings('.form_input_group__error').length === 0) {
-                            $('#institution_name').after('<span class="form_input_group__error">*Kurum adı girilmelidir</span>');
-                        }
-                        is_valid = false;
-                    } else {
-                        $('#institution_name').closest('.form_input_group').removeClass('form_input_group--error');
-                        $('#institution_name').siblings('.form_input_group__error').remove();
-                    }
-
-                    if (!position) {
-                        $('#position').closest('.form_input_group').addClass('form_input_group--error');
-                        if ($('#position').siblings('.form_input_group__error').length === 0) {
-                            $('#position').after('<span class="form_input_group__error">*Görev girilmelidir</span>');
-                        }
-                        is_valid = false;
-                    } else {
-                        $('#position').closest('.form_input_group').removeClass('form_input_group--error');
-                        $('#position').siblings('.form_input_group__error').remove();
-                    }
-                }
-
-                if (!is_valid) {
-                    e.preventDefault();
-                    return false;
-                }
-
-                // Loading state
-                $submit_btn.prop('disabled', true);
-                $submit_btn_text.hide();
-                $submit_btn_loading.show();
-            });
-
-            // Selectbox değiştiğinde error state'i temizle
-            $('.form_selectbox__field').on('change', function() {
-                $(this).closest('.form_selectbox').removeClass('form_selectbox--error');
-                $(this).siblings('.form_selectbox__error').remove();
-            });
-
-            // Input focus olduğunda error state'i temizle
-            $('.form_input_group__field').on('focus', function() {
-                var $group = $(this).closest('.form_input_group');
-                if ($group.hasClass('form_input_group--error')) {
-                    var $error = $(this).siblings('.form_input_group__error');
-                    if ($error.length > 0 && !$error.hasClass('asp-validation-message')) {
-                        $error.remove();
-                        $group.removeClass('form_input_group--error');
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="~/js/loan_apply.js"></script>
 }

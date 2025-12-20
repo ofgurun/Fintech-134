@@ -34,14 +34,17 @@ namespace InteraktifKredi.Web.Services
             _requestJsonOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = null, // Keep PascalCase for request
+                PropertyNameCaseInsensitive = true, // KRİTİK: Büyük/küçük harf farkını yok sayar
                 WriteIndented = false
             };
             
             // Configure JSON serialization options for RESPONSE
-            // API returns camelCase (success, statusCode, message, value)
+            // API'ler farklı formatlar dönüyor: Customers API (PascalCase), IDC API (camelCase)
+            // PropertyNameCaseInsensitive ile her ikisini de deserialize edebiliriz
             _responseJsonOptions = new JsonSerializerOptions
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Match API response
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Default camelCase
+                PropertyNameCaseInsensitive = true, // KRİTİK: Büyük/küçük harf farkını yok sayar
                 WriteIndented = false
             };
         }
@@ -134,16 +137,25 @@ namespace InteraktifKredi.Web.Services
                 {
                     Console.WriteLine("Processing successful response...");
                     
-                    // Try to deserialize with camelCase options
+                    // Customers API returns PascalCase JSON, so use _requestJsonOptions for deserialization
                     ApiResponse<VerifyUserResponse>? apiResponse = null;
                     try
                     {
-                        apiResponse = JsonSerializer.Deserialize<ApiResponse<VerifyUserResponse>>(responseContent, _responseJsonOptions);
+                        // Use PascalCase deserializer (PropertyNamingPolicy = null)
+                        apiResponse = JsonSerializer.Deserialize<ApiResponse<VerifyUserResponse>>(responseContent, _requestJsonOptions);
                         Console.WriteLine($"✅ Deserialization successful!");
                         Console.WriteLine($"  - Success     : {apiResponse?.Success}");
                         Console.WriteLine($"  - StatusCode  : {apiResponse?.StatusCode}");
                         Console.WriteLine($"  - Message     : {apiResponse?.Message}");
                         Console.WriteLine($"  - Value is null: {apiResponse?.Value == null}");
+                        
+                        if (apiResponse?.Value != null)
+                        {
+                            Console.WriteLine($"  - CustomerId  : {apiResponse.Value.CustomerId}");
+                            Console.WriteLine($"  - TCKN        : {apiResponse.Value.TCKN}");
+                            Console.WriteLine($"  - GSM         : {apiResponse.Value.GSM}");
+                            Console.WriteLine($"  - IsNewUser   : {apiResponse.Value.IsNewUser}");
+                        }
                     }
                     catch (JsonException jsonEx)
                     {
@@ -162,10 +174,12 @@ namespace InteraktifKredi.Web.Services
                             Console.WriteLine($"  - CustomerId: {apiResponse.Value.CustomerId}");
                             Console.WriteLine($"  - TCKN: {apiResponse.Value.TCKN}");
                             Console.WriteLine($"  - GSM: {apiResponse.Value.GSM}");
+                            Console.WriteLine($"  - IsNewUser: {apiResponse.Value.IsNewUser}");
                             Console.WriteLine("═══════════════════════════════════════════════════════════════════");
                             Console.WriteLine("");
                             
-                            _logger.LogInformation("User verified successfully. CustomerId: {CustomerId}", apiResponse.Value.CustomerId);
+                            _logger.LogInformation("User verified successfully. CustomerId: {CustomerId}, TCKN: {TCKN}, GSM: {GSM}", 
+                                apiResponse.Value.CustomerId, apiResponse.Value.TCKN, apiResponse.Value.GSM);
                             
                             return ServiceResponse<VerifyUserResponse>.SuccessResponse(
                                 apiResponse.Value,
@@ -268,6 +282,432 @@ namespace InteraktifKredi.Web.Services
                 _logger.LogError(ex, "Unexpected error during user verification");
                 return ServiceResponse<VerifyUserResponse>.FailureResponse(
                     "Beklenmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Generates OTP code for user authentication
+        /// </summary>
+        public async Task<ServiceResponse<GenerateOtpResponse>> GenerateOtpAsync(string tckn, string gsm)
+        {
+            try
+            {
+                _logger.LogInformation("Generating OTP for TCKN: {TCKN}, GSM: {GSM}", tckn, gsm);
+
+                var request = new GenerateOtpRequest
+                {
+                    TCKN = tckn,
+                    GSM = gsm,
+                    UtmId = "5"
+                };
+
+                var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
+                var endpoint = "generate-otp";
+                var requestUrl = $"{baseUrl}/{endpoint}?code={_apiSettings.OtpGenerateKey}";
+
+                _logger.LogInformation("OTP Generate URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                
+                // DETAILED LOGGING
+                Console.WriteLine("");
+                Console.WriteLine("╔═══════════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║           OTP GENERATE REQUEST - DETAILED LOGGING                 ║");
+                Console.WriteLine("╚═══════════════════════════════════════════════════════════════════╝");
+                Console.WriteLine($"→ Request URL: {requestUrl}");
+                Console.WriteLine($"→ Request Object:");
+                Console.WriteLine($"  - TCKN  : {request.TCKN}");
+                Console.WriteLine($"  - GSM   : {request.GSM}");
+                Console.WriteLine($"  - UtmId : {request.UtmId}");
+                Console.WriteLine($"→ JSON Payload (EXACT):");
+                Console.WriteLine($"  {requestJson}");
+                Console.WriteLine($"→ Bearer Token (first 20): {_apiSettings.BearerToken.Substring(0, 20)}...");
+                Console.WriteLine("───────────────────────────────────────────────────────────────────");
+                _logger.LogInformation("OTP Generate Request JSON: {Json}", requestJson);
+                
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"← Response Status: {response.StatusCode}");
+                Console.WriteLine($"← Response Body: {responseContent}");
+                Console.WriteLine("═══════════════════════════════════════════════════════════════════");
+                Console.WriteLine("");
+
+                _logger.LogInformation("OTP Generate Response: {StatusCode}, Body: {Body}", 
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<GenerateOtpResponse>>(
+                        responseContent, _responseJsonOptions);
+
+                    if (apiResponse != null && apiResponse.Success && apiResponse.Value != null)
+                    {
+                        _logger.LogInformation("OTP generated successfully");
+                        return ServiceResponse<GenerateOtpResponse>.SuccessResponse(
+                            apiResponse.Value,
+                            apiResponse.Message,
+                            apiResponse.StatusCode
+                        );
+                    }
+                    else
+                    {
+                        var errorMsg = apiResponse?.Message ?? "OTP oluşturulamadı.";
+                        _logger.LogWarning("OTP generation failed: {Message}", errorMsg);
+                        return ServiceResponse<GenerateOtpResponse>.FailureResponse(errorMsg, apiResponse?.StatusCode ?? 500);
+                    }
+                }
+                else
+                {
+                    _logger.LogError("OTP Generate API error: {StatusCode}, {Body}", 
+                        response.StatusCode, responseContent);
+                    return ServiceResponse<GenerateOtpResponse>.FailureResponse(
+                        "OTP oluşturulurken bir hata oluştu.",
+                        (int)response.StatusCode
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating OTP");
+                return ServiceResponse<GenerateOtpResponse>.FailureResponse(
+                    "OTP oluşturulurken beklenmeyen bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Sends OTP code via SMS
+        /// </summary>
+        public async Task<ServiceResponse<SendOtpSmsResponse>> SendOtpSmsAsync(string gsm, string otpCode)
+        {
+            try
+            {
+                _logger.LogInformation("Sending OTP SMS to GSM: {GSM}", gsm);
+
+                var request = new SendOtpSmsRequest
+                {
+                    GSM = gsm,
+                    OTPCode = otpCode
+                };
+
+                var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
+                var endpoint = "send-otp-sms";
+                var requestUrl = $"{baseUrl}/{endpoint}?code={_apiSettings.OtpSendKey}";
+
+                _logger.LogInformation("OTP Send SMS URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("OTP Send SMS Response: {StatusCode}, Body: {Body}", 
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // API sometimes returns plain text instead of JSON
+                    // If response is "SMS başarıyla gönderildi." or similar, treat as success
+                    if (!string.IsNullOrWhiteSpace(responseContent) && 
+                        (responseContent.Contains("başarıyla") || responseContent.Contains("success")))
+                    {
+                        _logger.LogInformation("OTP SMS sent successfully (plain text response)");
+                        return ServiceResponse<SendOtpSmsResponse>.SuccessResponse(
+                            new SendOtpSmsResponse { Sent = true },
+                            "SMS başarıyla gönderildi.",
+                            200
+                        );
+                    }
+                    
+                    // Try to parse as JSON (for future compatibility)
+                    try
+                    {
+                        var apiResponse = JsonSerializer.Deserialize<ApiResponse<SendOtpSmsResponse>>(
+                            responseContent, _responseJsonOptions);
+
+                        if (apiResponse != null && apiResponse.Success && apiResponse.Value != null)
+                        {
+                            _logger.LogInformation("OTP SMS sent successfully (JSON response)");
+                            return ServiceResponse<SendOtpSmsResponse>.SuccessResponse(
+                                apiResponse.Value,
+                                apiResponse.Message,
+                                apiResponse.StatusCode
+                            );
+                        }
+                    }
+                    catch (JsonException)
+                    {
+                        // Not JSON, but 200 OK - treat as success
+                        _logger.LogInformation("OTP SMS sent successfully (non-JSON response)");
+                        return ServiceResponse<SendOtpSmsResponse>.SuccessResponse(
+                            new SendOtpSmsResponse { Sent = true },
+                            responseContent,
+                            200
+                        );
+                    }
+                    
+                    // If we get here, something unexpected happened
+                    _logger.LogWarning("SMS sending response unclear: {Response}", responseContent);
+                    return ServiceResponse<SendOtpSmsResponse>.FailureResponse("SMS durumu belirsiz.", 500);
+                }
+                else
+                {
+                    _logger.LogError("OTP Send SMS API error: {StatusCode}, {Body}", 
+                        response.StatusCode, responseContent);
+                    return ServiceResponse<SendOtpSmsResponse>.FailureResponse(
+                        "SMS gönderilirken bir hata oluştu.",
+                        (int)response.StatusCode
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending OTP SMS");
+                return ServiceResponse<SendOtpSmsResponse>.FailureResponse(
+                    "SMS gönderilirken beklenmeyen bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Verifies OTP code entered by user
+        /// </summary>
+        public async Task<ServiceResponse<VerifyOtpResponse>> VerifyOtpAsync(string otpCode)
+        {
+            try
+            {
+                _logger.LogInformation("Verifying OTP code");
+
+                var request = new VerifyOtpRequest
+                {
+                    OTPCode = otpCode
+                };
+
+                var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
+                var endpoint = "verify-otp";
+                var requestUrl = $"{baseUrl}/{endpoint}?code={_apiSettings.OtpVerifyKey}";
+
+                _logger.LogInformation("OTP Verify URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("OTP Verify Response: {StatusCode}, Body: {Body}", 
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<VerifyOtpResponse>>(
+                        responseContent, _responseJsonOptions);
+
+                    if (apiResponse != null && apiResponse.Success && apiResponse.Value != null)
+                    {
+                        _logger.LogInformation("OTP verified successfully. Token received.");
+                        return ServiceResponse<VerifyOtpResponse>.SuccessResponse(
+                            apiResponse.Value,
+                            apiResponse.Message,
+                            apiResponse.StatusCode
+                        );
+                    }
+                    else
+                    {
+                        var errorMsg = apiResponse?.Message ?? "OTP doğrulanamadı.";
+                        _logger.LogWarning("OTP verification failed: {Message}", errorMsg);
+                        return ServiceResponse<VerifyOtpResponse>.FailureResponse(errorMsg, apiResponse?.StatusCode ?? 500);
+                    }
+                }
+                else
+                {
+                    _logger.LogError("OTP Verify API error: {StatusCode}, {Body}", 
+                        response.StatusCode, responseContent);
+                    return ServiceResponse<VerifyOtpResponse>.FailureResponse(
+                        "OTP doğrulanırken bir hata oluştu.",
+                        (int)response.StatusCode
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error verifying OTP");
+                return ServiceResponse<VerifyOtpResponse>.FailureResponse(
+                    "OTP doğrulanırken beklenmeyen bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Retrieves KVKK text by ID
+        /// </summary>
+        public async Task<ServiceResponse<KvkkTextResponse>> GetKvkkTextAsync(int id)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching KVKK text for ID: {KvkkId}", id);
+
+                var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
+                var endpoint = $"kvkk/text/{id}";
+                var requestUrl = $"{baseUrl}/{endpoint}?code={_apiSettings.KvkkTextKey}";
+
+                _logger.LogInformation("KVKK Text URL: {Url}", requestUrl);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("KVKK Text Response: {StatusCode}, Body: {Body}", 
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // KVKK API does NOT use ApiResponse wrapper, returns direct JSON
+                    var kvkkData = JsonSerializer.Deserialize<KvkkTextResponse>(
+                        responseContent, _responseJsonOptions);
+
+                    if (kvkkData != null && !string.IsNullOrWhiteSpace(kvkkData.Text))
+                    {
+                        _logger.LogInformation("KVKK text retrieved successfully - Id: {Id}, Title length: {TitleLen}, Text length: {TextLen}", 
+                            kvkkData.Id, kvkkData.Title?.Length ?? 0, kvkkData.Text?.Length ?? 0);
+                        
+                        return ServiceResponse<KvkkTextResponse>.SuccessResponse(
+                            kvkkData,
+                            "KVKK metni başarıyla alındı.",
+                            (int)response.StatusCode
+                        );
+                    }
+                    else
+                    {
+                        _logger.LogWarning("KVKK text retrieval failed: Empty or null data");
+                        return ServiceResponse<KvkkTextResponse>.FailureResponse(
+                            "KVKK metni boş veya geçersiz.", 
+                            (int)response.StatusCode
+                        );
+                    }
+                }
+                else
+                {
+                    _logger.LogError("KVKK Text API error: {StatusCode}, {Body}", 
+                        response.StatusCode, responseContent);
+                    return ServiceResponse<KvkkTextResponse>.FailureResponse(
+                        "KVKK metni alınırken bir hata oluştu.",
+                        (int)response.StatusCode
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching KVKK text");
+                return ServiceResponse<KvkkTextResponse>.FailureResponse(
+                    "KVKK metni alınırken beklenmeyen bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Saves KVKK approval for a customer
+        /// </summary>
+        public async Task<ServiceResponse<bool>> SaveKvkkApprovalAsync(KvkkApprovalRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Saving KVKK approval for CustomerId: {CustomerId}, KvkkId: {KvkkId}, IsOk: {IsOk}", 
+                    request.CustomerId, request.KvkkId, request.IsOk);
+
+                var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
+                var endpoint = "kvkk/onay";
+                var requestUrl = $"{baseUrl}/{endpoint}?code={_apiSettings.KvkkSaveKey}";
+
+                _logger.LogInformation("KVKK Save URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                _logger.LogInformation("KVKK Save Request JSON: {Json}", requestJson);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("KVKK Save Response: {StatusCode}, Body: {Body}", 
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Try to parse as direct KvkkApprovalResponse (API doesn't wrap in ApiResponse)
+                    try
+                    {
+                        var kvkkResponse = JsonSerializer.Deserialize<KvkkApprovalResponse>(
+                            responseContent, _responseJsonOptions);
+
+                        if (kvkkResponse != null && kvkkResponse.Id > 0)
+                        {
+                            _logger.LogInformation("✅ KVKK approval saved successfully - ID: {Id}, Message: {Message}", 
+                                kvkkResponse.Id, kvkkResponse.Message);
+                            return ServiceResponse<bool>.SuccessResponse(
+                                true,
+                                kvkkResponse.Message ?? "KVKK onayı başarıyla kaydedildi.",
+                                200
+                            );
+                        }
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        _logger.LogWarning(jsonEx, "Failed to parse KVKK save response as JSON, trying plain text");
+                    }
+
+                    // If JSON parsing fails, check for success keywords in plain text
+                    if (!string.IsNullOrWhiteSpace(responseContent) && 
+                        (responseContent.Contains("başarılı") || responseContent.Contains("success") || 
+                         responseContent.Contains("oluşturuldu") || responseContent.ToLower().Contains("ok")))
+                    {
+                        _logger.LogInformation("KVKK approval saved successfully (plain text response)");
+                        return ServiceResponse<bool>.SuccessResponse(
+                            true,
+                            "KVKK onayı başarıyla kaydedildi.",
+                            200
+                        );
+                    }
+
+                    // If we get here, HTTP 200 but couldn't parse response
+                    _logger.LogWarning("KVKK save response unclear: {Response}", responseContent);
+                    return ServiceResponse<bool>.FailureResponse("KVKK onayı durumu belirsiz.", 500);
+                }
+                else
+                {
+                    _logger.LogError("KVKK Save API error: {StatusCode}, {Body}", 
+                        response.StatusCode, responseContent);
+                    return ServiceResponse<bool>.FailureResponse(
+                        "KVKK onayı kaydedilirken bir hata oluştu.",
+                        (int)response.StatusCode
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving KVKK approval");
+                return ServiceResponse<bool>.FailureResponse(
+                    "KVKK onayı kaydedilirken beklenmeyen bir hata oluştu.",
                     500
                 );
             }
