@@ -1,0 +1,14 @@
+{
+  "name": "interaktif-kredi-web",
+  "version": "1.0.0",
+  "description": "İnteraktif Kredi - .NET 8 Razor Pages Web Application",
+  "scripts": {
+    "sass:build": "sass Styles/main.scss wwwroot/css/main.css",
+    "sass:watch": "sass --watch Styles/main.scss:wwwroot/css/main.css",
+    "sass:prod": "sass --style=compressed Styles/main.scss:wwwroot/css/main.css"
+  },
+  "devDependencies": {
+    "sass": "^1.69.5"
+  }
+}
+

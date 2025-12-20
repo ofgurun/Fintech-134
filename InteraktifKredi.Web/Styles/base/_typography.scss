@@ -264,12 +264,12 @@ blockquote {
 
 ::selection {
   background-color: $color_primary_lighter;
-  color: $primary_color_dark;
+  color: $color_primary_dark;
 }
 
 ::-moz-selection {
   background-color: $color_primary_lighter;
-  color: $primary_color_dark;
+  color: $color_primary_dark;
 }
 
 // ============================================================================

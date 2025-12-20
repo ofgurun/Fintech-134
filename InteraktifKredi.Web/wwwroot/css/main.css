@@ -415,6 +415,10 @@ p.small {
   font-size: 3rem;
 }
 
+.font-light {
+  font-weight: 300;
+}
+
 .font-regular {
   font-weight: 400;
 }
@@ -429,6 +433,10 @@ p.small {
 
 .font-bold {
   font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
 }
 
 .text-dark {
@@ -670,12 +678,12 @@ blockquote cite::before {
 
 ::selection {
   background-color: #E5EFFF;
-  color: #003DD6;
+  color: #1E255E;
 }
 
 ::-moz-selection {
   background-color: #E5EFFF;
-  color: #003DD6;
+  color: #1E255E;
 }
 
 /*
@@ -959,12 +967,59 @@ HTML Kullanım Örneği:
   }
 }
 
-.form_input_group {
+/*
+HTML Kullanım Örneği:
+
+<!-- Varsayılan Input -->
+<div class="input_group">
+  <input type="text" id="name" class="input_group__field" placeholder=" " />
+  <label for="name" class="input_group__label">Adınız</label>
+</div>
+
+<!-- Dolu Input (Value ile) -->
+<div class="input_group">
+  <input type="text" id="phone" class="input_group__field" value="555 123 4567" placeholder=" " />
+  <label for="phone" class="input_group__label">Telefon</label>
+</div>
+
+<!-- Focus State (Otomatik - tıklayınca aktif olur) -->
+<div class="input_group input_group--focus">
+  <input type="text" id="email" class="input_group__field" placeholder=" " />
+  <label for="email" class="input_group__label">E-Posta</label>
+</div>
+
+<!-- Error State -->
+<div class="input_group input_group--error">
+  <input type="text" id="tckn" class="input_group__field" value="12345" placeholder=" " />
+  <label for="tckn" class="input_group__label">TC Kimlik No</label>
+  <span class="input_group__error">TCKN 11 haneli olmalıdır</span>
+</div>
+
+<!-- Disabled Input -->
+<div class="input_group input_group--disabled">
+  <input type="text" id="disabled" class="input_group__field" disabled placeholder=" " />
+  <label for="disabled" class="input_group__label">Devre Dışı</label>
+</div>
+
+<!-- Success State -->
+<div class="input_group input_group--success">
+  <input type="text" id="success" class="input_group__field" value="Doğru değer" placeholder=" " />
+  <label for="success" class="input_group__label">Başarılı</label>
+  <span class="input_group__success">Bilgiler doğrulandı</span>
+</div>
+
+<!-- Textarea -->
+<div class="input_group">
+  <textarea id="note" class="input_group__field input_group__field--textarea" placeholder=" "></textarea>
+  <label for="note" class="input_group__label">Notunuz</label>
+</div>
+*/
+.input_group {
   position: relative;
   margin-bottom: 1.25rem;
   width: 100%;
 }
-.form_input_group__field {
+.input_group__field {
   width: 100%;
   height: 56px;
   padding: 24px 1rem 8px 1rem;
@@ -974,60 +1029,55 @@ HTML Kullanım Örneği:
   line-height: 1.5;
   color: #1F2937;
   background-color: #FFFFFF;
-  border: 1px solid #0055FF;
+  border: 2px solid #E5E7EB;
   border-radius: 0.5rem;
   outline: none;
   transition: all 200ms ease-in-out;
   appearance: none;
 }
-.form_input_group__field::placeholder {
+.input_group__field::placeholder {
   color: transparent;
   opacity: 0;
 }
-.form_input_group__field:focus {
+.input_group__field:focus {
   border-color: #0055FF;
   border-width: 2px;
   box-shadow: 0 0 0 4px rgba(0, 85, 255, 0.1);
 }
-.form_input_group__field:hover:not(:focus):not(:disabled) {
-  border-color: #003DD6;
+.input_group__field:hover:not(:focus):not(:disabled) {
+  border-color: #D1D5DB;
 }
-.form_input_group__field:disabled {
+.input_group__field:disabled {
   background-color: #F3F4F6;
-  border-color: #E5E7EB;
   color: #D1D5DB;
   cursor: not-allowed;
   opacity: 0.6;
 }
-.form_input_group__label {
+.input_group__field--textarea {
+  min-height: 120px;
+  padding-top: 28px;
+  resize: vertical;
+}
+.input_group__label {
   position: absolute;
   top: 8px;
   left: 1rem;
   font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
   font-size: 0.75rem;
-  font-weight: 400;
-  color: #0055FF;
+  font-weight: 700;
+  color: #6B7280;
   pointer-events: none;
   transition: all 200ms ease-in-out;
-  background-color: #FFFFFF;
+  background-color: transparent;
   padding: 0 2px;
   line-height: 1;
-  z-index: 1;
 }
-.form_input_group__field:focus ~ .form_input_group__label, .form_input_group__field:not(:placeholder-shown) ~ .form_input_group__label {
+.input_group__field:focus ~ .input_group__label, .input_group__field:not(:placeholder-shown) ~ .input_group__label {
   top: 8px;
   font-size: 0.75rem;
-  color: #6B7280;
-}
-.form_input_group__value {
-  display: block;
-  margin-top: 4px;
-  font-size: 1rem;
-  font-weight: 700;
   color: #0055FF;
-  line-height: 1.5;
 }
-.form_input_group__error {
+.input_group__error {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.75rem;
@@ -1035,7 +1085,15 @@ HTML Kullanım Örneği:
   color: #DC3545;
   line-height: 1.4;
 }
-.form_input_group__helper {
+.input_group__success {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #10B981;
+  line-height: 1.4;
+}
+.input_group__helper {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.75rem;
@@ -1043,145 +1101,131 @@ HTML Kullanım Örneği:
   color: #6B7280;
   line-height: 1.4;
 }
-.form_input_group--error .form_input_group__field {
-  border-color: #DC3545;
-  border-width: 1px;
+.input_group--focus .input_group__field {
+  border-color: #0055FF;
+  border-width: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 85, 255, 0.1);
 }
-.form_input_group--error .form_input_group__field:focus {
+.input_group--focus .input_group__label {
+  color: #0055FF;
+}
+.input_group--error .input_group__field {
   border-color: #DC3545;
   border-width: 2px;
+}
+.input_group--error .input_group__field:focus {
+  border-color: #DC3545;
   box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
 }
-.form_input_group--error .form_input_group__label {
+.input_group--error .input_group__label {
   color: #DC3545;
 }
-.form_input_group--disabled .form_input_group__field {
+.input_group--success .input_group__field {
+  border-color: #10B981;
+  border-width: 2px;
+}
+.input_group--success .input_group__field:focus {
+  border-color: #10B981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+.input_group--success .input_group__label {
+  color: #10B981;
+}
+.input_group--disabled .input_group__field {
   background-color: #F3F4F6;
-  border-color: #E5E7EB;
   cursor: not-allowed;
 }
-.form_input_group--disabled .form_input_group__label {
+.input_group--disabled .input_group__label {
   color: #D1D5DB;
 }
-.form_input_group--filled .form_input_group__label {
-  color: #6B7280;
+
+.input_group--sm .input_group__field {
+  height: 48px;
+  padding: 20px 0.75rem 6px 0.75rem;
+  font-size: 0.875rem;
+}
+.input_group--sm .input_group__label {
+  font-size: 0.625rem;
 }
 
-.form_selectbox {
-  position: relative;
-  margin-bottom: 1.25rem;
-  width: 100%;
+.input_group--lg .input_group__field {
+  height: 64px;
+  padding: 28px 1.25rem 10px 1.25rem;
+  font-size: 1.25rem;
 }
-.form_selectbox__field {
+.input_group--lg .input_group__label {
+  font-size: 0.875rem;
+}
+
+.form_input {
+  display: block;
   width: 100%;
-  height: 56px;
-  padding: 24px 2.5rem 8px 1rem;
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 1rem;
-  font-weight: 400;
   line-height: 1.5;
   color: #1F2937;
   background-color: #FFFFFF;
-  border: 1px solid #0055FF;
+  border: 1px solid #E5E7EB;
   border-radius: 0.5rem;
+  transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+.form_input::placeholder {
+  color: #9CA3AF;
+}
+.form_input:focus {
   outline: none;
-  transition: all 200ms ease-in-out;
-  appearance: none;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%230055FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-}
-.form_selectbox__field:focus {
   border-color: #0055FF;
-  border-width: 2px;
-  box-shadow: 0 0 0 4px rgba(0, 85, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
-.form_selectbox__field:hover:not(:focus):not(:disabled) {
-  border-color: #003DD6;
-}
-.form_selectbox__field:disabled {
+.form_input:disabled {
   background-color: #F3F4F6;
-  border-color: #E5E7EB;
-  color: #D1D5DB;
   cursor: not-allowed;
   opacity: 0.6;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
-.form_selectbox__field:not([value=""]) {
-  padding-top: 8px;
-  padding-bottom: 24px;
+.form_input--sm {
+  height: 2rem;
+  font-size: 0.875rem;
 }
-.form_selectbox__label {
-  position: absolute;
-  top: 8px;
-  left: 1rem;
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: #0055FF;
-  pointer-events: none;
-  transition: all 200ms ease-in-out;
-  background-color: #FFFFFF;
-  padding: 0 2px;
-  line-height: 1;
-  z-index: 1;
+.form_input--lg {
+  height: 3rem;
+  font-size: 1.25rem;
 }
-.form_selectbox__field:not([value=""]) ~ .form_selectbox__label, .form_selectbox__field:focus ~ .form_selectbox__label {
-  top: 8px;
-  font-size: 0.75rem;
-  color: #6B7280;
-}
-.form_selectbox__value {
-  display: block;
-  margin-top: 4px;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #0055FF;
-  line-height: 1.5;
-}
-.form_selectbox__error {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: #DC3545;
-  line-height: 1.4;
-}
-.form_selectbox--error .form_selectbox__field {
+.form_input--error {
   border-color: #DC3545;
-  border-width: 1px;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23DC3545' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
-.form_selectbox--error .form_selectbox__field:focus {
+.form_input--error:focus {
   border-color: #DC3545;
-  border-width: 2px;
-  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
 }
-.form_selectbox--error .form_selectbox__label {
-  color: #DC3545;
+.form_input--success {
+  border-color: #10B981;
 }
-.form_selectbox--disabled .form_selectbox__field {
-  background-color: #F3F4F6;
-  border-color: #E5E7EB;
-  cursor: not-allowed;
-}
-.form_selectbox--disabled .form_selectbox__label {
-  color: #D1D5DB;
-}
-.form_selectbox--filled .form_selectbox__label {
-  color: #6B7280;
+.form_input--success:focus {
+  border-color: #10B981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
+.input_group__select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.form_checkbox,
 .form_radio {
   position: relative;
   display: inline-flex;
   align-items: center;
   cursor: pointer;
   user-select: none;
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
 }
+.form_checkbox input[type=checkbox],
+.form_checkbox input[type=radio],
+.form_radio input[type=checkbox],
 .form_radio input[type=radio] {
   position: absolute;
   opacity: 0;
@@ -1189,109 +1233,44 @@ HTML Kullanım Örneği:
   height: 0;
   width: 0;
 }
+.form_checkbox input[type=checkbox]:checked ~ .form_checkbox__box, .form_checkbox input[type=checkbox]:checked ~ .form_radio__box,
+.form_checkbox input[type=radio]:checked ~ .form_checkbox__box,
+.form_checkbox input[type=radio]:checked ~ .form_radio__box,
+.form_radio input[type=checkbox]:checked ~ .form_checkbox__box,
+.form_radio input[type=checkbox]:checked ~ .form_radio__box,
+.form_radio input[type=radio]:checked ~ .form_checkbox__box,
 .form_radio input[type=radio]:checked ~ .form_radio__box {
-  border-color: #0055FF;
   background-color: #0055FF;
+  border-color: #0055FF;
 }
-.form_radio input[type=radio]:checked ~ .form_radio__box::after {
+.form_checkbox input[type=checkbox]:checked ~ .form_checkbox__box::after,
+.form_checkbox input[type=radio]:checked ~ .form_checkbox__box::after,
+.form_radio input[type=checkbox]:checked ~ .form_checkbox__box::after,
+.form_radio input[type=radio]:checked ~ .form_checkbox__box::after {
   display: block;
 }
+.form_checkbox input[type=checkbox]:focus ~ .form_checkbox__box, .form_checkbox input[type=checkbox]:focus ~ .form_radio__box,
+.form_checkbox input[type=radio]:focus ~ .form_checkbox__box,
+.form_checkbox input[type=radio]:focus ~ .form_radio__box,
+.form_radio input[type=checkbox]:focus ~ .form_checkbox__box,
+.form_radio input[type=checkbox]:focus ~ .form_radio__box,
+.form_radio input[type=radio]:focus ~ .form_checkbox__box,
 .form_radio input[type=radio]:focus ~ .form_radio__box {
   box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.1);
 }
-.form_radio input[type=radio]:disabled ~ .form_radio__box {
-  border-color: #E5E7EB;
-  background-color: #F3F4F6;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
+.form_checkbox__box,
 .form_radio__box {
   position: relative;
   width: 20px;
   height: 20px;
-  border: 2px solid #0055FF;
-  border-radius: 9999px;
-  background-color: #FFFFFF;
-  transition: all 200ms ease-in-out;
-  flex-shrink: 0;
-}
-.form_radio__box::after {
-  content: "";
-  position: absolute;
-  display: none;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background-color: #FFFFFF;
-}
-.form_radio__label {
-  margin-left: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #1F2937;
-  line-height: 1.5;
-}
-.form_radio--error input[type=radio] ~ .form_radio__box {
-  border-color: #DC3545;
-}
-.form_radio--error input[type=radio]:checked ~ .form_radio__box {
-  border-color: #DC3545;
-  background-color: #DC3545;
-}
-.form_radio--disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-.form_radio--disabled .form_radio__label {
-  color: #D1D5DB;
-}
-
-.form_checkbox {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-}
-.form_checkbox input[type=checkbox] {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-.form_checkbox input[type=checkbox]:checked ~ .form_checkbox__box {
-  border-color: #0055FF;
-  background-color: #0055FF;
-}
-.form_checkbox input[type=checkbox]:checked ~ .form_checkbox__box::after {
-  display: block;
-}
-.form_checkbox input[type=checkbox]:focus ~ .form_checkbox__box {
-  box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.1);
-}
-.form_checkbox input[type=checkbox]:disabled ~ .form_checkbox__box {
-  border-color: #E5E7EB;
-  background-color: #F3F4F6;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-.form_checkbox__box {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #0055FF;
+  border: 2px solid #E5E7EB;
   border-radius: 0.25rem;
   background-color: #FFFFFF;
   transition: all 200ms ease-in-out;
   flex-shrink: 0;
 }
-.form_checkbox__box::after {
+.form_checkbox__box::after,
+.form_radio__box::after {
   content: "";
   position: absolute;
   display: none;
@@ -1303,31 +1282,17 @@ HTML Kullanım Örneği:
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-.form_checkbox__label {
+.form_checkbox__label,
+.form_radio__label {
   margin-left: 0.5rem;
   font-size: 0.875rem;
-  font-weight: 400;
   color: #1F2937;
-  line-height: 1.5;
 }
-.form_checkbox--error input[type=checkbox] ~ .form_checkbox__box {
-  border-color: #DC3545;
-}
-.form_checkbox--error input[type=checkbox]:checked ~ .form_checkbox__box {
-  border-color: #DC3545;
-  background-color: #DC3545;
-}
-.form_checkbox--disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-.form_checkbox--disabled .form_checkbox__label {
-  color: #D1D5DB;
-}
-.form_checkbox--circular .form_checkbox__box {
+
+.form_radio .form_radio__box {
   border-radius: 9999px;
 }
-.form_checkbox--circular .form_checkbox__box::after {
+.form_radio .form_radio__box::after {
   left: 4px;
   top: 4px;
   width: 8px;
@@ -1336,70 +1301,6 @@ HTML Kullanım Örneği:
   background-color: #FFFFFF;
   border: none;
   transform: none;
-}
-
-.form_switch {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  margin-bottom: 0.5rem;
-}
-.form_switch input[type=checkbox] {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-.form_switch input[type=checkbox]:checked ~ .form_switch__track {
-  background-color: #0055FF;
-}
-.form_switch input[type=checkbox]:checked ~ .form_switch__track .form_switch__thumb {
-  transform: translateX(20px);
-}
-.form_switch input[type=checkbox]:focus ~ .form_switch__track {
-  box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.1);
-}
-.form_switch input[type=checkbox]:disabled ~ .form_switch__track {
-  background-color: #F3F4F6;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-.form_switch__track {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  background-color: #F3F4F6;
-  border-radius: 9999px;
-  transition: all 200ms ease-in-out;
-  flex-shrink: 0;
-}
-.form_switch__thumb {
-  position: absolute;
-  left: 2px;
-  top: 2px;
-  width: 20px;
-  height: 20px;
-  background-color: #FFFFFF;
-  border-radius: 9999px;
-  transition: transform 200ms ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.form_switch__label {
-  margin-left: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #1F2937;
-  line-height: 1.5;
-}
-.form_switch--disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-.form_switch--disabled .form_switch__label {
-  color: #D1D5DB;
 }
 
 .form_group {
@@ -1430,235 +1331,168 @@ HTML Kullanım Örneği:
     flex-direction: column;
   }
 }
-.form_row .form_input_group,
-.form_row .form_selectbox {
+.form_row .input_group {
   flex: 1;
   margin-bottom: 0;
 }
 
-.loan_form {
+.auth_page {
+  display: flex;
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+  min-height: 100vh;
   background-color: #FFFFFF;
-  padding: 2rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
-.loan_form .form_input_group,
-.loan_form .form_selectbox,
-.loan_form .loan_form__slider_group {
-  margin-bottom: 1.5rem;
+@media (max-width: 767px) {
+  .auth_page {
+    flex-direction: column;
+  }
 }
-.loan_form__submit_btn {
+
+.auth_image {
+  flex: 0 0 50%;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1E255E 0%, #0055FF 100%);
+}
+@media (max-width: 767px) {
+  .auth_image {
+    display: none;
+  }
+}
+.auth_image__img {
   width: 100%;
-  height: 48px;
-  background-color: #0055FF;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 0.5rem;
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 200ms ease-in-out;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+}
+.auth_image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(30, 37, 94, 0.3) 0%, rgba(0, 85, 255, 0.5) 100%);
+  pointer-events: none;
+}
+
+.auth_container {
+  flex: 0 0 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.2);
+  padding: 2rem 1.5rem;
+  background-color: #FFFFFF;
+  overflow-y: auto;
 }
-.loan_form__submit_btn:hover:not(:disabled) {
-  background-color: #003DD6;
-  box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.3);
-  transform: translateY(-1px);
-}
-.loan_form__submit_btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-.loan_form__submit_btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  background-color: #0055FF;
-}
-.loan_form__spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #FFFFFF;
-  border-top-color: transparent;
-  border-radius: 9999px;
-  animation: loan_form_spin 0.8s linear infinite;
-}
-
-@keyframes loan_form_spin {
-  to {
-    transform: rotate(360deg);
+@media (max-width: 767px) {
+  .auth_container {
+    flex: 1;
+    padding: 1.5rem 1rem;
+    min-height: 100vh;
   }
 }
-.loan_alert {
-  padding: 1rem;
-  border-radius: 0.5rem;
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.5;
+@media (max-width: 1023px) {
+  .auth_container {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+.auth_content {
+  width: 100%;
+  max-width: 440px;
+}
+@media (max-width: 767px) {
+  .auth_content {
+    max-width: 100%;
+  }
+}
+
+.auth_header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+@media (max-width: 767px) {
+  .auth_header {
+    margin-bottom: 1.5rem;
+  }
+}
+.auth_header__logo {
+  width: 180px;
+  height: auto;
   margin-bottom: 1.25rem;
 }
-.loan_alert--error {
-  background-color: #FEE2E2;
-  border: 1px solid #DC3545;
+@media (max-width: 767px) {
+  .auth_header__logo {
+    width: 140px;
+    margin-bottom: 1rem;
+  }
+}
+.auth_header__title {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1E255E;
+  line-height: 1.25;
+  margin: 0;
+}
+@media (max-width: 767px) {
+  .auth_header__title {
+    font-size: 1rem;
+  }
+}
+
+.auth_form {
+  width: 100%;
+}
+.auth_form .input_group {
+  margin-bottom: 1.25rem;
+  transition: all 200ms ease-in-out;
+}
+.auth_form .input_group.input_group--error .input_group__field {
+  border-color: #DC3545;
+}
+.auth_form .input_group.input_group--error .input_group__field:focus {
+  border-color: #DC3545;
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
+}
+.auth_form .input_group.input_group--error .input_group__label {
   color: #DC3545;
 }
-.loan_alert--success {
-  background-color: #D1FAE5;
-  border: 1px solid #10B981;
+.auth_form .input_group.input_group--success .input_group__field {
+  border-color: #10B981;
+}
+.auth_form .input_group.input_group--success .input_group__field:focus {
+  border-color: #10B981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+.auth_form .input_group.input_group--success .input_group__label {
   color: #10B981;
 }
-.loan_alert--warning {
-  background-color: #FEF3C7;
-  border: 1px solid #F59E0B;
-  color: #F59E0B;
-}
-.loan_alert--info {
-  background-color: #DBEAFE;
-  border: 1px solid #3B82F6;
-  color: #3B82F6;
-}
-
-.loan_form__slider_group {
-  margin-bottom: 1.5rem;
-  width: 100%;
-  padding: 1rem;
-  background-color: #F9FAFB;
-  border-radius: 0.5rem;
-  border: 1px solid #E5E7EB;
-}
-.loan_form__slider_group--error {
-  border-color: #DC3545;
-  background-color: rgba(220, 53, 69, 0.05);
-}
-.loan_form__slider_group--error .loan_form__slider {
-  border-color: #DC3545;
-}
-.loan_form__slider_group--error .loan_form__slider_label {
-  color: #DC3545;
-}
-
-.loan_form__slider_label {
-  display: block;
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: #0055FF;
-  margin-bottom: 0.5rem;
-}
-
-.loan_form__slider_container {
-  position: relative;
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-
-.loan_form__slider {
-  width: 100%;
-  height: 8px;
-  border-radius: 9999px;
-  background: #F3F4F6;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  transition: all 200ms ease-in-out;
-}
-.loan_form__slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 9999px;
-  background: #0055FF;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: all 200ms ease-in-out;
-}
-.loan_form__slider::-webkit-slider-thumb:hover {
-  background: #003DD6;
-  transform: scale(1.1);
-}
-.loan_form__slider::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
-  border-radius: 9999px;
-  background: #0055FF;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: all 200ms ease-in-out;
-}
-.loan_form__slider::-moz-range-thumb:hover {
-  background: #003DD6;
-  transform: scale(1.1);
-}
-.loan_form__slider::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 8px;
-  cursor: pointer;
-  background: linear-gradient(to right, #0055FF 0%, #0055FF var(--slider-progress, 0%), #F3F4F6 var(--slider-progress, 0%), #F3F4F6 100%);
-  border-radius: 9999px;
-}
-.loan_form__slider::-moz-range-track {
-  width: 100%;
-  height: 8px;
-  cursor: pointer;
-  background: #F3F4F6;
-  border-radius: 9999px;
-}
-.loan_form__slider:focus {
-  outline: none;
+.auth_form .input_group.input_group--focus .input_group__field {
+  border-color: #0055FF;
   box-shadow: 0 0 0 4px rgba(0, 85, 255, 0.1);
 }
-
-.loan_form__slider_value {
-  position: absolute;
-  top: -50px;
-  right: 0;
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
+.auth_form .input_group.input_group--focus .input_group__label {
   color: #0055FF;
-  background: #FFFFFF;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  min-width: 140px;
-  text-align: center;
-  border: 2px solid #0055FF;
 }
-
-.loan_form__slider_helper {
-  display: block;
-  font-size: 0.75rem;
-  color: #6B7280;
-  margin-top: 0.5rem;
-}
-
-.loan_form__slider_error {
+.auth_form .input_group__error {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.75rem;
   font-weight: 400;
   color: #DC3545;
   line-height: 1.4;
+  animation: slide_in_down 0.3s ease-out;
+}
+.auth_form .btn_primary {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.loan_form__dynamic_fields {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #E5E7EB;
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
+@keyframes slide_in_down {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -1668,71 +1502,137 @@ HTML Kullanım Örneği:
     transform: translateY(0);
   }
 }
-.loan_form_container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-@media (min-width: 768px) {
-  .loan_form_container {
-    padding: 2.5rem 1.5rem;
-  }
-}
-
-.loan_page_container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  min-height: 100vh;
-  background-color: #F3F4F6;
-}
-@media (min-width: 768px) {
-  .loan_page_container {
-    padding: 2.5rem 1.5rem;
-  }
-}
-
-.loan_page_title {
-  margin-bottom: 2rem;
-  color: #1E255E;
-  font-size: 1.75rem;
-  font-weight: 700;
-  text-align: center;
-}
-@media (min-width: 768px) {
-  .loan_page_title {
-    font-size: 2rem;
-    margin-bottom: 2.5rem;
-  }
-}
-
-.loan_alert {
+.auth_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
+  gap: 0.75rem;
+}
+@media (max-width: 767px) {
+  .auth_footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
+.auth_footer .form_checkbox {
+  margin: 0;
+}
+.auth_footer__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0055FF;
+  text-decoration: none;
+  transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+  white-space: nowrap;
+}
+.auth_footer__link:hover {
+  color: #003DD6;
+  text-decoration: underline;
+}
+@media (max-width: 767px) {
+  .auth_footer__link {
+    align-self: flex-end;
+  }
 }
 
-.loan_form__dynamic_fields {
-  display: none;
-  margin-top: 1rem;
-  padding: 1.25rem;
-  background-color: #F9FAFB;
-  border-radius: 0.5rem;
-  border: 1px solid #E5E7EB;
-}
-
-.loan_form__char_count {
-  text-align: right;
-  display: block;
-  margin-top: 0.25rem;
-}
-
-.loan_form__submit_container {
-  margin-top: 2rem;
+.auth_register {
+  text-align: center;
+  margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid #E5E7EB;
 }
+.auth_register__text {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-right: 0.5rem;
+}
+.auth_register__link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0055FF;
+  text-decoration: none;
+  transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+}
+.auth_register__link:hover {
+  color: #003DD6;
+  text-decoration: underline;
+}
 
-.loan_form__loading_hidden {
+.btn_google {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0 1.5rem;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1F2937;
+  background-color: #FFFFFF;
+  border: 2px solid #E5E7EB;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+  outline: none;
+}
+.btn_google:hover {
+  background-color: #F9FAFB;
+  border-color: #D1D5DB;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.btn_google:active {
+  transform: translateY(1px);
+}
+.btn_google__icon {
+  flex-shrink: 0;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  animation: slide_in_down 0.3s ease-out;
+}
+.alert:empty {
   display: none;
+  margin: 0;
+  padding: 0;
+}
+.alert--error {
+  background-color: #FEE2E2;
+  color: #DC3545;
+  border: 1px solid rgba(220, 53, 69, 0.2);
+}
+.alert--success {
+  background-color: #D1FAE5;
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.alert--info {
+  background-color: #DBEAFE;
+  color: #3B82F6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+.alert--warning {
+  background-color: #FEF3C7;
+  color: #F59E0B;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+.alert ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.alert ul li {
+  margin-bottom: 0.25rem;
+}
+.alert ul li:last-child {
+  margin-bottom: 0;
 }
 
 .container {
