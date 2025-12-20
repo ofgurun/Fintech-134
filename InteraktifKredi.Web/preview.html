@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>İnteraktif Kredi - Tasarım Önizleme</title>
+    <link rel="stylesheet" href="wwwroot/css/site.css" />
+    <style>
+        /* Preview için ek stiller */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__container">
+            <a href="#" class="header__logo">
+                <span class="header__logo_text">İnteraktif Şube</span>
+            </a>
+
+            <nav class="header__nav" id="header_nav">
+                <ul class="header__nav_list">
+                    <li class="header__nav_item">
+                        <a href="#" class="header__nav_link header__nav_link--active">
+                            <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>Ana Ekran</span>
+                        </a>
+                    </li>
+                    <li class="header__nav_item">
+                        <a href="#" class="header__nav_link">
+                            <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            <span>Hizmetler</span>
+                        </a>
+                    </li>
+                    <li class="header__nav_item">
+                        <a href="#" class="header__nav_link">
+                            <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <span>Kredi Hesaplama</span>
+                        </a>
+                    </li>
+                    <li class="header__nav_item">
+                        <a href="#" class="header__nav_link">
+                            <svg class="header__nav_link_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            <span>SSS</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header__user">
+                <div class="header__user_info" id="user_menu_toggle">
+                    <div class="header__user_avatar">A</div>
+                    <span class="header__user_name">Ahmet Yılmaz</span>
+                </div>
+                <div class="header__user_menu">
+                    <div class="header__user_dropdown" id="user_dropdown">
+                        <a href="#" class="header__user_dropdown_item">Profil Ayarları</a>
+                        <a href="#" class="header__user_dropdown_item header__user_dropdown_item--danger">Çıkış Yap</a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="header__toggle" id="header_toggle" aria-label="Menüyü Aç/Kapat">
+                <span class="header__toggle_line"></span>
+                <span class="header__toggle_line"></span>
+                <span class="header__toggle_line"></span>
+            </button>
+        </div>
+        <div class="header__overlay" id="header_overlay"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main_content">
+        <div class="dashboard_container">
+            <div class="dashboard_header">
+                <h1>Hoş Geldiniz</h1>
+                <p class="dashboard_subtitle">İnteraktif Kredi Web Şube'ye hoş geldiniz</p>
+            </div>
+
+            <div class="dashboard_cards">
+                <div class="card">
+                    <div class="card__header">
+                        <h2>Kredi Hesaplama</h2>
+                    </div>
+                    <div class="card__body">
+                        <p>İhtiyacınıza uygun kredi seçeneklerini hesaplayın ve başvurunuzu yapın.</p>
+                        <a href="#" class="btn_primary btn_primary--auto mt-4">Kredi Hesapla</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2>Hizmetlerimiz</h2>
+                    </div>
+                    <div class="card__body">
+                        <p>Tüm bankacılık hizmetlerimize buradan ulaşabilirsiniz.</p>
+                        <a href="#" class="btn_secondary btn_secondary--auto mt-4">Hizmetleri Gör</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2>Profil</h2>
+                    </div>
+                    <div class="card__body">
+                        <p>Hesap bilgilerinizi görüntüleyin ve güncelleyin.</p>
+                        <a href="#" class="btn_outline btn_outline--auto mt-4">Profili Görüntüle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__content">
+                <div class="footer__copyright">
+                    &copy; 2025 <span class="footer__brand">İnteraktif Kredi</span>. Tüm hakları saklıdır.
+                </div>
+                <ul class="footer__links">
+                    <li class="footer__links_item">
+                        <a href="#" class="footer__links_link">Gizlilik Politikası</a>
+                    </li>
+                    <li class="footer__links_item">
+                        <a href="#" class="footer__links_link">Kullanım Koşulları</a>
+                    </li>
+                    <li class="footer__links_item">
+                        <a href="#" class="footer__links_link">İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="wwwroot/js/site.js"></script>
+</body>
+</html>
+

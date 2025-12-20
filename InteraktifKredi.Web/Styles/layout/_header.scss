@@ -1,0 +1,506 @@
+// ============================================================================
+// HEADER - İNTERAKTİF KREDİ
+// ============================================================================
+// Header component - Giriş yapmış kullanıcılar için üst menü
+// BEM metodolojisi + snake_case naming convention
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// HEADER CONTAINER
+// ----------------------------------------------------------------------------
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: $z_index_sticky;
+  background-color: $bg_white;
+  border-bottom: 1px solid $border_color;
+  box-shadow: $shadow_sm;
+  
+  // --------------------------------------------------------------------------
+  // HEADER CONTAINER (İçerik wrapper)
+  // --------------------------------------------------------------------------
+  
+  &__container {
+    @include container;
+    @include flex_between;
+    height: 72px;
+    padding-top: $spacing_4;
+    padding-bottom: $spacing_4;
+    
+    @include respond_to_max(md) {
+      height: auto;
+      min-height: 64px;
+      padding-top: $spacing_3;
+      padding-bottom: $spacing_3;
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // LOGO SECTION
+  // --------------------------------------------------------------------------
+  
+  &__logo {
+    @include flex_center;
+    gap: $spacing_2;
+    text-decoration: none;
+    color: $color_navy;
+    transition: $transition_colors;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+    
+    &_image {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+      
+      @include respond_to_max(md) {
+        height: 32px;
+      }
+    }
+    
+    &_text {
+      font-family: $font_family_heading;
+      font-size: $font_size_lg;
+      font-weight: $font_weight_bold;
+      color: $color_navy;
+      
+      @include respond_to_max(md) {
+        font-size: $font_size_base;
+      }
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // NAVIGATION
+  // --------------------------------------------------------------------------
+  
+  &__nav {
+    @include flex_center;
+    gap: $spacing_2;
+    
+    @include respond_to_max(md) {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      background-color: $bg_white;
+      padding: $spacing_6;
+      gap: 0;
+      transform: translateX(-100%);
+      transition: transform $transition_slow;
+      overflow-y: auto;
+      z-index: $z_index_modal;
+      box-shadow: $shadow_xl;
+      
+      &--open {
+        transform: translateX(0);
+      }
+    }
+    
+    &_list {
+      @include flex_center;
+      gap: $spacing_1;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      
+      @include respond_to_max(md) {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+        align-items: stretch;
+      }
+    }
+    
+    &_item {
+      position: relative;
+      
+      @include respond_to_max(md) {
+        width: 100%;
+        border-bottom: 1px solid $border_light;
+      }
+      
+      // Dropdown item
+      &--dropdown {
+        @include respond_to_max(md) {
+          border-bottom: none;
+        }
+      }
+    }
+    
+    &_link {
+      @include flex_center;
+      gap: $spacing_2;
+      padding: $spacing_3 $spacing_4;
+      font-family: $font_main;
+      font-size: $font_size_sm;
+      font-weight: $font_weight_medium;
+      color: $text_main;
+      text-decoration: none;
+      border-radius: $border_radius_md;
+      background-color: transparent;
+      transition: $transition_colors;
+      white-space: nowrap;
+      
+      @include respond_to_max(md) {
+        width: 100%;
+        justify-content: flex-start;
+        padding: $spacing_4;
+        border-radius: 0;
+        font-size: $font_size_base;
+      }
+      
+      // Hover state - tüm linklerde aynı (sadece hover'da arka plan ve renk değişikliği)
+      &:hover {
+        color: $color_primary;
+        background-color: $color_primary_lighter;
+      }
+      
+      // Active state - kaldırıldı, tüm linkler aynı davranışta
+      // Aktif state class'ı artık hiçbir stil uygulamıyor
+      &--active {
+        // Aktif state'te de normal görünüm, sadece hover'da arka plan
+        // Aktif linkler de normal linkler gibi davranıyor
+      }
+      
+      &_icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        fill: currentColor;
+      }
+      
+      &_arrow {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-left: $spacing_1;
+        transition: transform $transition_base;
+        fill: currentColor;
+      }
+    }
+    
+    // Navigation Dropdown Menu
+    &_dropdown {
+      position: absolute;
+      top: calc(100% + $spacing_2);
+      left: 0;
+      min-width: 220px;
+      background-color: $bg_white;
+      border: 1px solid $border_color;
+      border-radius: $border_radius_md;
+      box-shadow: $shadow_lg;
+      padding: $spacing_2;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: $transition_all;
+      z-index: $z_index_dropdown;
+      list-style: none;
+      margin: 0;
+      
+      &--open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      &_item {
+        margin-bottom: $spacing_1;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      
+      &_link {
+        display: block;
+        width: 100%;
+        padding: $spacing_3 $spacing_4;
+        font-family: $font_main;
+        font-size: $font_size_sm;
+        font-weight: $font_weight_medium;
+        color: $text_main;
+        text-decoration: none;
+        border-radius: $border_radius_sm;
+        transition: $transition_colors;
+        
+        &:hover {
+          background-color: $color_primary_lighter;
+          color: $color_primary;
+        }
+      }
+      
+      @include respond_to_max(md) {
+        position: static;
+        display: none;
+        min-width: 100%;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: $spacing_2 0 $spacing_2 $spacing_6;
+        margin-top: $spacing_2;
+        background-color: $bg_lighter;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        
+        &--open {
+          display: block;
+        }
+      }
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // USER SECTION (Sağ üst - Profil & Çıkış)
+  // --------------------------------------------------------------------------
+  
+  &__user {
+    @include flex_center;
+    gap: $spacing_3;
+    
+    @include respond_to_max(md) {
+      gap: $spacing_2;
+    }
+    
+    &_info {
+      @include flex_center;
+      gap: $spacing_2;
+      padding: $spacing_2 $spacing_3;
+      border-radius: $border_radius_md;
+      background-color: $bg_lighter;
+      cursor: pointer;
+      transition: $transition_colors;
+      
+      @include respond_to_max(md) {
+        padding: $spacing_2;
+      }
+      
+      &:hover {
+        background-color: $color_primary_lighter;
+      }
+    }
+    
+    &_avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: $border_radius_full;
+      background: linear-gradient(135deg, $color_primary, $color_secondary);
+      @include flex_center;
+      color: $bg_white;
+      font-weight: $font_weight_bold;
+      font-size: $font_size_sm;
+      
+      @include respond_to_max(md) {
+        width: 32px;
+        height: 32px;
+        font-size: $font_size_xs;
+      }
+    }
+    
+    &_name {
+      font-family: $font_main;
+      font-size: $font_size_sm;
+      font-weight: $font_weight_medium;
+      color: $text_dark;
+      
+      @include respond_to_max(md) {
+        display: none;
+      }
+    }
+    
+    &_menu {
+      position: relative;
+    }
+    
+    &_dropdown {
+      position: absolute;
+      top: calc(100% + $spacing_2);
+      right: 0;
+      min-width: 240px;
+      background-color: $bg_white;
+      border: 1px solid $border_color;
+      border-radius: $border_radius_md;
+      box-shadow: $shadow_lg;
+      padding: $spacing_2;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: $transition_all;
+      z-index: $z_index_dropdown;
+      
+      &--open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      &_section {
+        margin-bottom: $spacing_2;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      
+      &_title {
+        padding: $spacing_2 $spacing_4;
+        font-family: $font_main;
+        font-size: $font_size_xs;
+        font-weight: $font_weight_semibold;
+        color: $text_light;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      &_divider {
+        height: 1px;
+        background-color: $border_light;
+        margin: $spacing_2 0;
+      }
+      
+      &_item {
+        display: block;
+        width: 100%;
+        padding: $spacing_3 $spacing_4;
+        font-family: $font_main;
+        font-size: $font_size_sm;
+        font-weight: $font_weight_medium;
+        color: $text_main;
+        text-decoration: none;
+        border-radius: $border_radius_sm;
+        transition: $transition_colors;
+        
+        &:hover {
+          background-color: $bg_light;
+          color: $color_primary;
+        }
+        
+        &--active {
+          background-color: $color_primary_lighter;
+          color: $color_primary;
+          font-weight: $font_weight_semibold;
+        }
+        
+        &--danger {
+          color: $danger_color;
+          
+          &:hover {
+            background-color: $danger_light;
+            color: $danger_color;
+          }
+        }
+      }
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // MOBILE MENU TOGGLE (Hamburger)
+  // --------------------------------------------------------------------------
+  
+  &__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: $z_index_fixed;
+    
+    @include respond_to_max(md) {
+      display: flex;
+    }
+    
+    &_line {
+      width: 100%;
+      height: 3px;
+      background-color: $color_navy;
+      border-radius: $border_radius_full;
+      transition: $transition_all;
+      
+      &:nth-child(1) {
+        transform-origin: top left;
+      }
+      
+      &:nth-child(2) {
+        opacity: 1;
+      }
+      
+      &:nth-child(3) {
+        transform-origin: bottom left;
+      }
+    }
+    
+    &--active {
+      .header__toggle_line {
+        &:nth-child(1) {
+          transform: rotate(45deg) translate(2px, -2px);
+        }
+        
+        &:nth-child(2) {
+          opacity: 0;
+        }
+        
+        &:nth-child(3) {
+          transform: rotate(-45deg) translate(2px, 2px);
+        }
+      }
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // OVERLAY (Mobil menü açıkken arka plan)
+  // --------------------------------------------------------------------------
+  
+  &__overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($text_dark, 0.5);
+    z-index: $z_index_modal_backdrop;
+    opacity: 0;
+    transition: opacity $transition_base;
+    
+    @include respond_to_max(md) {
+      &--active {
+        display: block;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// MAIN CONTENT (Layout için)
+// ============================================================================
+
+.main_content {
+  min-height: calc(100vh - 200px); // Header + Footer için alan bırak
+  padding: $spacing_6 $spacing_4;
+  
+  @include respond_to(md) {
+    padding: $spacing_8 $spacing_6;
+  }
+}
+
+// ============================================================================
+// END OF HEADER
+// ============================================================================
+

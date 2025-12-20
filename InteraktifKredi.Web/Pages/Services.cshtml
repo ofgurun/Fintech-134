@@ -1,0 +1,45 @@
+@page
+@model ServicesModel
+@{
+    ViewData["Title"] = "Hizmetlerimiz";
+}
+
+<div class="container">
+    <div class="services_container">
+        <h1>Hizmetlerimiz</h1>
+        <p class="services_subtitle">İnteraktif Kredi olarak sunduğumuz tüm bankacılık hizmetlerine buradan ulaşabilirsiniz.</p>
+        
+        <div class="services_content">
+            <div class="card">
+                <div class="card__header">
+                    <h2>Kredi Hizmetleri</h2>
+                </div>
+                <div class="card__body">
+                    <p>İhtiyacınıza uygun kredi seçenekleri ve başvuru işlemleri.</p>
+                    <a href="/Loan/Apply" class="btn_primary btn_primary--auto mt-4">Kredi Başvurusu Yap</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card__header">
+                    <h2>Hesap İşlemleri</h2>
+                </div>
+                <div class="card__body">
+                    <p>Hesap bilgilerinizi görüntüleyin ve yönetin.</p>
+                    <a href="/Account/Profile" class="btn_secondary btn_secondary--auto mt-4">Hesabım</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card__header">
+                    <h2>Müşteri Hizmetleri</h2>
+                </div>
+                <div class="card__body">
+                    <p>7/24 müşteri hizmetlerimizden yararlanın.</p>
+                    <a href="/Contact" class="btn_outline btn_outline--auto mt-4">İletişime Geç</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

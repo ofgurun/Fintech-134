@@ -4,5 +4,41 @@
     ViewData["Title"] = "Web Şube";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="dashboard_container">
+    <div class="dashboard_header">
+        <h1>Hoş Geldiniz</h1>
+        <p class="dashboard_subtitle">İnteraktif Kredi Web Şube'ye hoş geldiniz</p>
+    </div>
 
+    <div class="dashboard_cards">
+        <div class="card">
+            <div class="card__header">
+                <h2>Kredi Hesaplama</h2>
+            </div>
+            <div class="card__body">
+                <p>İhtiyacınıza uygun kredi seçeneklerini hesaplayın ve başvurunuzu yapın.</p>
+                <a href="/Loan/Apply" class="btn_primary btn_primary--auto mt-4">Kredi Hesapla</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__header">
+                <h2>Hizmetlerimiz</h2>
+            </div>
+            <div class="card__body">
+                <p>Tüm bankacılık hizmetlerimize buradan ulaşabilirsiniz.</p>
+                <a href="/Dashboard" class="btn_secondary btn_secondary--auto mt-4">Hizmetleri Gör</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__header">
+                <h2>Profil</h2>
+            </div>
+            <div class="card__body">
+                <p>Hesap bilgilerinizi görüntüleyin ve güncelleyin.</p>
+                <a href="/Account/Profile" class="btn_outline btn_outline--auto mt-4">Profili Görüntüle</a>
+            </div>
+        </div>
+    </div>
+</div>

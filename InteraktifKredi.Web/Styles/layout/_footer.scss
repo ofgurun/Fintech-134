@@ -1,0 +1,123 @@
+// ============================================================================
+// FOOTER - İNTERAKTİF KREDİ
+// ============================================================================
+// Footer component - Sade ve minimal tasarım
+// BEM metodolojisi + snake_case naming convention
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// FOOTER
+// ----------------------------------------------------------------------------
+
+.footer {
+  background-color: $bg_white;
+  border-top: 1px solid $border_color;
+  padding: $spacing_8 0 $spacing_6;
+  margin-top: auto;
+  
+  // --------------------------------------------------------------------------
+  // FOOTER CONTAINER
+  // --------------------------------------------------------------------------
+  
+  &__container {
+    @include container;
+  }
+  
+  // --------------------------------------------------------------------------
+  // FOOTER CONTENT
+  // --------------------------------------------------------------------------
+  
+  &__content {
+    @include flex_between;
+    flex-wrap: wrap;
+    gap: $spacing_4;
+    
+    @include respond_to_max(md) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // FOOTER COPYRIGHT
+  // --------------------------------------------------------------------------
+  
+  &__copyright {
+    font-family: $font_main;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_regular;
+    color: $text_light;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_xs;
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // FOOTER LINKS
+  // --------------------------------------------------------------------------
+  
+  &__links {
+    @include flex_center;
+    gap: $spacing_6;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+    @include respond_to_max(md) {
+      gap: $spacing_4;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    &_item {
+      // List item wrapper
+    }
+    
+    &_link {
+      font-family: $font_main;
+      font-size: $font_size_sm;
+      font-weight: $font_weight_medium;
+      color: $text_light;
+      text-decoration: none;
+      transition: $transition_colors;
+      
+      &:hover {
+        color: $color_primary;
+      }
+      
+      &--active {
+        color: $color_primary;
+        font-weight: $font_weight_semibold;
+      }
+      
+      @include respond_to_max(md) {
+        font-size: $font_size_xs;
+      }
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // FOOTER BRAND
+  // --------------------------------------------------------------------------
+  
+  &__brand {
+    font-family: $font_family_heading;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_semibold;
+    color: $color_navy;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_xs;
+    }
+  }
+}
+
+// ============================================================================
+// END OF FOOTER
+// ============================================================================
+

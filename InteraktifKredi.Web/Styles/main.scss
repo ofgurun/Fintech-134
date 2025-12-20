@@ -21,7 +21,14 @@
 @use 'base/typography';
 
 // ----------------------------------------------------------------------------
-// 3. COMPONENTS
+// 3. LAYOUT
+// ----------------------------------------------------------------------------
+// Layout bileşenleri (Header, Footer)
+@use 'layout/header';
+@use 'layout/footer';
+
+// ----------------------------------------------------------------------------
+// 4. COMPONENTS
 // ----------------------------------------------------------------------------
 // Yeniden kullanılabilir UI bileşenleri
 @use 'components/buttons';
@@ -29,12 +36,16 @@
 @use 'components/cards';
 
 // ----------------------------------------------------------------------------
-// 4. PAGES
+// 5. PAGES
 // ----------------------------------------------------------------------------
 // Sayfa spesifik stiller
 @use 'pages/login';
 @use 'pages/dashboard';
 @use 'pages/loan_wizard';
+@use 'pages/terms';
+@use 'pages/contact';
+@use 'pages/services';
+@use 'pages/faq';
 
 // ============================================================================
 // GLOBAL UTILITIES (Optional - Gerekirse eklenebilir)
