@@ -1,0 +1,89 @@
+// ============================================================================
+// LOAN APPLY PAGE - İNTERAKTİF KREDİ
+// ============================================================================
+// Kredi başvuru formu sayfası
+// Login sayf sayfasındaki input_group yapısını kullanır
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// LOAN APPLY PAGE - ANA CONTAINER
+// ----------------------------------------------------------------------------
+
+.loan_apply_page {
+  min-height: 100vh;
+  padding: $spacing_8 $spacing_4;
+  background-color: $bg_lighter;
+  
+  @include respond_to_max(md) {
+    padding: $spacing_6 $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LOAN APPLY CONTAINER
+// ----------------------------------------------------------------------------
+
+.loan_apply_container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: $bg_white;
+  border-radius: $border_radius_xl;
+  box-shadow: $shadow_lg;
+  padding: $spacing_8;
+  
+  @include respond_to_max(md) {
+    padding: $spacing_6 $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LOAN APPLY HEADER
+// ----------------------------------------------------------------------------
+
+.loan_apply_header {
+  text-align: center;
+  margin-bottom: $spacing_8;
+  
+  &__title {
+    font-family: $font_family_heading;
+    font-size: $font_size_2xl;
+    font-weight: $font_weight_bold;
+    color: $color_navy;
+    margin: 0 0 $spacing_2 0;
+    line-height: $line_height_tight;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_xl;
+    }
+  }
+  
+  &__subtitle {
+    font-size: $font_size_sm;
+    color: $text_light;
+    margin: 0;
+    line-height: $line_height_normal;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LOAN APPLY FORM
+// ----------------------------------------------------------------------------
+
+.loan_apply_form {
+  width: 100%;
+  
+  // Dynamic fields container
+  &__dynamic_fields {
+    margin-top: $spacing_4;
+    padding-top: $spacing_4;
+    border-top: 1px solid $border_color;
+  }
+}
+
+// ============================================================================
+// END OF LOAN APPLY PAGE
+// ============================================================================
+

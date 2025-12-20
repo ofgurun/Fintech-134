@@ -1,146 +1,143 @@
-// ============================================================================
-// LOGIN PAGE - CLIENT-SIDE İNTERAKSİYON
-// ============================================================================
-// Form validasyonu ve input formatlaması
-// ============================================================================
+// Login Page JavaScript
+// Handles KVKK modal, form validation, and input masking
 
-$(document).ready(function () {
-    // ----------------------------------------------------------------------------
-    // TCKN INPUT - Sadece Rakam Girişi
-    // ----------------------------------------------------------------------------
-    $('#tckn').on('input', function () {
-        // Sadece rakam kabul et
-        var value = $(this).val().replace(/[^0-9]/g, '');
-        $(this).val(value);
+$(document).ready(function() {
+    // ========================================================================
+    // TCKN Input: Only Numbers
+    // ========================================================================
+    $('#tckn').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // ========================================================================
+    // GSM Input: Only Numbers, Auto-format
+    // ========================================================================
+    $('#gsm').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
         
-        // Validation state
-        update_validation_state('#tckn_group', $(this));
-    });
-
-    // ----------------------------------------------------------------------------
-    // GSM INPUT - Sadece Rakam Girişi ve Otomatik Formatlama
-    // ----------------------------------------------------------------------------
-    $('#gsm').on('input', function () {
-        // Sadece rakam kabul et
-        var value = $(this).val().replace(/[^0-9]/g, '');
-        $(this).val(value);
+    // ========================================================================
+    // KVKK Modal Functions
+    // ========================================================================
+    
+    // Global reference for callback
+    window.kvkkApprovalCallback = null;
+    window.kvkkData = null;
         
-        // Validation state
-        update_validation_state('#gsm_group', $(this));
-    });
+    /**
+     * Shows KVKK Modal with text content
+     * @param {string} text - KVKK text content
+     * @param {number} kvkkId - KVKK document ID
+     * @param {number} customerId - Customer ID
+     * @param {function} onApprove - Callback function after approval
+     */
+    window.showKvkkModal = function(text, kvkkId, customerId, onApprove) {
+        console.log('Opening KVKK Modal...');
+        
+        // Store callback and data
+        window.kvkkApprovalCallback = onApprove;
+        window.kvkkData = {
+            kvkkId: kvkkId,
+            customerId: customerId
+        };
 
-    // ----------------------------------------------------------------------------
-    // VALIDATION STATE HELPER
-    // ----------------------------------------------------------------------------
-    function update_validation_state(group_selector, $input) {
-        var $group = $(group_selector);
-        var value = $input.val();
-        var field_name = $input.attr('id');
+        // Show modal
+        $('#kvkkModal').fadeIn(300);
+        $('body').css('overflow', 'hidden');
 
-        // Remove all states
-        $group.removeClass('input_group--error input_group--success');
+        // Hide loading, show content
+        $('#kvkk-loading').hide();
+        $('#kvkk-content').html(text).show();
 
-        if (value.length > 0) {
-            // TCKN Validation
-            if (field_name === 'tckn') {
-                if (value.length === 11 && /^\d{11}$/.test(value)) {
-                    $group.addClass('input_group--success');
-                } else if (value.length >= 11) {
-                    $group.addClass('input_group--error');
-                }
-            }
+        // Enable approve button after a short delay (simulate reading time)
+        setTimeout(function() {
+            $('#btn-approve-kvkk').prop('disabled', false);
+        }, 1000);
 
-            // GSM Validation
-            if (field_name === 'gsm') {
-                if (value.length === 10 && /^5\d{9}$/.test(value)) {
-                    $group.addClass('input_group--success');
-                } else if (value.length >= 10 || (value.length > 0 && value[0] !== '5')) {
-                    $group.addClass('input_group--error');
-                }
-            }
+        // Setup scroll detection (optional - enable button only after scroll to bottom)
+        setupScrollDetection();
+    };
+
+    /**
+     * Closes KVKK Modal
+     */
+    window.closeKvkkModal = function() {
+        console.log('Closing KVKK Modal...');
+        $('#kvkkModal').fadeOut(300);
+        $('body').css('overflow', 'auto');
+        
+        // Reset
+        $('#kvkk-content').empty();
+        $('#btn-approve-kvkk').prop('disabled', true);
+        window.kvkkApprovalCallback = null;
+        window.kvkkData = null;
+    };
+
+    /**
+     * Setup scroll detection to enable button only after scrolling to bottom
+     */
+    function setupScrollDetection() {
+        var $content = $('#kvkk-content');
+        
+        // Check if content is scrollable
+        if ($content[0].scrollHeight <= $content[0].clientHeight) {
+            // Content fits without scrolling - enable button immediately
+            $('#btn-approve-kvkk').prop('disabled', false);
+            return;
         }
-    }
 
-    // ----------------------------------------------------------------------------
-    // FORM SUBMIT - Loading State
-    // ----------------------------------------------------------------------------
-    $('.auth_form').on('submit', function (e) {
-        var $form = $(this);
-        var $submit_btn = $form.find('button[type="submit"]');
+        // Disable button initially if content is scrollable
+        $('#btn-approve-kvkk').prop('disabled', true);
 
-        // jQuery Validation kontrolü
-        if ($form.valid()) {
-            // Loading state ekle
-            $submit_btn.addClass('btn_primary--loading');
-            $submit_btn.prop('disabled', true);
-        }
-    });
-
-    // ----------------------------------------------------------------------------
-    // FOCUS STATE - Input Group Vurgulaması
-    // ----------------------------------------------------------------------------
-    $('.input_group__field').on('focus', function () {
-        $(this).closest('.input_group').addClass('input_group--focus');
-    });
-
-    $('.input_group__field').on('blur', function () {
-        $(this).closest('.input_group').removeClass('input_group--focus');
-    });
-
-    // ----------------------------------------------------------------------------
-    // JQUERY VALIDATION - Custom Error Placement
-    // ----------------------------------------------------------------------------
-    var $form = $('.auth_form');
-    if ($form.length > 0) {
-        $form.validate({
-            errorClass: 'input_group__error',
-            validClass: 'input_group__valid',
-            errorPlacement: function (error, element) {
-                // Hata mesajını input_group içine yerleştir
-                error.insertAfter(element);
-                element.closest('.input_group').addClass('input_group--error');
-            },
-            success: function (label, element) {
-                // Başarılı validasyon
-                $(element).closest('.input_group').removeClass('input_group--error');
-            },
-            highlight: function (element) {
-                $(element).closest('.input_group').addClass('input_group--error');
-            },
-            unhighlight: function (element) {
-                $(element).closest('.input_group').removeClass('input_group--error');
+        // Enable button when scrolled to bottom
+        $content.on('scroll', function() {
+            var scrollTop = $(this).scrollTop();
+            var scrollHeight = $(this)[0].scrollHeight;
+            var clientHeight = $(this)[0].clientHeight;
+            
+            // Check if scrolled to bottom (with 10px tolerance)
+            if (scrollTop + clientHeight >= scrollHeight - 10) {
+                $('#btn-approve-kvkk').prop('disabled', false);
             }
         });
     }
 
-    // ----------------------------------------------------------------------------
-    // BENI HATIRLA - LocalStorage Desteği (İsteğe Bağlı)
-    // ----------------------------------------------------------------------------
-    var $remember_me = $('input[name="remember_me"]');
-    var $tckn_input = $('#tckn');
-
-    // Sayfa yüklendiğinde hatırlanan TCKN'yi doldur
-    if (localStorage.getItem('remember_tckn') === 'true') {
-        var saved_tckn = localStorage.getItem('saved_tckn');
-        if (saved_tckn) {
-            $tckn_input.val(saved_tckn);
-            $remember_me.prop('checked', true);
+    /**
+     * Handles KVKK Approval
+     */
+    $('#btn-approve-kvkk').on('click', function() {
+        var $btn = $(this);
+        
+        if (!window.kvkkData || !window.kvkkApprovalCallback) {
+            console.error('KVKK data or callback not set!');
+            alert('Bir hata oluştu. Lütfen sayfayı yenileyip tekrar deneyin.');
+            return;
         }
-    }
 
-    // Form submit edildiğinde TCKN'yi kaydet
-    $('.auth_form').on('submit', function () {
-        if ($remember_me.is(':checked')) {
-            localStorage.setItem('remember_tckn', 'true');
-            localStorage.setItem('saved_tckn', $tckn_input.val());
-        } else {
-            localStorage.removeItem('remember_tckn');
-            localStorage.removeItem('saved_tckn');
-        }
+        console.log('Approving KVKK...', window.kvkkData);
+
+        // Disable button and show loading
+        $btn.prop('disabled', true).text('Kaydediliyor...');
+
+        // Call the approval callback
+        window.kvkkApprovalCallback(window.kvkkData.kvkkId, window.kvkkData.customerId);
     });
+
+    // ========================================================================
+    // Close modal when clicking overlay
+    // ========================================================================
+    $('.modal__overlay').on('click', function() {
+        closeKvkkModal();
 });
 
-// ============================================================================
-// END OF LOGIN JS
-// ============================================================================
+    // ========================================================================
+    // Close modal with ESC key
+    // ========================================================================
+    $(document).on('keydown', function(e) {
+        if (e.key === 'Escape' && $('#kvkkModal').is(':visible')) {
+            closeKvkkModal();
+        }
+    });
 
+    console.log('Login.js loaded successfully');
+});

@@ -2,9 +2,20 @@
 @model InteraktifKredi.Web.Pages.Dashboard.IndexModel
 @{
     ViewData["Title"] = "Web Şube";
+    Layout = null; // KVKK modalı için Layout kaldırıldı
 }
 
-<div class="dashboard_container">
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - İnteraktif Kredi</title>
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+<body>
+
+<div class="dashboard_container" style="@(Model.ShowKvkk ? "filter: blur(5px); pointer-events: none;" : "")">
     <div class="dashboard_header">
         <h1>Hoş Geldiniz</h1>
         <p class="dashboard_subtitle">İnteraktif Kredi Web Şube'ye hoş geldiniz</p>
@@ -42,3 +53,86 @@
         </div>
     </div>
 </div>
+
+<!-- KVKK Modal (shown on Dashboard after OTP verification) -->
+@if (Model.ShowKvkk)
+{
+    <div id="kvkkModal" class="modal-overlay active">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Aydınlatma Metni</h3>
+            </div>
+            <div class="modal-body" id="kvkk-content">
+                @Html.Raw(Model.KvkkTextContent ?? "Metin yükleniyor...")
+            </div>
+            <div class="modal-footer">
+                <form method="post" id="kvkk-form">
+                    @Html.AntiForgeryToken()
+                    <button type="button" class="btn_primary" id="btn-approve-kvkk">
+                        Okudum, Onaylıyorum
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@if (Model.ShowKvkk)
+{
+    <script>
+        $(document).ready(function() {
+            console.log('KVKK Modal is active on Dashboard');
+            
+            var kvkkId = @Model.KvkkId;
+            var customerId = @Model.CustomerId;
+            
+            $('#btn-approve-kvkk').on('click', function() {
+                var $btn = $(this);
+                console.log('KVKK approved, sending to backend...', { kvkkId, customerId });
+                
+                $btn.prop('disabled', true).text('Kaydediliyor...');
+                
+                $.ajax({
+                    url: '/Dashboard/Index?handler=ApproveKvkk',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    data: JSON.stringify({
+                        kvkkId: kvkkId,
+                        customerId: customerId
+                    }),
+                    success: function(response) {
+                        console.log('KVKK approval response:', response);
+                        
+                        if (response.success) {
+                            console.log('KVKK approved successfully, removing modal...');
+                            $('#kvkkModal').fadeOut(300, function() {
+                                $(this).remove();
+                            });
+                            $('.dashboard_container').css({
+                                'filter': 'none',
+                                'pointer-events': 'auto',
+                                'transition': 'filter 0.3s ease'
+                            });
+                        } else {
+                            alert('KVKK onayı kaydedilemedi: ' + (response.message || 'Bilinmeyen hata'));
+                            $btn.prop('disabled', false).text('Okudum, Onaylıyorum');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('KVKK approval error:', error);
+                        console.error('Response:', xhr.responseText);
+                        alert('Bir hata oluştu: ' + (xhr.responseText || error));
+                        $btn.prop('disabled', false).text('Okudum, Onaylıyorum');
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+</body>
+</html>
