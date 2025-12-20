@@ -91,12 +91,10 @@ p {
 .text-4xl { font-size: $font_size_4xl; }
 
 // Font Weights
-.font-light { font-weight: $font_weight_light; }
 .font-regular { font-weight: $font_weight_regular; }
 .font-medium { font-weight: $font_weight_medium; }
 .font-semibold { font-weight: $font_weight_semibold; }
 .font-bold { font-weight: $font_weight_bold; }
-.font-extrabold { font-weight: $font_weight_extrabold; }
 
 // Text Colors
 .text-dark { color: $text_dark; }

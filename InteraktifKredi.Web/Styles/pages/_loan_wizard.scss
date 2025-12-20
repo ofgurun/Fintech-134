@@ -1,2 +1,365 @@
-// Loan Wizard Page
+// ============================================================================
+// LOAN WIZARD PAGE - İNTERAKTİF KREDİ
+// ============================================================================
+// Kredi başvuru formu sayfası stilleri
+// ============================================================================
 
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// LOAN FORM
+// ----------------------------------------------------------------------------
+
+.loan_form {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: $color_white;
+  padding: $spacing_8;
+  border-radius: $border_radius_lg;
+  box-shadow: $shadow_base;
+
+  // Form spacing
+  .form_input_group,
+  .form_selectbox,
+  .loan_form__slider_group {
+    margin-bottom: $spacing_6;
+  }
+
+  // Submit Button
+  &__submit_btn {
+    width: 100%;
+    height: 48px;
+    background-color: $color_primary;
+    color: $color_white;
+    border: none;
+    border-radius: $border_radius_md;
+    font-family: $font_main;
+    font-size: 1rem;
+    font-weight: $font_weight_semibold;
+    cursor: pointer;
+    transition: $transition_all;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing_2;
+    box-shadow: $shadow_primary;
+
+    &:hover:not(:disabled) {
+      background-color: $primary_color_dark;
+      box-shadow: $shadow_primary_hover;
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background-color: $color_primary;
+    }
+  }
+
+  // Loading Spinner
+  &__spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid $color_white;
+    border-top-color: transparent;
+    border-radius: $border_radius_full;
+    animation: loan_form_spin 0.8s linear infinite;
+  }
+}
+
+// Spinner Animation
+@keyframes loan_form_spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LOAN ALERT
+// ----------------------------------------------------------------------------
+
+.loan_alert {
+  padding: $spacing_4;
+  border-radius: $border_radius_md;
+  font-family: $font_main;
+  font-size: $font_size_sm;
+  font-weight: $font_weight_regular;
+  line-height: $line_height_normal;
+  margin-bottom: $spacing_5;
+
+  &--error {
+    background-color: $danger_light;
+    border: 1px solid $color_error;
+    color: $color_error;
+  }
+
+  &--success {
+    background-color: $success_light;
+    border: 1px solid $success_color;
+    color: $success_color;
+  }
+
+  &--warning {
+    background-color: $warning_light;
+    border: 1px solid $warning_color;
+    color: $warning_color;
+  }
+
+  &--info {
+    background-color: $info_light;
+    border: 1px solid $info_color;
+    color: $info_color;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LOAN FORM SLIDER
+// ----------------------------------------------------------------------------
+
+.loan_form__slider_group {
+  margin-bottom: $spacing_6;
+  width: 100%;
+  padding: $spacing_4;
+  background-color: $bg_lighter;
+  border-radius: $border_radius_md;
+  border: 1px solid $border_color;
+
+  &--error {
+    border-color: $color_error;
+    background-color: rgba($color_error, 0.05);
+
+    .loan_form__slider {
+      border-color: $color_error;
+    }
+
+    .loan_form__slider_label {
+      color: $color_error;
+    }
+  }
+}
+
+.loan_form__slider_label {
+  display: block;
+  font-family: $font_main;
+  font-size: 0.75rem;
+  font-weight: $font_weight_regular;
+  color: $color_primary;
+  margin-bottom: $spacing_2;
+}
+
+.loan_form__slider_container {
+  position: relative;
+  width: 100%;
+  margin-bottom: $spacing_2;
+}
+
+.loan_form__slider {
+  width: 100%;
+  height: 8px;
+  border-radius: $border_radius_full;
+  background: $bg_light;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: $transition_all;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: $border_radius_full;
+    background: $color_primary;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: $transition_all;
+
+    &:hover {
+      background: $primary_color_dark;
+      transform: scale(1.1);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: $border_radius_full;
+    background: $color_primary;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: $transition_all;
+
+    &:hover {
+      background: $primary_color_dark;
+      transform: scale(1.1);
+    }
+  }
+
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: linear-gradient(to right, $color_primary 0%, $color_primary var(--slider-progress, 0%), $bg_light var(--slider-progress, 0%), $bg_light 100%);
+    border-radius: $border_radius_full;
+  }
+
+  &::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: $bg_light;
+    border-radius: $border_radius_full;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba($color_primary, 0.1);
+  }
+}
+
+.loan_form__slider_value {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  font-family: $font_main;
+  font-size: 1.5rem;
+  font-weight: $font_weight_bold;
+  color: $color_primary;
+  background: $color_white;
+  padding: $spacing_2 $spacing_4;
+  border-radius: $border_radius_md;
+  box-shadow: $shadow_md;
+  min-width: 140px;
+  text-align: center;
+  border: 2px solid $color_primary;
+}
+
+.loan_form__slider_helper {
+  display: block;
+  font-size: $font_size_xs;
+  color: $text_light;
+  margin-top: $spacing_2;
+}
+
+.loan_form__slider_error {
+  display: block;
+  margin-top: $spacing_2;
+  font-size: $font_size_xs;
+  font-weight: $font_weight_regular;
+  color: $color_error;
+  line-height: 1.4;
+}
+
+// ----------------------------------------------------------------------------
+// DYNAMIC FIELDS
+// ----------------------------------------------------------------------------
+
+.loan_form__dynamic_fields {
+  margin-top: $spacing_4;
+  padding-top: $spacing_4;
+  border-top: 1px solid $border_color;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LOAN FORM CONTAINER
+// ----------------------------------------------------------------------------
+
+.loan_form_container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing_8 $spacing_4;
+
+  @include respond_to(md) {
+    padding: $spacing_10 $spacing_6;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// LOAN PAGE SPECIFIC STYLES
+// ----------------------------------------------------------------------------
+
+// Page Container
+.loan_page_container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: $spacing_8 $spacing_4;
+  min-height: 100vh;
+  background-color: $bg_light;
+
+  @include respond_to(md) {
+    padding: $spacing_10 $spacing_6;
+  }
+}
+
+// Page Title
+.loan_page_title {
+  margin-bottom: $spacing_8;
+  color: $color_navy;
+  font-size: $font_h1;
+  font-weight: $font_weight_bold;
+  text-align: center;
+
+  @include respond_to(md) {
+    font-size: 2rem;
+    margin-bottom: $spacing_10;
+  }
+}
+
+// Alert Margin
+.loan_alert {
+  margin-bottom: $spacing_6;
+}
+
+// Dynamic Fields Hidden State
+.loan_form__dynamic_fields {
+  display: none;
+  margin-top: $spacing_4;
+  padding: $spacing_5;
+  background-color: $bg_lighter;
+  border-radius: $border_radius_md;
+  border: 1px solid $border_color;
+}
+
+// Character Count Helper
+.loan_form__char_count {
+  text-align: right;
+  display: block;
+  margin-top: $spacing_1;
+}
+
+// Submit Button Container
+.loan_form__submit_container {
+  margin-top: $spacing_8;
+  padding-top: $spacing_6;
+  border-top: 1px solid $border_color;
+}
+
+// Loading State Hidden
+.loan_form__loading_hidden {
+  display: none;
+}
+
+// ============================================================================
+// END OF LOAN WIZARD
+// ============================================================================

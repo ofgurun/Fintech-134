@@ -1,0 +1,30 @@
+@page
+@model TermsModel
+@{
+    ViewData["Title"] = "Kullanım Koşulları";
+}
+
+<div class="container">
+    <div class="terms_container">
+        <h1>Kullanım Koşulları</h1>
+        <p class="terms_subtitle">Son güncelleme: @DateTime.Now.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</p>
+        
+        <div class="terms_content">
+            <section class="terms_section">
+                <h2>1. Genel Hükümler</h2>
+                <p>Bu kullanım koşulları, İnteraktif Kredi Web Şube hizmetlerinin kullanımına ilişkin kuralları belirlemektedir.</p>
+            </section>
+            
+            <section class="terms_section">
+                <h2>2. Hizmet Kullanımı</h2>
+                <p>Web şube hizmetlerimizi kullanarak, bu koşulları kabul etmiş sayılırsınız.</p>
+            </section>
+            
+            <section class="terms_section">
+                <h2>3. Sorumluluklar</h2>
+                <p>Kullanıcılar, hesap bilgilerinin gizliliğinden ve güvenliğinden sorumludur.</p>
+            </section>
+        </div>
+    </div>
+</div>
+
