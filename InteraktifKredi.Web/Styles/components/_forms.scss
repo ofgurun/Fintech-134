@@ -1,166 +1,111 @@
 // ============================================================================
-// FORMS - İNTERAKTİF KREDİ (Figma Spec)
+// FORMS - İNTERAKTİF KREDİ (UI Kit - Figma Spec)
 // ============================================================================
-// Modern form input yapısı - Label inside input style
-// Kullanım örnekleri en altta HTML comment olarak verilmiştir
+// Form elemanları: Input, SelectBox, Radio, Checkbox, Switch
+// BEM metodolojisi + snake_case naming convention
 // ============================================================================
 
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
 // ----------------------------------------------------------------------------
-// INPUT GROUP - MODERN OUTLINED INPUT (Figma Design)
+// INPUT GROUP - Modern Outlined Input (UI Kit Design)
 // ----------------------------------------------------------------------------
 
-/*
-HTML Kullanım Örneği:
-
-<!-- Varsayılan Input -->
-<div class="input_group">
-  <input type="text" id="name" class="input_group__field" placeholder=" " />
-  <label for="name" class="input_group__label">Adınız</label>
-</div>
-
-<!-- Dolu Input (Value ile) -->
-<div class="input_group">
-  <input type="text" id="phone" class="input_group__field" value="555 123 4567" placeholder=" " />
-  <label for="phone" class="input_group__label">Telefon</label>
-</div>
-
-<!-- Focus State (Otomatik - tıklayınca aktif olur) -->
-<div class="input_group input_group--focus">
-  <input type="text" id="email" class="input_group__field" placeholder=" " />
-  <label for="email" class="input_group__label">E-Posta</label>
-</div>
-
-<!-- Error State -->
-<div class="input_group input_group--error">
-  <input type="text" id="tckn" class="input_group__field" value="12345" placeholder=" " />
-  <label for="tckn" class="input_group__label">TC Kimlik No</label>
-  <span class="input_group__error">TCKN 11 haneli olmalıdır</span>
-</div>
-
-<!-- Disabled Input -->
-<div class="input_group input_group--disabled">
-  <input type="text" id="disabled" class="input_group__field" disabled placeholder=" " />
-  <label for="disabled" class="input_group__label">Devre Dışı</label>
-</div>
-
-<!-- Success State -->
-<div class="input_group input_group--success">
-  <input type="text" id="success" class="input_group__field" value="Doğru değer" placeholder=" " />
-  <label for="success" class="input_group__label">Başarılı</label>
-  <span class="input_group__success">Bilgiler doğrulandı</span>
-</div>
-
-<!-- Textarea -->
-<div class="input_group">
-  <textarea id="note" class="input_group__field input_group__field--textarea" placeholder=" "></textarea>
-  <label for="note" class="input_group__label">Notunuz</label>
-</div>
-*/
-
-// Base Input Group Container
-.input_group {
+.form_input_group {
   position: relative;
   margin-bottom: $spacing_5;
   width: 100%;
-  
+
   // Input Field
   &__field {
     width: 100%;
     height: 56px;
     padding: 24px $spacing_4 8px $spacing_4;
     font-family: $font_main;
-    font-size: 1rem;                    // 16px - Value size (Figma Spec)
+    font-size: 1rem;                      // 16px - Value size
     font-weight: $font_weight_regular;
     line-height: 1.5;
     color: $text_dark;
     background-color: $color_white;
-    border: 2px solid $border_color;    // Varsayılan gri kenarlık
-    border-radius: $border_radius_md;   // 8px
+    border: 1px solid $color_primary;     // Mavi border (Default - UI Kit)
+    border-radius: $border_radius_md;     // 8px
     outline: none;
     transition: $transition_all;
     appearance: none;
-    
-    // Placeholder (gizli - sadece :placeholder-shown için)
+
     &::placeholder {
       color: transparent;
       opacity: 0;
     }
-    
-    // Focus State
+
+    // Focus/Active State - Kalın mavi border
     &:focus {
-      border-color: $color_primary;     // Mavi kenarlık (Figma Spec)
+      border-color: $color_primary;
       border-width: 2px;
       box-shadow: 0 0 0 4px rgba($color_primary, 0.1);
     }
-    
+
     // Hover State
     &:hover:not(:focus):not(:disabled) {
-      border-color: $border_dark;
+      border-color: $primary_color_dark;
     }
-    
+
     // Disabled State
     &:disabled {
       background-color: $bg_light;
+      border-color: $border_color;
       color: $text_muted;
       cursor: not-allowed;
       opacity: 0.6;
     }
-    
-    // Textarea variant
-    &--textarea {
-      min-height: 120px;
-      padding-top: 28px;
-      resize: vertical;
-    }
   }
-  
+
   // Label (Floating inside input)
   &__label {
     position: absolute;
     top: 8px;
     left: $spacing_4;
     font-family: $font_main;
-    font-size: 0.75rem;                 // 12px - Label size (Figma Spec)
-    font-weight: $font_weight_bold;     // Bold (Figma Spec)
-    color: $text_light;
+    font-size: 0.75rem;                   // 12px - Label size
+    font-weight: $font_weight_regular;
+    color: $color_primary;                // Mavi renk (UI Kit)
     pointer-events: none;
     transition: $transition_all;
-    background-color: transparent;
+    background-color: $color_white;
     padding: 0 2px;
     line-height: 1;
-    
-    // When input is focused or has value
-    .input_group__field:focus ~ &,
-    .input_group__field:not(:placeholder-shown) ~ & {
+    z-index: 1;
+
+    // When input is focused or has value (Filled state)
+    .form_input_group__field:focus ~ &,
+    .form_input_group__field:not(:placeholder-shown) ~ & {
       top: 8px;
-      font-size: 0.75rem;               // 12px
-      color: $color_primary;
+      font-size: 0.75rem;                 // 12px - Küçük label
+      color: $text_light;                  // Gri renk (UI Kit - Filled state)
     }
   }
-  
+
+  // Value Display (Filled state - görseldeki büyük mavi bold text)
+  &__value {
+    display: block;
+    margin-top: 4px;
+    font-size: 1rem;                      // 16px
+    font-weight: $font_weight_bold;
+    color: $color_primary;                 // Mavi bold (UI Kit)
+    line-height: 1.5;
+  }
+
   // Error Message
   &__error {
     display: block;
     margin-top: $spacing_2;
-    font-size: $font_size_xs;           // 12px
+    font-size: $font_size_xs;              // 12px
     font-weight: $font_weight_regular;
-    color: $color_error;                // Kırmızı (Figma Spec)
+    color: $color_error;                   // Kırmızı
     line-height: 1.4;
   }
-  
-  // Success Message
-  &__success {
-    display: block;
-    margin-top: $spacing_2;
-    font-size: $font_size_xs;
-    font-weight: $font_weight_regular;
-    color: $success_color;
-    line-height: 1.4;
-  }
-  
+
   // Helper Text
   &__helper {
     display: block;
@@ -170,170 +115,364 @@ HTML Kullanım Örneği:
     color: $text_light;
     line-height: 1.4;
   }
-  
+
   // ----------------------------------------------------------------------------
   // STATE MODIFIERS
   // ----------------------------------------------------------------------------
-  
-  // Focus State (Active)
-  &--focus {
-    .input_group__field {
+
+  // Error State - Kırmızı border + hata mesajı
+  &--error {
+    .form_input_group__field {
+      border-color: $color_error;         // Kırmızı border
+      border-width: 1px;
+
+      &:focus {
+        border-color: $color_error;
+        border-width: 2px;
+        box-shadow: 0 0 0 4px rgba($color_error, 0.1);
+      }
+    }
+
+    .form_input_group__label {
+      color: $color_error;                 // Kırmızı label
+    }
+  }
+
+  // Disabled State
+  &--disabled {
+    .form_input_group__field {
+      background-color: $bg_light;
+      border-color: $border_color;
+      cursor: not-allowed;
+    }
+
+    .form_input_group__label {
+      color: $text_muted;
+    }
+  }
+
+  // Filled State (Value ile dolu)
+  &--filled {
+    .form_input_group__label {
+      color: $text_light;                  // Gri label
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// SELECTBOX - Dropdown Select (UI Kit Design)
+// ----------------------------------------------------------------------------
+
+.form_selectbox {
+  position: relative;
+  margin-bottom: $spacing_5;
+  width: 100%;
+
+  // Select Field
+  &__field {
+    width: 100%;
+    height: 56px;
+    padding: 24px $spacing_10 8px $spacing_4;
+    font-family: $font_main;
+    font-size: 1rem;
+    font-weight: $font_weight_regular;
+    line-height: 1.5;
+    color: $text_dark;
+    background-color: $color_white;
+    border: 1px solid $color_primary;       // Mavi border (Default)
+    border-radius: $border_radius_md;
+    outline: none;
+    transition: $transition_all;
+    appearance: none;
+    cursor: pointer;
+
+    // Dropdown Icon (Chevron Down - Mavi)
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%230055FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $spacing_4 center;
+
+    // Focus/Active State
+    &:focus {
       border-color: $color_primary;
       border-width: 2px;
       box-shadow: 0 0 0 4px rgba($color_primary, 0.1);
     }
-    
-    .input_group__label {
-      color: $color_primary;
+
+    // Hover State
+    &:hover:not(:focus):not(:disabled) {
+      border-color: $primary_color_dark;
+    }
+
+    // Disabled State
+    &:disabled {
+      background-color: $bg_light;
+      border-color: $border_color;
+      color: $text_muted;
+      cursor: not-allowed;
+      opacity: 0.6;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    // Selected Value Display (Filled state)
+    &:not([value=""]) {
+      padding-top: 8px;
+      padding-bottom: 24px;
     }
   }
-  
-  // Error State
+
+  // Label
+  &__label {
+    position: absolute;
+    top: 8px;
+    left: $spacing_4;
+    font-family: $font_main;
+    font-size: 0.75rem;                   // 12px
+    font-weight: $font_weight_regular;
+    color: $color_primary;                // Mavi renk
+    pointer-events: none;
+    transition: $transition_all;
+    background-color: $color_white;
+    padding: 0 2px;
+    line-height: 1;
+    z-index: 1;
+
+    // When select has value (Filled state)
+    .form_selectbox__field:not([value=""]) ~ &,
+    .form_selectbox__field:focus ~ & {
+      top: 8px;
+      font-size: 0.75rem;
+      color: $text_light;                  // Gri renk (Filled state)
+    }
+  }
+
+  // Selected Value Display (Büyük mavi bold text)
+  &__value {
+    display: block;
+    margin-top: 4px;
+    font-size: 1rem;
+    font-weight: $font_weight_bold;
+    color: $color_primary;                 // Mavi bold
+    line-height: 1.5;
+  }
+
+  // Error Message
+  &__error {
+    display: block;
+    margin-top: $spacing_2;
+    font-size: $font_size_xs;
+    font-weight: $font_weight_regular;
+    color: $color_error;
+    line-height: 1.4;
+  }
+
+  // ----------------------------------------------------------------------------
+  // STATE MODIFIERS
+  // ----------------------------------------------------------------------------
+
+  // Error State - Kırmızı border + hata mesajı
   &--error {
-    .input_group__field {
-      border-color: $color_error;       // Kırmızı kenarlık (Figma Spec)
-      border-width: 2px;
-      
+    .form_selectbox__field {
+      border-color: $color_error;         // Kırmızı border
+      border-width: 1px;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23DC3545' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
       &:focus {
         border-color: $color_error;
+        border-width: 2px;
         box-shadow: 0 0 0 4px rgba($color_error, 0.1);
       }
     }
-    
-    .input_group__label {
-      color: $color_error;
+
+    .form_selectbox__label {
+      color: $color_error;                 // Kırmızı label
     }
   }
-  
-  // Success State
-  &--success {
-    .input_group__field {
-      border-color: $success_color;
-      border-width: 2px;
-      
-      &:focus {
-        border-color: $success_color;
-        box-shadow: 0 0 0 4px rgba($success_color, 0.1);
-      }
-    }
-    
-    .input_group__label {
-      color: $success_color;
-    }
-  }
-  
+
   // Disabled State
   &--disabled {
-    .input_group__field {
+    .form_selectbox__field {
       background-color: $bg_light;
+      border-color: $border_color;
       cursor: not-allowed;
     }
-    
-    .input_group__label {
+
+    .form_selectbox__label {
       color: $text_muted;
     }
   }
-}
 
-// ----------------------------------------------------------------------------
-// INPUT GROUP SIZES
-// ----------------------------------------------------------------------------
-
-.input_group--sm {
-  .input_group__field {
-    height: 48px;
-    padding: 20px $spacing_3 6px $spacing_3;
-    font-size: $font_size_sm;
-  }
-  
-  .input_group__label {
-    font-size: 0.625rem;                // 10px
-  }
-}
-
-.input_group--lg {
-  .input_group__field {
-    height: 64px;
-    padding: 28px $spacing_5 10px $spacing_5;
-    font-size: $font_size_lg;
-  }
-  
-  .input_group__label {
-    font-size: $font_size_sm;           // 14px
+  // Filled State (Seçili)
+  &--filled {
+    .form_selectbox__label {
+      color: $text_light;                  // Gri label
+    }
   }
 }
 
 // ----------------------------------------------------------------------------
-// CLASSIC INPUT (Optional - Standart input style)
+// RADIO BUTTON (UI Kit Design)
 // ----------------------------------------------------------------------------
 
-.form_input {
-  @include input_base;
-  
-  &--sm { @include input_sm; }
-  &--lg { @include input_lg; }
-  &--error { @include input_error; }
-  &--success { @include input_success; }
-}
-
-// ----------------------------------------------------------------------------
-// SELECT DROPDOWN
-// ----------------------------------------------------------------------------
-
-.input_group__select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right $spacing_4 center;
-  padding-right: $spacing_10;
-}
-
-// ----------------------------------------------------------------------------
-// CHECKBOX & RADIO (Modern Style)
-// ----------------------------------------------------------------------------
-
-.form_checkbox,
 .form_radio {
   position: relative;
   display: inline-flex;
   align-items: center;
   cursor: pointer;
   user-select: none;
-  
-  input[type="checkbox"],
+  margin-right: $spacing_4;
+  margin-bottom: $spacing_2;
+
+  // Hidden Native Radio
   input[type="radio"] {
     position: absolute;
     opacity: 0;
     cursor: pointer;
     height: 0;
     width: 0;
-    
-    &:checked ~ .form_checkbox__box,
+
+    // Checked State - Mavi dolu daire
     &:checked ~ .form_radio__box {
-      background-color: $color_primary;
       border-color: $color_primary;
+      background-color: $color_primary;
+
+      &::after {
+        display: block;
+      }
     }
-    
-    &:checked ~ .form_checkbox__box::after {
-      display: block;
-    }
-    
-    &:focus ~ .form_checkbox__box,
+
+    // Focus State
     &:focus ~ .form_radio__box {
       box-shadow: 0 0 0 3px rgba($color_primary, 0.1);
     }
+
+    // Disabled State
+    &:disabled ~ .form_radio__box {
+      border-color: $border_color;
+      background-color: $bg_light;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
   }
-  
+
+  // Radio Box (Daire)
   &__box {
     position: relative;
     width: 20px;
     height: 20px;
-    border: 2px solid $border_color;
-    border-radius: $border_radius_sm;
+    border: 2px solid $color_primary;      // Mavi border (Default)
+    border-radius: $border_radius_full;
     background-color: $color_white;
     transition: $transition_all;
     flex-shrink: 0;
-    
+
+    // Inner Circle (Seçili durumda - beyaz nokta)
+    &::after {
+      content: '';
+      position: absolute;
+      display: none;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      border-radius: $border_radius_full;
+      background-color: $color_white;
+    }
+  }
+
+  // Label
+  &__label {
+    margin-left: $spacing_2;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_regular;
+    color: $text_dark;
+    line-height: 1.5;
+  }
+
+  // ----------------------------------------------------------------------------
+  // STATE MODIFIERS
+  // ----------------------------------------------------------------------------
+
+  // Error State - Kırmızı border
+  &--error {
+    input[type="radio"] ~ .form_radio__box {
+      border-color: $color_error;         // Kırmızı border
+    }
+
+    input[type="radio"]:checked ~ .form_radio__box {
+      border-color: $color_error;
+      background-color: $color_error;
+    }
+  }
+
+  // Disabled State
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    .form_radio__label {
+      color: $text_muted;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// CHECKBOX (UI Kit Design)
+// ----------------------------------------------------------------------------
+
+.form_checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin-right: $spacing_4;
+  margin-bottom: $spacing_2;
+
+  // Hidden Native Checkbox
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+    // Checked State - Mavi dolu kare + checkmark
+    &:checked ~ .form_checkbox__box {
+      border-color: $color_primary;
+      background-color: $color_primary;
+
+      &::after {
+        display: block;
+      }
+    }
+
+    // Focus State
+    &:focus ~ .form_checkbox__box {
+      box-shadow: 0 0 0 3px rgba($color_primary, 0.1);
+    }
+
+    // Disabled State
+    &:disabled ~ .form_checkbox__box {
+      border-color: $border_color;
+      background-color: $bg_light;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  // Checkbox Box (Kare)
+  &__box {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $color_primary;      // Mavi border (Default)
+    border-radius: $border_radius_sm;      // 4px
+    background-color: $color_white;
+    transition: $transition_all;
+    flex-shrink: 0;
+
+    // Checkmark (Seçili durumda - beyaz checkmark)
     &::after {
       content: '';
       position: absolute;
@@ -347,45 +486,165 @@ HTML Kullanım Örneği:
       transform: rotate(45deg);
     }
   }
-  
+
+  // Label
   &__label {
     margin-left: $spacing_2;
     font-size: $font_size_sm;
+    font-weight: $font_weight_regular;
     color: $text_dark;
+    line-height: 1.5;
   }
-}
 
-.form_radio {
-  .form_radio__box {
-    border-radius: $border_radius_full;
-    
-    &::after {
-      left: 4px;
-      top: 4px;
-      width: 8px;
-      height: 8px;
+  // ----------------------------------------------------------------------------
+  // STATE MODIFIERS
+  // ----------------------------------------------------------------------------
+
+  // Error State - Kırmızı border
+  &--error {
+    input[type="checkbox"] ~ .form_checkbox__box {
+      border-color: $color_error;         // Kırmızı border
+    }
+
+    input[type="checkbox"]:checked ~ .form_checkbox__box {
+      border-color: $color_error;
+      background-color: $color_error;
+    }
+  }
+
+  // Disabled State
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    .form_checkbox__label {
+      color: $text_muted;
+    }
+  }
+
+  // Circular Checkbox Variant (Yuvarlak checkbox - görseldeki ikinci set)
+  &--circular {
+    .form_checkbox__box {
       border-radius: $border_radius_full;
-      background-color: $color_white;
-      border: none;
-      transform: none;
+
+      &::after {
+        left: 4px;
+        top: 4px;
+        width: 8px;
+        height: 8px;
+        border-radius: $border_radius_full;
+        background-color: $color_white;
+        border: none;
+        transform: none;
+      }
     }
   }
 }
 
 // ----------------------------------------------------------------------------
-// FORM GROUP (Multiple inputs container)
+// SWITCH BUTTON (UI Kit Design)
+// ----------------------------------------------------------------------------
+
+.form_switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: $spacing_2;
+
+  // Hidden Native Checkbox
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+    // Checked State - Mavi arka plan, toggle sağda
+    &:checked ~ .form_switch__track {
+      background-color: $color_primary;    // Mavi arka plan
+
+      .form_switch__thumb {
+        transform: translateX(20px);       // Sağa kaydır
+      }
+    }
+
+    // Focus State
+    &:focus ~ .form_switch__track {
+      box-shadow: 0 0 0 3px rgba($color_primary, 0.1);
+    }
+
+    // Disabled State
+    &:disabled ~ .form_switch__track {
+      background-color: $bg_light;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  // Switch Track (Arka plan çubuğu)
+  &__track {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background-color: $bg_light;           // Gri arka plan (Kapalı)
+    border-radius: $border_radius_full;
+    transition: $transition_all;
+    flex-shrink: 0;
+  }
+
+  // Switch Thumb (Toggle düğmesi)
+  &__thumb {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    background-color: $color_white;        // Beyaz toggle
+    border-radius: $border_radius_full;
+    transition: $transition_transform;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  // Label
+  &__label {
+    margin-left: $spacing_2;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_regular;
+    color: $text_dark;
+    line-height: 1.5;
+  }
+
+  // ----------------------------------------------------------------------------
+  // STATE MODIFIERS
+  // ----------------------------------------------------------------------------
+
+  // Disabled State
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    .form_switch__label {
+      color: $text_muted;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// FORM GROUP (Container for multiple inputs)
 // ----------------------------------------------------------------------------
 
 .form_group {
   margin-bottom: $spacing_6;
-  
+
   &__title {
     font-size: $font_size_base;
     font-weight: $font_weight_semibold;
     color: $text_dark;
     margin-bottom: $spacing_3;
   }
-  
+
   &__description {
     font-size: $font_size_sm;
     color: $text_light;
@@ -401,12 +660,13 @@ HTML Kullanım Örneği:
   @include flex(flex-start, stretch, row);
   gap: $spacing_4;
   margin-bottom: $spacing_5;
-  
+
   @include respond_to_max(md) {
     flex-direction: column;
   }
-  
-  .input_group {
+
+  .form_input_group,
+  .form_selectbox {
     flex: 1;
     margin-bottom: 0;
   }
@@ -415,4 +675,3 @@ HTML Kullanım Örneği:
 // ============================================================================
 // END OF FORMS
 // ============================================================================
-

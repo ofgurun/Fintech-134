@@ -1,0 +1,11 @@
+[
+  { "id": 1, "name": "Kamu Çalışanı" },
+  { "id": 2, "name": "Özel Sektör Çalışanı" },
+  { "id": 3, "name": "Serbest Meslek" },
+  { "id": 4, "name": "Emekli" },
+  { "id": 5, "name": "Öğrenci" },
+  { "id": 6, "name": "Ev Hanımı" },
+  { "id": 7, "name": "İşsiz" },
+  { "id": 8, "name": "Diğer" }
+]
+
