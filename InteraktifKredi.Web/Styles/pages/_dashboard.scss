@@ -1,2 +1,72 @@
-// Dashboard Page
+// ============================================================================
+// DASHBOARD PAGE - İNTERAKTİF KREDİ
+// ============================================================================
 
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// DASHBOARD CONTAINER
+// ----------------------------------------------------------------------------
+
+.dashboard_container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing_6 $spacing_4;
+  
+  @include respond_to(md) {
+    padding: $spacing_8 $spacing_6;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// DASHBOARD HEADER
+// ----------------------------------------------------------------------------
+
+.dashboard_header {
+  margin-bottom: $spacing_8;
+  text-align: center;
+  
+  @include respond_to(md) {
+    text-align: left;
+  }
+  
+  h1 {
+    font-size: $font_size_3xl;
+    font-weight: $font_weight_bold;
+    color: $color_navy;
+    margin-bottom: $spacing_2;
+    
+    @include respond_to(md) {
+      font-size: $font_size_4xl;
+    }
+  }
+}
+
+.dashboard_subtitle {
+  font-size: $font_size_lg;
+  color: $text_light;
+  margin: 0;
+}
+
+// ----------------------------------------------------------------------------
+// DASHBOARD CARDS GRID
+// ----------------------------------------------------------------------------
+
+.dashboard_cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing_6;
+  
+  @include respond_to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @include respond_to(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// ============================================================================
+// END OF DASHBOARD
+// ============================================================================

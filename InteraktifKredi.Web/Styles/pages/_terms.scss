@@ -1,0 +1,56 @@
+// ============================================================================
+// TERMS PAGE - İNTERAKTİF KREDİ
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.terms_container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing_8 $spacing_4;
+  
+  @include respond_to(md) {
+    padding: $spacing_10 $spacing_6;
+  }
+  
+  h1 {
+    font-size: $font_size_3xl;
+    font-weight: $font_weight_bold;
+    color: $color_navy;
+    margin-bottom: $spacing_2;
+    
+    @include respond_to(md) {
+      font-size: $font_size_4xl;
+    }
+  }
+}
+
+.terms_subtitle {
+  font-size: $font_size_sm;
+  color: $text_light;
+  margin-bottom: $spacing_8;
+}
+
+.terms_content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_6;
+}
+
+.terms_section {
+  h2 {
+    font-size: $font_size_xl;
+    font-weight: $font_weight_semibold;
+    color: $color_navy;
+    margin-bottom: $spacing_3;
+  }
+  
+  p {
+    font-size: $font_size_base;
+    line-height: $line_height_relaxed;
+    color: $text_main;
+    margin-bottom: $spacing_4;
+  }
+}
+

@@ -1,2 +1,100 @@
-// Cards
+// ============================================================================
+// CARDS - İNTERAKTİF KREDİ
+// ============================================================================
 
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// BASE CARD
+// ----------------------------------------------------------------------------
+
+.card {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: $transition_all;
+  
+  &:hover {
+    @include card_hover;
+  }
+  
+  // --------------------------------------------------------------------------
+  // CARD HEADER
+  // --------------------------------------------------------------------------
+  
+  &__header {
+    padding-bottom: $spacing_4;
+    border-bottom: 1px solid $border_color;
+    margin-bottom: $spacing_4;
+    
+    h2 {
+      font-size: $font_size_lg;
+      font-weight: $font_weight_semibold;
+      color: $color_navy;
+      margin: 0;
+    }
+    
+    h3 {
+      font-size: $font_size_base;
+      font-weight: $font_weight_semibold;
+      color: $text_dark;
+      margin: 0;
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // CARD BODY
+  // --------------------------------------------------------------------------
+  
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    p {
+      margin-bottom: $spacing_4;
+      color: $text_main;
+      line-height: $line_height_relaxed;
+    }
+  }
+  
+  // --------------------------------------------------------------------------
+  // CARD FOOTER
+  // --------------------------------------------------------------------------
+  
+  &__footer {
+    padding-top: $spacing_4;
+    border-top: 1px solid $border_color;
+    margin-top: $spacing_4;
+  }
+  
+  // --------------------------------------------------------------------------
+  // CARD VARIANTS
+  // --------------------------------------------------------------------------
+  
+  &--sm {
+    @include card_sm;
+  }
+  
+  &--lg {
+    @include card_lg;
+  }
+  
+  &--no_padding {
+    padding: 0;
+  }
+  
+  &--bordered {
+    border: 2px solid $border_color;
+  }
+  
+  &--shadow_none {
+    box-shadow: none;
+  }
+}
+
+// ============================================================================
+// END OF CARDS
+// ============================================================================

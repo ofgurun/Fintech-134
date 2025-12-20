@@ -1,0 +1,40 @@
+// ============================================================================
+// FAQ PAGE - İNTERAKTİF KREDİ
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.faq_container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: $spacing_8 $spacing_4;
+  
+  @include respond_to(md) {
+    padding: $spacing_10 $spacing_6;
+  }
+  
+  h1 {
+    font-size: $font_size_3xl;
+    font-weight: $font_weight_bold;
+    color: $color_navy;
+    margin-bottom: $spacing_2;
+    
+    @include respond_to(md) {
+      font-size: $font_size_4xl;
+    }
+  }
+}
+
+.faq_subtitle {
+  font-size: $font_size_lg;
+  color: $text_light;
+  margin-bottom: $spacing_8;
+}
+
+.faq_content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_6;
+}
+
