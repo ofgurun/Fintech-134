@@ -201,42 +201,25 @@
                     <div class="profile_form__grid">
                         <!-- Marital Status -->
                         <div class="input_group">
-                            <select asp-for="WifeForm.MaritalStatus" class="input_group__field input_group__field--select">
-                                <option value="">Medeni Durum Seçiniz</option>
-                                <option value="Bekar">Bekar</option>
-                                <option value="Evli">Evli</option>
-                                <option value="Boşanmış">Boşanmış</option>
-                                <option value="Dul">Dul</option>
+                            <select asp-for="WifeForm.MaritalStatus" class="input_group__field input_group__field--select" required>
+                                <option value="">Medeni Durum Seçiniz *</option>
+                                <option value="true">Evli</option>
+                                <option value="false">Bekar</option>
                             </select>
                         </div>
 
-                        <!-- Number of Children -->
+                        <!-- Work Wife -->
                         <div class="input_group">
-                            <input asp-for="WifeForm.NumberOfChildren" type="number" class="input_group__field" placeholder="Örn: Çocuk Sayısı 0" min="0" />
-                        </div>
-
-                        <!-- Wife Name -->
-                        <div class="input_group">
-                            <input asp-for="WifeForm.WifeName" type="text" class="input_group__field" placeholder="Örn: Eş Adı Soyadı - Ayşe Yılmaz" />
-                        </div>
-
-                        <!-- Wife TCKN -->
-                        <div class="input_group">
-                            <input asp-for="WifeForm.WifeTCKN" type="text" class="input_group__field" placeholder="Örn: Eş TC No 11111111111" maxlength="11" />
-                        </div>
-
-                        <!-- Wife Phone -->
-                        <div class="input_group">
-                            <input asp-for="WifeForm.WifePhone" type="tel" class="input_group__field" placeholder="Örn: Eş Telefon 0555 123 4567" />
-                        </div>
-
-                        <!-- Is Wife Working -->
-                        <div class="input_group">
-                            <select asp-for="WifeForm.IsWifeWorking" class="input_group__field input_group__field--select">
-                                <option value="">Eş Çalışıyor mu? Seçiniz</option>
-                                <option value="true">Evet</option>
-                                <option value="false">Hayır</option>
+                            <select asp-for="WifeForm.WorkWife" class="input_group__field input_group__field--select" required>
+                                <option value="">Eşiniz Çalışıyor mu? Seçiniz *</option>
+                                <option value="true">Evet, Çalışıyor</option>
+                                <option value="false">Hayır, Çalışmıyor</option>
                             </select>
+                        </div>
+
+                        <!-- Wife Salary Amount -->
+                        <div class="input_group input_group--full">
+                            <input asp-for="WifeForm.WifeSalaryAmount" type="number" class="input_group__field" placeholder="Örn: Eş Maaşı (₺) 65000 (Eğer çalışıyorsa)" min="0" step="0.01" />
                         </div>
                     </div>
 
@@ -255,72 +238,55 @@
                     
                     <div class="profile_form__header">
                         <h3 class="profile_form__title">💰 Varlık & Finans Bilgileri</h3>
-                        <p class="profile_form__description">Taşınır/taşınmaz varlıklarınız ve finans durumunuzu güncelleyin.</p>
+                        <p class="profile_form__description">İş sektörü, maaş bilgileriniz ve varlık durumunuzu güncelleyin.</p>
                     </div>
 
                     <div class="profile_form__section">
-                        <h4 class="profile_form__section_title">Taşınır/Taşınmaz Varlıklar</h4>
+                        <h4 class="profile_form__section_title">İş & Gelir Bilgileri</h4>
                         <div class="profile_form__grid">
-                            <!-- Has Car -->
+                            <!-- Work Sector -->
                             <div class="input_group">
-                                <select asp-for="FinanceForm.HasCar" class="input_group__field input_group__field--select">
-                                    <option value="">Araç Sahibi misiniz? Seçiniz</option>
-                                    <option value="true">Evet</option>
-                                    <option value="false">Hayır</option>
+                                <select asp-for="FinanceForm.WorkSector" class="input_group__field input_group__field--select" required>
+                                    <option value="">Çalıştığınız Sektör Seçiniz *</option>
+                                    <option value="1">Kamu</option>
+                                    <option value="2">Özel Sektör</option>
+                                    <option value="3">Serbest Meslek</option>
+                                    <option value="4">Emekli</option>
+                                    <option value="5">Diğer</option>
                                 </select>
                             </div>
 
-                            <!-- Car Value -->
+                            <!-- Salary Bank -->
                             <div class="input_group">
-                                <input asp-for="FinanceForm.CarValue" type="number" class="input_group__field" placeholder="Örn: Araç Değeri (₺) 500000" min="0" step="0.01" />
+                                <input asp-for="FinanceForm.SalaryBank" type="text" class="input_group__field" placeholder="Örn: Maaş Bankası - Ziraat" />
                             </div>
 
-                            <!-- Has Real Estate -->
-                            <div class="input_group">
-                                <select asp-for="FinanceForm.HasRealEstate" class="input_group__field input_group__field--select">
-                                    <option value="">Gayrimenkul Sahibi misiniz? Seçiniz</option>
-                                    <option value="true">Evet</option>
-                                    <option value="false">Hayır</option>
-                                </select>
-                            </div>
-
-                            <!-- Real Estate Value -->
-                            <div class="input_group">
-                                <input asp-for="FinanceForm.RealEstateValue" type="number" class="input_group__field" placeholder="Örn: Gayrimenkul Değeri (₺) 2000000" min="0" step="0.01" />
+                            <!-- Salary Amount -->
+                            <div class="input_group input_group--full">
+                                <input asp-for="FinanceForm.SalaryAmount" type="number" class="input_group__field" placeholder="Örn: Maaş Tutarı (₺) 50000" min="0" step="0.01" />
                             </div>
                         </div>
                     </div>
 
                     <div class="profile_form__section">
-                        <h4 class="profile_form__section_title">Banka & Kredi Kartı</h4>
+                        <h4 class="profile_form__section_title">Varlık Durumu</h4>
                         <div class="profile_form__grid">
-                            <!-- Bank Name -->
+                            <!-- Car Status -->
                             <div class="input_group">
-                                <input asp-for="FinanceForm.BankName" type="text" class="input_group__field" placeholder="Örn: Ana Banka - Ziraat Bankası" />
-                            </div>
-
-                            <!-- Account Balance -->
-                            <div class="input_group">
-                                <input asp-for="FinanceForm.AccountBalance" type="number" class="input_group__field" placeholder="Örn: Hesap Bakiyesi (₺) 25000" min="0" step="0.01" />
-                            </div>
-
-                            <!-- Has Credit Card -->
-                            <div class="input_group">
-                                <select asp-for="FinanceForm.HasCreditCard" class="input_group__field input_group__field--select">
-                                    <option value="">Kredi Kartı Sahibi misiniz? Seçiniz</option>
-                                    <option value="true">Evet</option>
-                                    <option value="false">Hayır</option>
+                                <select asp-for="FinanceForm.CarStatus" class="input_group__field input_group__field--select" required>
+                                    <option value="">Aracınız Var mı? Seçiniz *</option>
+                                    <option value="true">Evet, Araç Sahibiyim</option>
+                                    <option value="false">Hayır, Araç Sahibi Değilim</option>
                                 </select>
                             </div>
 
-                            <!-- Credit Card Limit -->
+                            <!-- House Status -->
                             <div class="input_group">
-                                <input asp-for="FinanceForm.CreditCardLimit" type="number" class="input_group__field" placeholder="Örn: Kredi Kartı Limiti (₺) 50000" min="0" step="0.01" />
-                            </div>
-
-                            <!-- Monthly Expenses -->
-                            <div class="input_group input_group--full">
-                                <input asp-for="FinanceForm.MonthlyExpenses" type="number" class="input_group__field" placeholder="Örn: Aylık Giderler (₺) 8000" min="0" step="0.01" />
+                                <select asp-for="FinanceForm.HouseStatus" class="input_group__field input_group__field--select" required>
+                                    <option value="">Ev Sahibi misiniz? Seçiniz *</option>
+                                    <option value="true">Evet, Ev Sahibiyim</option>
+                                    <option value="false">Hayır, Kiracıyım/Aile ile Oturuyorum</option>
+                                </select>
                             </div>
                         </div>
                     </div>

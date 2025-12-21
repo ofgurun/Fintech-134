@@ -1262,25 +1262,59 @@ namespace InteraktifKredi.Web.Services
         {
             try
             {
-                _logger.LogInformation("Saving wife info for customer ID: {CustomerId}", customerId);
+                _logger.LogInformation("===========================================");
+                _logger.LogInformation("🔍 DEBUG: SAVE WIFE INFO - START");
+                _logger.LogInformation("===========================================");
+                _logger.LogInformation("📝 Request Details:");
+                _logger.LogInformation("  - CustomerId (parameter): {CustomerId}", customerId);
+                _logger.LogInformation("  - CustomerId (request body): {RequestCustomerId}", request.CustomerId);
+                _logger.LogInformation("  - MaritalStatus: {MaritalStatus}", request.MaritalStatus);
+                _logger.LogInformation("  - WorkWife: {WorkWife}", request.WorkWife);
+                _logger.LogInformation("  - WifeSalaryAmount: {WifeSalaryAmount}", request.WifeSalaryAmount);
 
                 var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
-                var requestUrl = $"{baseUrl}/api/customer/wife-info/{customerId}?code={_apiSettings.SaveWifeInformationKey}";
+                _logger.LogInformation("🌐 Base URL: {BaseUrl}", baseUrl);
+                
+                var endpoint = $"/api/customer/wife-info/{customerId}";
+                _logger.LogInformation("🎯 Endpoint: {Endpoint}", endpoint);
+                
+                var apiKey = _apiSettings.SaveWifeInformationKey;
+                _logger.LogInformation("🔑 API Key (first 20 chars): {ApiKey}...", apiKey?.Substring(0, Math.Min(20, apiKey?.Length ?? 0)));
+                
+                var requestUrl = $"{baseUrl}{endpoint}?code={apiKey}";
+                _logger.LogInformation("🚀 Full Request URL: {Url}", requestUrl);
 
-                _logger.LogInformation("Save Wife Info URL: {Url}", requestUrl);
-
-                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
-                _logger.LogInformation("Save Wife Info Request JSON: {Json}", requestJson);
+                // ⚠️ KRİTİK: Bu endpoint camelCase bekliyor (diğerlerinden farklı olarak)
+                // Swagger'da başarılı test: {"customerId":1000849,"maritalStatus":true,"workWife":true,"wifeSalaryAmount":65000}
+                var camelCaseOptions = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    PropertyNameCaseInsensitive = true,
+                    WriteIndented = false
+                };
+                
+                var requestJson = JsonSerializer.Serialize(request, camelCaseOptions);
+                _logger.LogInformation("📦 Request JSON (camelCase): {Json}", requestJson);
+                _logger.LogInformation("📋 JSON Options: PropertyNamingPolicy=CamelCase (ÖZEL DURUM)");
 
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
                 httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
-                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+                // ⚠️ KRİTİK: Authorization header ekleme! Bu endpoint sadece 'code' parametresi ile çalışıyor
+                // httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+                
+                _logger.LogInformation("📨 HTTP Headers:");
+                _logger.LogInformation("  - Content-Type: application/json; charset=utf-8");
+                _logger.LogInformation("  - Authorization: YOK (sadece code parametresi kullanılıyor)");
 
+                _logger.LogInformation("⏳ Sending HTTP POST request...");
                 var response = await _httpClient.SendAsync(httpRequest);
                 var responseContent = await response.Content.ReadAsStringAsync();
 
-                _logger.LogInformation("Save Wife Info Response: {StatusCode}, Body: {Body}",
-                    response.StatusCode, responseContent);
+                _logger.LogInformation("📥 Response Received:");
+                _logger.LogInformation("  - Status Code: {StatusCode} ({StatusCodeInt})", response.StatusCode, (int)response.StatusCode);
+                _logger.LogInformation("  - Body Length: {Length} chars", responseContent?.Length ?? 0);
+                _logger.LogInformation("  - Body Content: {Body}", string.IsNullOrEmpty(responseContent) ? "(empty)" : responseContent);
+                _logger.LogInformation("===========================================");
 
                 if (response.IsSuccessStatusCode)
                 {

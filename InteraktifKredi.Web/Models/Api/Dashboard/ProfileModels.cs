@@ -148,23 +148,17 @@ namespace InteraktifKredi.Web.Models.Api.Dashboard
     /// </summary>
     public class SaveWifeInfoRequest
     {
-        [JsonPropertyName("wifeName")]
-        public string? WifeName { get; set; }
-
-        [JsonPropertyName("wifeTCKN")]
-        public string? WifeTCKN { get; set; }
-
-        [JsonPropertyName("wifePhone")]
-        public string? WifePhone { get; set; }
+        [JsonPropertyName("customerId")]
+        public long CustomerId { get; set; }
 
         [JsonPropertyName("maritalStatus")]
-        public string? MaritalStatus { get; set; }
+        public bool MaritalStatus { get; set; }
 
-        [JsonPropertyName("numberOfChildren")]
-        public int? NumberOfChildren { get; set; }
+        [JsonPropertyName("workWife")]
+        public bool WorkWife { get; set; }
 
-        [JsonPropertyName("isWifeWorking")]
-        public bool? IsWifeWorking { get; set; }
+        [JsonPropertyName("wifeSalaryAmount")]
+        public decimal? WifeSalaryAmount { get; set; }
     }
 
     /// <summary>
@@ -175,32 +169,20 @@ namespace InteraktifKredi.Web.Models.Api.Dashboard
         [JsonPropertyName("customerId")]
         public long CustomerId { get; set; }
 
-        [JsonPropertyName("hasCar")]
-        public bool? HasCar { get; set; }
+        [JsonPropertyName("workSector")]
+        public int WorkSector { get; set; }
 
-        [JsonPropertyName("carValue")]
-        public decimal? CarValue { get; set; }
+        [JsonPropertyName("salaryBank")]
+        public string? SalaryBank { get; set; }
 
-        [JsonPropertyName("hasRealEstate")]
-        public bool? HasRealEstate { get; set; }
+        [JsonPropertyName("salaryAmount")]
+        public decimal? SalaryAmount { get; set; }
 
-        [JsonPropertyName("realEstateValue")]
-        public decimal? RealEstateValue { get; set; }
+        [JsonPropertyName("carStatus")]
+        public bool CarStatus { get; set; }
 
-        [JsonPropertyName("bankName")]
-        public string? BankName { get; set; }
-
-        [JsonPropertyName("accountBalance")]
-        public decimal? AccountBalance { get; set; }
-
-        [JsonPropertyName("hasCreditCard")]
-        public bool? HasCreditCard { get; set; }
-
-        [JsonPropertyName("creditCardLimit")]
-        public decimal? CreditCardLimit { get; set; }
-
-        [JsonPropertyName("monthlyExpenses")]
-        public decimal? MonthlyExpenses { get; set; }
+        [JsonPropertyName("houseStatus")]
+        public bool HouseStatus { get; set; }
     }
 
     /// <summary>
