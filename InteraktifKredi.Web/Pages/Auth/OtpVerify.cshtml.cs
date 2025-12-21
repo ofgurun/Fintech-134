@@ -222,6 +222,82 @@ namespace InteraktifKredi.Web.Pages.Auth
         }
 
         /// <summary>
+        /// AJAX handler to resend OTP SMS
+        /// </summary>
+        public async Task<IActionResult> OnPostResendOtpAsync()
+        {
+            _logger.LogInformation("=== RESEND OTP STARTED ===");
+
+            try
+            {
+                // TRY 1: Get from TempData
+                var tckn = TempData["TCKN"]?.ToString();
+                var gsm = TempData["GSM"]?.ToString();
+
+                _logger.LogInformation("TempData check - TCKN: {TCKN}, GSM: {GSM}", tckn ?? "NULL", gsm ?? "NULL");
+
+                // TRY 2: If TempData is empty, try to get from current page properties
+                if (string.IsNullOrEmpty(tckn) || string.IsNullOrEmpty(gsm))
+                {
+                    _logger.LogWarning("TempData empty, trying to restore from Request.Form or ViewData");
+                    
+                    // Get from form hidden fields (we'll add these to the page)
+                    tckn = Request.Form["TCKN"].ToString();
+                    gsm = Request.Form["GSM"].ToString();
+                    
+                    _logger.LogInformation("Form check - TCKN: {TCKN}, GSM: {GSM}", tckn ?? "NULL", gsm ?? "NULL");
+                }
+
+                if (string.IsNullOrEmpty(tckn) || string.IsNullOrEmpty(gsm))
+                {
+                    _logger.LogError("❌ Resend OTP failed - missing session data (both TempData and Form are empty)");
+                    return new JsonResult(new { success = false, message = "Oturum bilgileri bulunamadı. Lütfen giriş sayfasından tekrar deneyin." });
+                }
+
+                TempData.Keep(); // Keep all TempData for next request
+
+                _logger.LogInformation("Resending OTP for TCKN: {TCKN}, GSM: {GSM}", tckn, gsm);
+
+                // Generate new OTP
+                var otpResponse = await _apiService.GenerateOtpAsync(tckn, gsm);
+                if (!otpResponse.Success || otpResponse.Value == null)
+                {
+                    _logger.LogError("Failed to generate OTP: {Message}", otpResponse.Message);
+                    return new JsonResult(new { success = false, message = "OTP oluşturulamadı." });
+                }
+
+                var otpCode = otpResponse.Value.OTPCode.ToString();
+                _logger.LogInformation("New OTP generated: {OTPCode}", otpCode);
+
+                // Send SMS
+                var smsResponse = await _apiService.SendOtpSmsAsync(gsm, otpCode);
+                if (!smsResponse.Success)
+                {
+                    _logger.LogError("Failed to send OTP SMS: {Message}", smsResponse.Message);
+                    return new JsonResult(new { success = false, message = "SMS gönderilemedi." });
+                }
+
+                _logger.LogInformation("✅ OTP SMS resent successfully");
+
+                // Store new OTP code in TempData for development
+                TempData["OTPCode"] = otpCode;
+                TempData["TCKN"] = tckn; // Re-store for next requests
+                TempData["GSM"] = gsm;
+                TempData.Keep();
+
+                // Log new OTP for development
+                Console.WriteLine($"🔐 NEW OTP CODE: {otpCode}");
+
+                return new JsonResult(new { success = true, message = "SMS tekrar gönderildi." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error resending OTP");
+                return new JsonResult(new { success = false, message = "Bir hata oluştu." });
+            }
+        }
+
+        /// <summary>
         /// Masks GSM number for display: 5551112233 -> 0 (5XX) XXX XX 33
         /// </summary>
         private string MaskGsmNumber(string gsm)
