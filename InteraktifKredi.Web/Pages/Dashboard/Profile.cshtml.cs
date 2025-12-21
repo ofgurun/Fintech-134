@@ -89,8 +89,8 @@ namespace InteraktifKredi.Web.Pages.Dashboard
             CustomerId = long.Parse(customerIdClaim ?? "0");
             AddressForm.CustomerId = CustomerId;
 
-            _logger.LogInformation("Address Form Data - City: {City}, County: {County}, CustomerId: {CustomerId}", 
-                AddressForm.City, AddressForm.County, AddressForm.CustomerId);
+            _logger.LogInformation("Address Form Data - CityId: {CityId}, TownId: {TownId}, Address: {Address}, CustomerId: {CustomerId}", 
+                AddressForm.CityId, AddressForm.TownId, AddressForm.Address, AddressForm.CustomerId);
 
             // Save via API
             var response = await _apiService.SaveCustomerAddressAsync(AddressForm);
@@ -124,8 +124,8 @@ namespace InteraktifKredi.Web.Pages.Dashboard
             CustomerId = long.Parse(customerIdClaim ?? "0");
             JobForm.CustomerId = CustomerId;
 
-            _logger.LogInformation("Job Form Data - Company: {Company}, Position: {Position}, CustomerId: {CustomerId}", 
-                JobForm.Company, JobForm.Position, JobForm.CustomerId);
+            _logger.LogInformation("Job Form Data - TitleCompany: {TitleCompany}, CompanyPosition: {CompanyPosition}, JobGroupId: {JobGroupId}, CustomerWork: {CustomerWork}, WorkingYears: {WorkingYears}, WorkingMonth: {WorkingMonth}, CustomerId: {CustomerId}", 
+                JobForm.TitleCompany, JobForm.CompanyPosition, JobForm.JobGroupId, JobForm.CustomerWork, JobForm.WorkingYears, JobForm.WorkingMonth, JobForm.CustomerId);
 
             // Save via API
             var response = await _apiService.SaveJobInfoAsync(JobForm);
@@ -240,14 +240,13 @@ namespace InteraktifKredi.Web.Pages.Dashboard
                 AddressForm = new SaveAddressRequest
                 {
                     CustomerId = CustomerId,
-                    City = addressResponse.Value.City,
-                    County = addressResponse.Value.County,
-                    District = addressResponse.Value.District,
-                    AddressDetail = addressResponse.Value.AddressDetail,
-                    ResidenceDuration = addressResponse.Value.ResidenceDuration,
-                    HomeType = addressResponse.Value.HomeType
+                    CityId = addressResponse.Value.CityId ?? 0,
+                    TownId = addressResponse.Value.TownId ?? 0,
+                    Address = addressResponse.Value.Address ?? string.Empty,
+                    Source = 2 // Sabit değer: 2 = Kişi ekler
                 };
-                _logger.LogInformation("Address data loaded");
+                _logger.LogInformation("Address data loaded - CityId: {CityId}, TownId: {TownId}", 
+                    AddressForm.CityId, AddressForm.TownId);
             }
 
             // Fetch Job
@@ -257,14 +256,16 @@ namespace InteraktifKredi.Web.Pages.Dashboard
                 JobForm = new SaveJobRequest
                 {
                     CustomerId = CustomerId,
-                    Company = jobResponse.Value.Company,
-                    Sector = jobResponse.Value.Sector,
-                    Position = jobResponse.Value.Position,
-                    StartDate = jobResponse.Value.StartDate,
-                    MonthlyIncome = jobResponse.Value.MonthlyIncome,
-                    EmploymentType = jobResponse.Value.EmploymentType
+                    TitleCompany = jobResponse.Value.TitleCompany ?? string.Empty,
+                    CompanyPosition = jobResponse.Value.CompanyPosition ?? string.Empty,
+                    JobGroupId = jobResponse.Value.JobGroupId ?? 0,
+                    CustomerWork = jobResponse.Value.CustomerWork ?? 0,
+                    WorkingYears = jobResponse.Value.WorkingYears ?? 0,
+                    WorkingMonth = jobResponse.Value.WorkingMonth ?? 0
+                    // StartDate ve MonthlyIncome UI-only, JavaScript tarafından hesaplanacak
                 };
-                _logger.LogInformation("Job data loaded");
+                _logger.LogInformation("Job data loaded - JobGroupId: {JobGroupId}, CustomerWork: {CustomerWork}, WorkingYears: {WorkingYears}, WorkingMonth: {WorkingMonth}",
+                    JobForm.JobGroupId, JobForm.CustomerWork, JobForm.WorkingYears, JobForm.WorkingMonth);
             }
 
             // Fetch Wife - Geçici olarak devre dışı (GET ve POST modelleri farklı)
