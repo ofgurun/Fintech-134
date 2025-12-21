@@ -10,11 +10,19 @@
     <!-- ========================================================================
          SIDEBAR (Sol Menü)
     ======================================================================== -->
-    <aside class="dashboard_sidebar">
+    <aside class="dashboard_sidebar" id="dashboard_sidebar">
         <!-- Logo -->
         <div class="dashboard_sidebar__logo">
-            <img src="~/img/logo.svg" alt="İnteraktif Kredi" class="dashboard_sidebar__logo_img" />
-            <span class="dashboard_sidebar__logo_text">İnteraktif Kredi</span>
+            <div class="dashboard_sidebar__logo_icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="20" fill="#0056B3"/>
+                    <path d="M12 20L18 26L28 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="dashboard_sidebar__logo_text_container">
+                <span class="dashboard_sidebar__logo_text_line1">interaktif</span>
+                <span class="dashboard_sidebar__logo_text_line2">kredi</span>
+            </div>
         </div>
 
         <!-- Navigation Menu -->
@@ -101,10 +109,10 @@
             }
             @if (isHomePage)
             {
-                <div class="dashboard_header__welcome">
-                    <h1 class="dashboard_header__title">Hoşgeldiniz, @User.Identity?.Name</h1>
-                    <p class="dashboard_header__subtitle">Kredi başvuru ve takip işlemlerinizi buradan yönetebilirsiniz.</p>
-                </div>
+            <div class="dashboard_header__welcome">
+                <h1 class="dashboard_header__title">Hoşgeldiniz, @User.Identity?.Name</h1>
+                <p class="dashboard_header__subtitle">Kredi başvuru ve takip işlemlerinizi buradan yönetebilirsiniz.</p>
+            </div>
             }
             else
             {

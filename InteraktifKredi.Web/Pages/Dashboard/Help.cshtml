@@ -1,0 +1,251 @@
+@page
+@model InteraktifKredi.Web.Pages.Dashboard.HelpModel
+@{
+    ViewData["Title"] = "Yardım & Destek Merkezi";
+    Layout = "_DashboardLayout";
+}
+
+<!-- ========================================================================
+     YARDIM & DESTEK MERKEZİ
+======================================================================== -->
+
+<div class="help_center_page">
+    <!-- Page Header -->
+    <div class="help_center_page__header">
+        <h1 class="help_center_page__title">Yardım & Destek Merkezi</h1>
+        <p class="help_center_page__subtitle">
+            Sıkça sorulan sorular ve kullanım rehberi ile ihtiyacınız olan bilgilere hızlıca ulaşın.
+        </p>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="help_center_page__content">
+        <!-- SSS Section -->
+        <section class="help_section">
+            <div class="help_section__header">
+                <h2 class="help_section__title">Sıkça Sorulan Sorular (SSS)</h2>
+                <p class="help_section__description">
+                    Kredi başvuru süreci, raporlama ve profil ayarları hakkında merak ettikleriniz.
+                </p>
+            </div>
+
+            <div class="faq_accordion" id="faq_accordion">
+                <!-- Kredi Başvurusu Kategorisi -->
+                <div class="faq_category">
+                    <h3 class="faq_category__title">Kredi Başvurusu</h3>
+                    <div class="faq_items">
+                        <div class="faq_item" data-category="kredi-basvurusu">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Kredi başvurusu nasıl yapılır?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Kredi başvurunuzu online olarak yapabilirsiniz. Ana menüden "Kredi Başvurusu" seçeneğine tıklayarak başvuru formunu doldurun. Gerekli bilgileri eksiksiz doldurduktan sonra başvurunuz sisteme kaydedilecektir.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq_item" data-category="kredi-basvurusu">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Başvuru süreci ne kadar sürer?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Online başvurularınız genellikle 24 saat içinde değerlendirilir. Değerlendirme sonucu size SMS ve e-posta ile bildirilir. Ayrıca "Raporlarım" bölümünden başvuru durumunuzu takip edebilirsiniz.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq_item" data-category="kredi-basvurusu">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Hangi belgeler gereklidir?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Başvuru sırasında kimlik bilgileriniz (TCKN) ve iletişim bilgileriniz yeterlidir. Onay sürecinde gelir belgeniz ve diğer gerekli evraklar talep edilebilir. Detaylı bilgi için müşteri hizmetlerimizle iletişime geçebilirsiniz.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq_item" data-category="kredi-basvurusu">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Başvurumu iptal edebilir miyim?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Başvurunuz değerlendirme aşamasındayken iptal edebilirsiniz. "Raporlarım" bölümünden başvurunuzu görüntüleyip iptal işlemini gerçekleştirebilirsiniz. Onaylanmış başvurular için müşteri hizmetlerimizle iletişime geçmeniz gerekmektedir.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Raporlama Kategorisi -->
+                <div class="faq_category">
+                    <h3 class="faq_category__title">Raporlama</h3>
+                    <div class="faq_items">
+                        <div class="faq_item" data-category="raporlama">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Raporlarımı nasıl görüntüleyebilirim?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Sol menüden "Raporlarım" seçeneğine tıklayarak tüm raporlarınızı görüntüleyebilirsiniz. Her rapor kartında rapor numarası, oluşturulma tarihi ve durum bilgisi yer almaktadır. "Raporu İncele" butonuna tıklayarak detaylı bilgilere ulaşabilirsiniz.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq_item" data-category="raporlama">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Rapor detaylarında hangi bilgiler yer alır?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Rapor detaylarında kredi skoru, kredi tutarı, vade bilgisi, faiz oranı, aylık ödeme tutarı ve rapor durumu gibi tüm önemli bilgiler yer almaktadır. Ayrıca raporun oluşturulma tarihi ve onay durumu da görüntülenebilir.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq_item" data-category="raporlama">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Raporumu indirebilir miyim?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Şu anda raporlarınızı PDF formatında indirme özelliği bulunmamaktadır. Ancak rapor detaylarını ekran görüntüsü alarak kaydedebilirsiniz. Bu özellik yakında eklenecektir.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profil Ayarları Kategorisi -->
+                <div class="faq_category">
+                    <h3 class="faq_category__title">Profil & Ayarlar</h3>
+                    <div class="faq_items">
+                        <div class="faq_item" data-category="profil-ayarlari">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Profil bilgilerimi nasıl güncelleyebilirim?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Sol menüden "Profil & Ayarlar" seçeneğine tıklayarak profil bilgilerinizi görüntüleyebilir ve güncelleyebilirsiniz. Adres, iletişim bilgileri ve meslek bilgilerinizi buradan düzenleyebilirsiniz.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq_item" data-category="profil-ayarlari">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Şifremi nasıl değiştirebilirim?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Sistemimiz SMS doğrulama ile çalıştığı için ayrı bir şifre bulunmamaktadır. Giriş yapmak için TCKN ve GSM numaranız yeterlidir. Giriş sırasında size gönderilen SMS kodunu girerek sisteme erişebilirsiniz.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq_item" data-category="profil-ayarlari">
+                            <button type="button" class="faq_item__question" aria-expanded="false">
+                                <span class="faq_item__question_text">Telefon numaramı değiştirebilir miyim?</span>
+                                <svg class="faq_item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="faq_item__answer">
+                                <div class="faq_item__answer_content">
+                                    <p>Telefon numaranızı değiştirmek için "Profil & Ayarlar" bölümünden "Adres / İletişim Bilgileri" sekmesine gidin. Yeni telefon numaranızı girebilirsiniz. Değişiklik için SMS doğrulaması gerekecektir.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rehber Section -->
+        <section class="help_section">
+            <div class="help_section__header">
+                <h2 class="help_section__title">Kullanım Rehberi</h2>
+                <p class="help_section__description">
+                    Sistemi nasıl kullanacağınızı adım adım öğrenin.
+                </p>
+            </div>
+
+            <div class="guide_steps">
+                <div class="guide_step">
+                    <div class="guide_step__number">1</div>
+                    <div class="guide_step__content">
+                        <h3 class="guide_step__title">Giriş Yapma</h3>
+                        <p class="guide_step__description">
+                            Ana sayfadan "Giriş Yap" butonuna tıklayın. TCKN ve GSM numaranızı girerek doğrulama yapın. Size gönderilen SMS kodunu girerek sisteme giriş yapabilirsiniz.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="guide_step">
+                    <div class="guide_step__number">2</div>
+                    <div class="guide_step__content">
+                        <h3 class="guide_step__title">Kredi Başvurusu Yapma</h3>
+                        <p class="guide_step__description">
+                            Ana menüden "Kredi Başvurusu" seçeneğine tıklayın. Başvuru formunu eksiksiz doldurun. Gerekli bilgileri girdikten sonra başvurunuzu gönderin. Başvuru durumunuzu "Raporlarım" bölümünden takip edebilirsiniz.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="guide_step">
+                    <div class="guide_step__number">3</div>
+                    <div class="guide_step__content">
+                        <h3 class="guide_step__title">Raporları Görüntüleme</h3>
+                        <p class="guide_step__description">
+                            Sol menüden "Raporlarım" seçeneğine tıklayın. Tüm raporlarınızı burada görebilirsiniz. Herhangi bir raporun üzerine tıklayarak detaylı bilgilere ulaşabilirsiniz.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="guide_step">
+                    <div class="guide_step__number">4</div>
+                    <div class="guide_step__content">
+                        <h3 class="guide_step__title">Profil Bilgilerini Güncelleme</h3>
+                        <p class="guide_step__description">
+                            "Profil & Ayarlar" menüsünden kişisel bilgilerinizi, adres bilgilerinizi ve meslek bilgilerinizi güncelleyebilirsiniz. Değişiklikleriniz anında kaydedilir.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/help_center.js"></script>
+}
+
