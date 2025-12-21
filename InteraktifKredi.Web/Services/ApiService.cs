@@ -927,6 +927,7 @@ namespace InteraktifKredi.Web.Services
 
         /// <summary>
         /// Retrieves customer address information
+        /// API Response Format: { "statusCode": 200, "value": { "cityId": 34, "townId": 12, "address": "...", "customerId": 1, "source": 2 } }
         /// </summary>
         public async Task<ServiceResponse<AddressResponse>> GetCustomerAddressAsync(long customerId)
         {
@@ -950,17 +951,47 @@ namespace InteraktifKredi.Web.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var address = JsonSerializer.Deserialize<AddressResponse>(
-                        responseContent, _responseJsonOptions);
-
-                    if (address != null)
+                    try
                     {
-                        _logger.LogInformation("✅ Customer address retrieved successfully");
-                        return ServiceResponse<AddressResponse>.SuccessResponse(
-                            address,
-                            "Adres bilgisi başarıyla getirildi.",
-                            200
-                        );
+                        // API response format: { "statusCode": 200, "value": { ... } }
+                        var outerResponse = JsonSerializer.Deserialize<JsonElement>(responseContent, _responseJsonOptions);
+
+                        if (outerResponse.TryGetProperty("value", out JsonElement valueElement))
+                        {
+                            var address = JsonSerializer.Deserialize<AddressResponse>(
+                                valueElement.GetRawText(), _responseJsonOptions);
+
+                            if (address != null)
+                            {
+                                _logger.LogInformation("✅ Customer address retrieved successfully - CityId: {CityId}, TownId: {TownId}",
+                                    address.CityId, address.TownId);
+                                return ServiceResponse<AddressResponse>.SuccessResponse(
+                                    address,
+                                    "Adres bilgisi başarıyla getirildi.",
+                                    200
+                                );
+                            }
+                        }
+                        else
+                        {
+                            // Fallback: Try direct deserialization if "value" property doesn't exist
+                            var address = JsonSerializer.Deserialize<AddressResponse>(
+                                responseContent, _responseJsonOptions);
+
+                            if (address != null)
+                            {
+                                _logger.LogInformation("✅ Customer address retrieved successfully (direct deserialization)");
+                                return ServiceResponse<AddressResponse>.SuccessResponse(
+                                    address,
+                                    "Adres bilgisi başarıyla getirildi.",
+                                    200
+                                );
+                            }
+                        }
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        _logger.LogError(jsonEx, "JSON deserialization failed for customer address. Response: {Response}", responseContent);
                     }
                 }
 
@@ -982,6 +1013,8 @@ namespace InteraktifKredi.Web.Services
 
         /// <summary>
         /// Retrieves customer job information
+        /// API Response Format: { "statusCode": 200, "value": { "titleCompany": "...", "companyPosition": "...", "jobGroupId": 3, "customerWork": 5, "workingYears": 5, "workingMonth": 2 } }
+        /// Note: API can return value: null
         /// </summary>
         public async Task<ServiceResponse<JobResponse>> GetJobInfoAsync(long customerId)
         {
@@ -990,7 +1023,7 @@ namespace InteraktifKredi.Web.Services
                 _logger.LogInformation("Fetching job info for customer ID: {CustomerId}", customerId);
 
                 var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
-                var requestUrl = $"{baseUrl}/api/customer/job-info/{customerId}?code={_apiSettings.JobInformationKey}";
+                var requestUrl = $"{baseUrl}/api/customer/job-info/new/{customerId}?code={_apiSettings.JobInformationKey}";
 
                 _logger.LogInformation("Job Info URL: {Url}", requestUrl);
 
@@ -1005,17 +1038,58 @@ namespace InteraktifKredi.Web.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var jobInfo = JsonSerializer.Deserialize<JobResponse>(
-                        responseContent, _responseJsonOptions);
-
-                    if (jobInfo != null)
+                    try
                     {
-                        _logger.LogInformation("✅ Job info retrieved successfully");
-                        return ServiceResponse<JobResponse>.SuccessResponse(
-                            jobInfo,
-                            "İş bilgisi başarıyla getirildi.",
-                            200
-                        );
+                        // API response format: { "statusCode": 200, "value": { ... } } or { "statusCode": 200, "value": null }
+                        var outerResponse = JsonSerializer.Deserialize<JsonElement>(responseContent, _responseJsonOptions);
+
+                        if (outerResponse.TryGetProperty("value", out JsonElement valueElement))
+                        {
+                            // Check if value is null
+                            if (valueElement.ValueKind == JsonValueKind.Null)
+                            {
+                                _logger.LogInformation("Job info is null - returning empty response");
+                                return ServiceResponse<JobResponse>.SuccessResponse(
+                                    new JobResponse(),
+                                    "İş bilgisi bulunamadı (null).",
+                                    200
+                                );
+                            }
+
+                            var jobInfo = JsonSerializer.Deserialize<JobResponse>(
+                                valueElement.GetRawText(), _responseJsonOptions);
+
+                            if (jobInfo != null)
+                            {
+                                _logger.LogInformation("✅ Job info retrieved successfully - JobGroupId: {JobGroupId}, CustomerWork: {CustomerWork}",
+                                    jobInfo.JobGroupId, jobInfo.CustomerWork);
+                                return ServiceResponse<JobResponse>.SuccessResponse(
+                                    jobInfo,
+                                    "İş bilgisi başarıyla getirildi.",
+                                    200
+                                );
+                            }
+                        }
+                        else
+                        {
+                            // Fallback: Try direct deserialization if "value" property doesn't exist
+                            var jobInfo = JsonSerializer.Deserialize<JobResponse>(
+                                responseContent, _responseJsonOptions);
+
+                            if (jobInfo != null)
+                            {
+                                _logger.LogInformation("✅ Job info retrieved successfully (direct deserialization)");
+                                return ServiceResponse<JobResponse>.SuccessResponse(
+                                    jobInfo,
+                                    "İş bilgisi başarıyla getirildi.",
+                                    200
+                                );
+                            }
+                        }
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        _logger.LogError(jsonEx, "JSON deserialization failed for job info. Response: {Response}", responseContent);
                     }
                 }
 
@@ -1204,6 +1278,7 @@ namespace InteraktifKredi.Web.Services
 
         /// <summary>
         /// Saves customer job information
+        /// API Request: POST /api/customer/job-profile?code=...
         /// </summary>
         public async Task<ServiceResponse<bool>> SaveJobInfoAsync(SaveJobRequest request)
         {
@@ -1212,7 +1287,7 @@ namespace InteraktifKredi.Web.Services
                 _logger.LogInformation("Saving job info for customer ID: {CustomerId}", request.CustomerId);
 
                 var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
-                var requestUrl = $"{baseUrl}/api/customer/job-info?code={_apiSettings.SaveJobInformationKey}";
+                var requestUrl = $"{baseUrl}/api/customer/job-profile?code={_apiSettings.SaveJobInformationKey}";
 
                 _logger.LogInformation("Save Job Info URL: {Url}", requestUrl);
 

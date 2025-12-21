@@ -72,6 +72,24 @@ public class GetReportDetailRequest
 }
 
 /// <summary>
+/// Ödeme Tarihçesi UI Öğesi (odeme_tarihcesi_ui array içindeki her bir öğe)
+/// </summary>
+public class OdemeTarihcesiUiItem
+{
+    [JsonPropertyName("ay")]
+    public string Ay { get; set; } = string.Empty;
+
+    [JsonPropertyName("durum")]
+    public string Durum { get; set; } = string.Empty;
+
+    [JsonPropertyName("ui_renk")]
+    public string UiRenk { get; set; } = string.Empty;
+
+    [JsonPropertyName("ui_ikon")]
+    public string? UiIkon { get; set; }
+}
+
+/// <summary>
 /// Bireysel Kredi Detayı (bireyselDetails array içindeki her bir öğe)
 /// </summary>
 public class BireyselDetail
@@ -111,6 +129,9 @@ public class BireyselDetail
 
     [JsonPropertyName("bkOdemePerformansiTarihcesi")]
     public string BkOdemePerformansiTarihcesi { get; set; } = string.Empty;
+
+    [JsonPropertyName("odeme_tarihcesi_ui")]
+    public List<OdemeTarihcesiUiItem>? OdemeTarihcesiUi { get; set; }
 }
 
 /// <summary>

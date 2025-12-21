@@ -82,45 +82,35 @@
                     
                     <div class="profile_form__header">
                         <h3 class="profile_form__title">🏠 Adres Bilgileri</h3>
-                        <p class="profile_form__description">İkamet adresinizi ve ev durumunuzu güncelleyin.</p>
+                        <p class="profile_form__description">İkamet adresinizi güncelleyin.</p>
                     </div>
 
                     <div class="profile_form__grid">
-                        <!-- City -->
+                        <!-- City Dropdown -->
                         <div class="input_group">
-                            <input asp-for="AddressForm.City" type="text" class="input_group__field" placeholder="Örn: İstanbul *" required />
-                            <span asp-validation-for="AddressForm.City" class="input_group__error"></span>
-                        </div>
-
-                        <!-- County -->
-                        <div class="input_group">
-                            <input asp-for="AddressForm.County" type="text" class="input_group__field" placeholder="Örn: Kadıköy *" required />
-                            <span asp-validation-for="AddressForm.County" class="input_group__error"></span>
-                        </div>
-
-                        <!-- District -->
-                        <div class="input_group">
-                            <input asp-for="AddressForm.District" type="text" class="input_group__field" placeholder="Örn: Fenerbahçe Mahallesi" />
-                        </div>
-
-                        <!-- Residence Duration -->
-                        <div class="input_group">
-                            <input asp-for="AddressForm.ResidenceDuration" type="number" class="input_group__field" placeholder="Örn: 5 yıl" min="0" />
-                        </div>
-
-                        <!-- Home Type -->
-                        <div class="input_group input_group--full">
-                            <select asp-for="AddressForm.HomeType" class="input_group__field input_group__field--select">
-                                <option value="">Ev Tipi Seçiniz</option>
-                                <option value="Kira">Kira</option>
-                                <option value="Ev Sahibi">Ev Sahibi</option>
-                                <option value="Aile">Aile ile Oturuyor</option>
+                            <label class="input_group__label">Şehir *</label>
+                            <select id="citySelect" class="input_group__field input_group__field--select" required>
+                                <option value="">Şehir Seçiniz</option>
                             </select>
+                            <input asp-for="AddressForm.CityId" type="hidden" id="cityIdInput" />
+                            <span asp-validation-for="AddressForm.CityId" class="input_group__error"></span>
                         </div>
 
-                        <!-- Address Detail -->
+                        <!-- Town Dropdown -->
+                        <div class="input_group">
+                            <label class="input_group__label">İlçe *</label>
+                            <select id="townSelect" class="input_group__field input_group__field--select" required disabled>
+                                <option value="">Önce şehir seçiniz</option>
+                            </select>
+                            <input asp-for="AddressForm.TownId" type="hidden" id="townIdInput" />
+                            <span asp-validation-for="AddressForm.TownId" class="input_group__error"></span>
+                        </div>
+
+                        <!-- Address -->
                         <div class="input_group input_group--full">
-                            <textarea asp-for="AddressForm.AddressDetail" class="input_group__field input_group__field--textarea" rows="3" placeholder="Örn: Sokak, cadde, bina no, daire no..."></textarea>
+                            <label class="input_group__label">Açık Adres *</label>
+                            <textarea asp-for="AddressForm.Address" class="input_group__field input_group__field--textarea" rows="4" placeholder="Örn: Sokak, cadde, bina no, daire no..." required></textarea>
+                            <span asp-validation-for="AddressForm.Address" class="input_group__error"></span>
                         </div>
                     </div>
 
@@ -143,45 +133,57 @@
                     </div>
 
                     <div class="profile_form__grid">
-                        <!-- Company -->
+                        <!-- Company (Firma Adı) -->
                         <div class="input_group">
-                            <input asp-for="JobForm.Company" type="text" class="input_group__field" placeholder="Örn: ABC Teknoloji A.Ş." />
+                            <label class="input_group__label">Firma Adı</label>
+                            <input asp-for="JobForm.TitleCompany" type="text" class="input_group__field" id="jobCompany" placeholder="Örn: ABC Teknoloji A.Ş." />
+                            <span asp-validation-for="JobForm.TitleCompany" class="input_group__error"></span>
                         </div>
 
-                        <!-- Position -->
+                        <!-- Position (Unvan) -->
                         <div class="input_group">
-                            <input asp-for="JobForm.Position" type="text" class="input_group__field" placeholder="Örn: Yazılım Geliştirici" />
+                            <label class="input_group__label">Unvan</label>
+                            <input asp-for="JobForm.CompanyPosition" type="text" class="input_group__field" id="jobPosition" placeholder="Örn: Kıdemli Yazılım Geliştirici" />
+                            <span asp-validation-for="JobForm.CompanyPosition" class="input_group__error"></span>
                         </div>
 
-                        <!-- Sector -->
+                        <!-- Sector (Sektör) - Dropdown -->
                         <div class="input_group">
-                            <input asp-for="JobForm.Sector" type="text" class="input_group__field" placeholder="Örn: Teknoloji" />
-                        </div>
-
-                        <!-- Employment Type -->
-                        <div class="input_group">
-                            <select asp-for="JobForm.EmploymentType" class="input_group__field input_group__field--select">
-                                <option value="">Çalışma Tipi Seçiniz</option>
-                                <option value="Tam Zamanlı">Tam Zamanlı</option>
-                                <option value="Yarı Zamanlı">Yarı Zamanlı</option>
-                                <option value="Serbest Meslek">Serbest Meslek</option>
-                                <option value="Emekli">Emekli</option>
+                            <label class="input_group__label">Sektör</label>
+                            <select id="jobGroupSelect" class="input_group__field input_group__field--select">
+                                <option value="">Sektör Seçiniz</option>
                             </select>
+                            <input asp-for="JobForm.JobGroupId" type="hidden" id="jobGroupIdInput" />
+                            <span asp-validation-for="JobForm.JobGroupId" class="input_group__error"></span>
                         </div>
 
-                        <!-- Start Date -->
+                        <!-- Employment Type (Çalışma Tipi) - Dropdown -->
                         <div class="input_group">
-                            <input asp-for="JobForm.StartDate" type="date" class="input_group__field" placeholder="İşe Başlama Tarihi" />
+                            <label class="input_group__label">Çalışma Tipi</label>
+                            <select id="workTypeSelect" class="input_group__field input_group__field--select">
+                                <option value="">Çalışma Tipi Seçiniz</option>
+                            </select>
+                            <input asp-for="JobForm.CustomerWork" type="hidden" id="customerWorkInput" />
+                            <span asp-validation-for="JobForm.CustomerWork" class="input_group__error"></span>
                         </div>
 
-                        <!-- Monthly Income -->
+                        <!-- Start Date (İşe Başlangıç Tarihi) -->
                         <div class="input_group">
-                            <input asp-for="JobForm.MonthlyIncome" type="number" class="input_group__field" placeholder="Örn: Aylık Gelir (₺) 15000" min="0" step="0.01" />
+                            <label class="input_group__label">İşe Başlangıç Tarihi</label>
+                            <input type="date" class="input_group__field" id="jobStartDate" />
+                            <input asp-for="JobForm.WorkingYears" type="hidden" id="workingYearsInput" />
+                            <input asp-for="JobForm.WorkingMonth" type="hidden" id="workingMonthInput" />
+                        </div>
+
+                        <!-- Monthly Income (Aylık Gelir) - UI Only -->
+                        <div class="input_group">
+                            <label class="input_group__label">Aylık Gelir (₺)</label>
+                            <input asp-for="JobForm.MonthlyIncome" type="number" class="input_group__field" placeholder="Örn: 15000" min="0" step="0.01" />
                         </div>
                     </div>
 
                     <div class="profile_form__actions">
-                        <button type="submit" class="btn_primary" data-loading-text="Kaydediliyor...">
+                        <button type="submit" class="btn_primary" data-loading-text="Kaydediliyor..." id="jobSubmitBtn">
                             Kaydet
                         </button>
                     </div>
@@ -339,15 +341,336 @@
 @section Scripts {
     <script src="~/js/profile_tabs.js"></script>
     <script>
-        // Restore active tab if returning from post
-        @if (!string.IsNullOrEmpty(Model.ActiveTab))
-        {
-            <text>
-            $(document).ready(function() {
-                switch_tab('@Model.ActiveTab');
+        // Türkiye Şehir ve İlçe Verisi
+        const citiesData = [
+            { "id": 34, "name": "İstanbul", "towns": [ 
+                { "id": 1, "name": "Kadıköy" }, 
+                { "id": 2, "name": "Beşiktaş" }, 
+                { "id": 3, "name": "Üsküdar" },
+                { "id": 4, "name": "Şişli" },
+                { "id": 5, "name": "Beyoğlu" },
+                { "id": 6, "name": "Fatih" },
+                { "id": 7, "name": "Bakırköy" },
+                { "id": 8, "name": "Ataşehir" }
+            ]},
+            { "id": 6, "name": "Ankara", "towns": [ 
+                { "id": 9, "name": "Çankaya" }, 
+                { "id": 10, "name": "Keçiören" },
+                { "id": 11, "name": "Yenimahalle" },
+                { "id": 12, "name": "Mamak" }
+            ]},
+            { "id": 35, "name": "İzmir", "towns": [ 
+                { "id": 13, "name": "Konak" }, 
+                { "id": 14, "name": "Karşıyaka" },
+                { "id": 15, "name": "Bornova" },
+                { "id": 16, "name": "Bayraklı" }
+            ]},
+            { "id": 1, "name": "Adana", "towns": [ 
+                { "id": 17, "name": "Seyhan" },
+                { "id": 18, "name": "Yüreğir" },
+                { "id": 19, "name": "Çukurova" }
+            ]},
+            { "id": 42, "name": "Konya", "towns": [ 
+                { "id": 20, "name": "Selçuklu" }, 
+                { "id": 21, "name": "Meram" },
+                { "id": 22, "name": "Karatay" }
+            ]},
+            { "id": 7, "name": "Antalya", "towns": [
+                { "id": 23, "name": "Muratpaşa" },
+                { "id": 24, "name": "Kepez" },
+                { "id": 25, "name": "Konyaaltı" }
+            ]},
+            { "id": 16, "name": "Bursa", "towns": [
+                { "id": 26, "name": "Osmangazi" },
+                { "id": 27, "name": "Nilüfer" },
+                { "id": 28, "name": "Yıldırım" }
+            ]}
+        ];
+
+        // Mevcut değerler (API'den gelen)
+        const currentCityId = @(Model.AddressForm?.CityId ?? 0);
+        const currentTownId = @(Model.AddressForm?.TownId ?? 0);
+
+        $(document).ready(function() {
+            const $citySelect = $('#citySelect');
+            const $townSelect = $('#townSelect');
+            const $cityIdInput = $('#cityIdInput');
+            const $townIdInput = $('#townIdInput');
+
+            // Şehir dropdown'ını doldur
+            citiesData.forEach(function(city) {
+                const $option = $('<option></option>')
+                    .attr('value', city.id)
+                    .text(city.name);
+                $citySelect.append($option);
             });
-            </text>
-        }
+
+            // Mevcut şehri seç
+            if (currentCityId && currentCityId > 0) {
+                $citySelect.val(currentCityId);
+                $cityIdInput.val(currentCityId);
+                
+                // Seçili şehrin ilçelerini yükle
+                loadTowns(currentCityId);
+            }
+
+            // Şehir seçildiğinde
+            $citySelect.on('change', function() {
+                const selectedCityId = parseInt($(this).val());
+                
+                if (selectedCityId > 0) {
+                    // Hidden input'u güncelle
+                    $cityIdInput.val(selectedCityId);
+                    
+                    // İlçe dropdown'ını aktif et ve doldur
+                    $townSelect.prop('disabled', false);
+                    loadTowns(selectedCityId);
+                    
+                    // İlçe seçimini sıfırla
+                    $townSelect.val('');
+                    $townIdInput.val('');
+                } else {
+                    // Şehir seçimi kaldırıldıysa
+                    $cityIdInput.val('');
+                    $townSelect.prop('disabled', true);
+                    $townSelect.html('<option value="">Önce şehir seçiniz</option>');
+                    $townIdInput.val('');
+                }
+            });
+
+            // İlçe seçildiğinde
+            $townSelect.on('change', function() {
+                const selectedTownId = parseInt($(this).val());
+                if (selectedTownId > 0) {
+                    $townIdInput.val(selectedTownId);
+                } else {
+                    $townIdInput.val('');
+                }
+            });
+
+            // İlçeleri yükle
+            function loadTowns(cityId) {
+                const selectedCity = citiesData.find(function(city) {
+                    return city.id === cityId;
+                });
+
+                if (selectedCity && selectedCity.towns) {
+                    $townSelect.html('<option value="">İlçe Seçiniz</option>');
+                    
+                    selectedCity.towns.forEach(function(town) {
+                        const $option = $('<option></option>')
+                            .attr('value', town.id)
+                            .text(town.name);
+                        $townSelect.append($option);
+                    });
+
+                    // Mevcut ilçeyi seç
+                    if (currentTownId && currentTownId > 0) {
+                        $townSelect.val(currentTownId);
+                        $townIdInput.val(currentTownId);
+                    }
+                } else {
+                    $townSelect.html('<option value="">İlçe bulunamadı</option>');
+                }
+            }
+
+            // Restore active tab if returning from post
+            @if (!string.IsNullOrEmpty(Model.ActiveTab))
+            {
+                <text>
+                switch_tab('@Model.ActiveTab');
+                </text>
+            }
+        });
+
+        // ========================================================================
+        // JOB TAB - Dropdown and Date Calculation Logic
+        // ========================================================================
+        
+        // Sektör Grupları (Job Groups)
+        const jobGroups = [
+            { id: 1, name: "Eğitim" },
+            { id: 2, name: "Sağlık" },
+            { id: 3, name: "Bilişim/Teknoloji" },
+            { id: 4, name: "Finans" },
+            { id: 5, name: "İnşaat" },
+            { id: 6, name: "Tarım" },
+            { id: 7, name: "Ticaret" },
+            { id: 8, name: "Turizm" },
+            { id: 9, name: "Üretim" },
+            { id: 10, name: "Diğer" }
+        ];
+
+        // Çalışma Tipleri (Work Types)
+        const workTypes = [
+            { id: 1, name: "Ücretli çalışan" },
+            { id: 2, name: "Kamu Çalışanı" },
+            { id: 3, name: "Emekli" },
+            { id: 4, name: "Serbest Meslek" },
+            { id: 5, name: "Öğrenci" }
+        ];
+
+        // Mevcut değerler (API'den gelen)
+        const currentJobGroupId = @(Model.JobForm?.JobGroupId ?? 0);
+        const currentCustomerWork = @(Model.JobForm?.CustomerWork ?? 0);
+        const currentWorkingYears = @(Model.JobForm?.WorkingYears ?? 0);
+        const currentWorkingMonth = @(Model.JobForm?.WorkingMonth ?? 0);
+
+        $(document).ready(function() {
+            const $jobGroupSelect = $('#jobGroupSelect');
+            const $workTypeSelect = $('#workTypeSelect');
+            const $jobGroupIdInput = $('#jobGroupIdInput');
+            const $customerWorkInput = $('#customerWorkInput');
+            const $jobStartDate = $('#jobStartDate');
+            const $workingYearsInput = $('#workingYearsInput');
+            const $workingMonthInput = $('#workingMonthInput');
+
+            // Sektör dropdown'ını doldur
+            jobGroups.forEach(function(group) {
+                const $option = $('<option></option>')
+                    .attr('value', group.id)
+                    .text(group.name);
+                $jobGroupSelect.append($option);
+            });
+
+            // Çalışma Tipi dropdown'ını doldur
+            workTypes.forEach(function(type) {
+                const $option = $('<option></option>')
+                    .attr('value', type.id)
+                    .text(type.name);
+                $workTypeSelect.append($option);
+            });
+
+            // Mevcut seçimleri set et
+            if (currentJobGroupId && currentJobGroupId > 0) {
+                $jobGroupSelect.val(currentJobGroupId);
+                $jobGroupIdInput.val(currentJobGroupId);
+            }
+
+            if (currentCustomerWork && currentCustomerWork > 0) {
+                $workTypeSelect.val(currentCustomerWork);
+                $customerWorkInput.val(currentCustomerWork);
+            }
+
+            // Tarihi hesapla ve set et (workingYears ve workingMonth'dan)
+            if (currentWorkingYears !== null && currentWorkingMonth !== null) {
+                const calculatedDate = calculateStartDateFromYearsAndMonths(currentWorkingYears, currentWorkingMonth);
+                if (calculatedDate) {
+                    $jobStartDate.val(calculatedDate);
+                }
+            }
+
+            // Sektör seçildiğinde
+            $jobGroupSelect.on('change', function() {
+                const selectedId = parseInt($(this).val());
+                if (selectedId > 0) {
+                    $jobGroupIdInput.val(selectedId);
+                } else {
+                    $jobGroupIdInput.val('');
+                }
+            });
+
+            // Çalışma Tipi seçildiğinde
+            $workTypeSelect.on('change', function() {
+                const selectedId = parseInt($(this).val());
+                if (selectedId > 0) {
+                    $customerWorkInput.val(selectedId);
+                } else {
+                    $customerWorkInput.val('');
+                }
+            });
+
+            // Tarih değiştiğinde workingYears ve workingMonth hesapla
+            $jobStartDate.on('change', function() {
+                const selectedDate = $(this).val();
+                if (selectedDate) {
+                    const { years, months } = calculateYearsAndMonthsFromDate(selectedDate);
+                    $workingYearsInput.val(years);
+                    $workingMonthInput.val(months);
+                } else {
+                    $workingYearsInput.val('');
+                    $workingMonthInput.val('');
+                }
+            });
+
+            // Form submit validation
+            $('form[asp-page-handler="Job"]').on('submit', function(e) {
+                // Hidden input'ların dolu olduğunu kontrol et
+                if ($jobGroupIdInput.val() === '' || $jobGroupIdInput.val() === '0') {
+                    e.preventDefault();
+                    alert('Lütfen bir sektör seçiniz.');
+                    return false;
+                }
+
+                if ($customerWorkInput.val() === '' || $customerWorkInput.val() === '0') {
+                    e.preventDefault();
+                    alert('Lütfen bir çalışma tipi seçiniz.');
+                    return false;
+                }
+
+                // Tarih seçilmişse workingYears ve workingMonth'u hesapla
+                if ($jobStartDate.val() && ($workingYearsInput.val() === '' || $workingMonthInput.val() === '')) {
+                    const selectedDate = $jobStartDate.val();
+                    const { years, months } = calculateYearsAndMonthsFromDate(selectedDate);
+                    $workingYearsInput.val(years);
+                    $workingMonthInput.val(months);
+                }
+
+                // Tarih seçilmemişse workingYears ve workingMonth'u 0 yap (isteğe bağlı)
+                if (!$jobStartDate.val()) {
+                    $workingYearsInput.val(0);
+                    $workingMonthInput.val(0);
+                }
+            });
+
+            // Tarihten yıl ve ay hesapla
+            function calculateYearsAndMonthsFromDate(startDateString) {
+                const startDate = new Date(startDateString);
+                const today = new Date();
+                
+                let years = today.getFullYear() - startDate.getFullYear();
+                let months = today.getMonth() - startDate.getMonth();
+                
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+                
+                // Gün kontrolü (eğer bugünün günü başlangıç tarihinden küçükse bir ay eksilt)
+                if (today.getDate() < startDate.getDate()) {
+                    months--;
+                    if (months < 0) {
+                        years--;
+                        months += 12;
+                    }
+                }
+                
+                return { years: years, months: months };
+            }
+
+            // Yıl ve aydan tarih hesapla (geriye dönük)
+            function calculateStartDateFromYearsAndMonths(years, months) {
+                if (!years && !months) return null;
+                
+                const today = new Date();
+                const calculatedDate = new Date(today);
+                
+                calculatedDate.setFullYear(today.getFullYear() - years);
+                calculatedDate.setMonth(today.getMonth() - months);
+                
+                // Ay taşması kontrolü
+                if (calculatedDate.getMonth() > today.getMonth()) {
+                    calculatedDate.setFullYear(calculatedDate.getFullYear() - 1);
+                }
+                
+                // Format: YYYY-MM-DD
+                const year = calculatedDate.getFullYear();
+                const month = String(calculatedDate.getMonth() + 1).padStart(2, '0');
+                const day = String(calculatedDate.getDate()).padStart(2, '0');
+                
+                return `${year}-${month}-${day}`;
+            }
+        });
     </script>
 }
 
