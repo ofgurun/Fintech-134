@@ -1,0 +1,440 @@
+// ============================================================================
+// REPORT DETAIL PAGE - İNTERAKTİF KREDİ
+// PROFESSIONAL FINANCIAL DASHBOARD DESIGN
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// REPORT DETAIL CONTAINER
+// ----------------------------------------------------------------------------
+
+.report_detail {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: $spacing_8 $spacing_4;
+  
+  @include respond_to(md) {
+    padding: $spacing_10 $spacing_6;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// REPORT DETAIL HEADER
+// ----------------------------------------------------------------------------
+
+.report_detail__header {
+  margin-bottom: $spacing_8;
+  padding: $spacing_6;
+  background-color: $bg_white;
+  border-radius: $border_radius_xl;
+  box-shadow: $shadow_sm;
+  border: 1px solid $border_color;
+}
+
+.report_detail__header_content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_4;
+}
+
+.report_detail__back_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing_2;
+  padding: $spacing_2 $spacing_3;
+  margin-bottom: $spacing_4;
+  color: $text_main;
+  text-decoration: none;
+  font-size: $font_size_sm;
+  font-weight: $font_weight_medium;
+  border-radius: $border_radius_base;
+  transition: $transition_all;
+  
+  &:hover {
+    color: $primary_color;
+    background-color: $color_primary_lighter;
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+.report_detail__title {
+  font-size: $font_size_3xl;
+  font-weight: $font_weight_bold;
+  color: $color_navy;
+  margin: 0 0 $spacing_2 0;
+  line-height: 1.2;
+  
+  @include respond_to(md) {
+    font-size: $font_size_4xl;
+  }
+}
+
+.report_detail__date {
+  font-size: $font_size_lg;
+  color: $text_light;
+  margin: 0;
+}
+
+// ----------------------------------------------------------------------------
+// SUMMARY CARDS SECTION (3 Cards Grid - Hero Design)
+// ----------------------------------------------------------------------------
+
+.report_detail__summary_cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing_6;
+  margin-bottom: $spacing_8;
+  
+  @include respond_to(md) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing_6;
+  }
+}
+
+// Base Card Styles
+.report_detail__summary_card {
+  background-color: $bg_white;
+  border-radius: $border_radius_xl;
+  padding: $spacing_6;
+  box-shadow: $shadow_sm;
+  border: 1px solid $border_color;
+  transition: $transition_all;
+  
+  &:hover {
+    box-shadow: $shadow_md;
+    transform: translateY(-1px);
+  }
+}
+
+// Hero Card (First Card - Kredi Notu)
+.report_detail__summary_card--hero {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); // indigo-600 to purple-600
+  border: none;
+  color: white;
+  
+  &:hover {
+    box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.3), 0 10px 10px -5px rgba(79, 70, 229, 0.2);
+  }
+}
+
+.report_detail__summary_card_content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_3;
+}
+
+// Card Label (Small Title)
+.report_detail__summary_card_label {
+  font-size: $font_size_sm;
+  font-weight: $font_weight_medium;
+  color: $text_light;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.report_detail__summary_card--hero .report_detail__summary_card_label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+// Card Icon (For Limit and Debt Cards)
+.report_detail__summary_card_icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border_radius_lg;
+  background-color: $color_primary_lighter;
+  color: $primary_color;
+  margin-bottom: $spacing_2;
+  
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// Hero Card Value (Very Large)
+.report_detail__summary_card_value--hero {
+  font-size: 3rem; // text-5xl equivalent
+  font-weight: $font_weight_bold;
+  line-height: 1;
+  color: white;
+  margin: $spacing_2 0;
+  
+  @include respond_to(md) {
+    font-size: 3.5rem;
+  }
+  
+  @include respond_to_max(sm) {
+    font-size: 2.5rem;
+  }
+}
+
+// Large Card Value (For Limit and Debt Cards)
+.report_detail__summary_card_value--large {
+  font-size: $font_size_2xl;
+  font-weight: $font_weight_semibold;
+  color: $text_dark;
+  line-height: 1.2;
+  
+  @include respond_to(md) {
+    font-size: $font_size_3xl;
+  }
+}
+
+// Hero Card Badge
+.report_detail__summary_card_badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing_1 $spacing_4;
+  border-radius: $border_radius_full;
+  font-size: $font_size_sm;
+  font-weight: $font_weight_medium;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  margin-top: $spacing_2;
+  align-self: flex-start;
+}
+
+// ----------------------------------------------------------------------------
+// TABLE SECTION (Professional Data Table)
+// ----------------------------------------------------------------------------
+
+.report_detail__table_wrapper {
+  background-color: $bg_white;
+  border-radius: $border_radius_xl;
+  box-shadow: $shadow_sm;
+  border: 1px solid $border_color;
+  margin-bottom: $spacing_8;
+  overflow: hidden;
+}
+
+.report_detail__table_header_section {
+  padding: $spacing_6;
+  border-bottom: 1px solid $border_color;
+  background-color: $bg_white;
+}
+
+.report_detail__table_title {
+  font-size: $font_size_xl;
+  font-weight: $font_weight_semibold;
+  color: $color_navy;
+  margin: 0;
+}
+
+.report_detail__table_container {
+  overflow-x: auto;
+}
+
+.report_detail__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: $font_main;
+}
+
+.report_detail__table_head {
+  background-color: rgba(249, 250, 251, 0.5); // bg-gray-50/50 equivalent
+}
+
+.report_detail__table_row {
+  border-bottom: 1px solid rgba(229, 231, 235, 1); // border-gray-200
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.report_detail__table_header {
+  padding: $spacing_4 $spacing_5;
+  text-align: left;
+  font-size: 0.75rem; // text-xs
+  font-weight: $font_weight_medium;
+  color: $text_light;
+  text-transform: uppercase;
+  letter-spacing: 0.05em; // tracking-wider
+  white-space: nowrap;
+  
+  &--right {
+    text-align: right;
+  }
+}
+
+.report_detail__table_body .report_detail__table_row {
+  transition: $transition_colors;
+  background-color: $bg_white;
+  
+  &:hover {
+    background-color: rgba(249, 250, 251, 1); // hover:bg-gray-50
+  }
+}
+
+.report_detail__table_cell {
+  padding: $spacing_5;
+  font-size: $font_size_base;
+  color: $text_main;
+  vertical-align: middle;
+  
+  &--numeric {
+    text-align: right;
+  }
+}
+
+// Numeric Values (Monospace Font)
+.report_detail__table_number {
+  font-family: $font_family_mono;
+  font-variant-numeric: tabular-nums;
+  font-weight: $font_weight_semibold;
+  color: $text_dark;
+}
+
+.report_detail__table_currency {
+  font-size: $font_size_sm;
+  color: $text_light;
+  margin-left: $spacing_1;
+  font-weight: $font_weight_regular;
+}
+
+// Status Badge
+.report_detail__table_badge {
+  display: inline-block;
+  padding: $spacing_1 $spacing_3;
+  border-radius: $border_radius_base;
+  font-size: $font_size_xs;
+  font-weight: $font_weight_medium;
+  background-color: rgba(243, 244, 246, 1); // bg-gray-100
+  color: rgba(31, 41, 55, 1); // text-gray-800
+}
+
+// ----------------------------------------------------------------------------
+// ACTIONS SECTION (Back Button)
+// ----------------------------------------------------------------------------
+
+.report_detail__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $spacing_10;
+  padding-top: $spacing_8;
+  
+  @include respond_to_max(sm) {
+    justify-content: center;
+  }
+}
+
+.report_detail__back_to_list_btn {
+  padding: $spacing_3 $spacing_6;
+  font-size: $font_size_base;
+  font-weight: $font_weight_semibold;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing_2;
+  border-radius: $border_radius_base;
+  transition: $transition_all;
+  background-color: $primary_color;
+  color: white;
+  box-shadow: $shadow_sm;
+  
+  &:hover {
+    background-color: $primary_color_dark;
+    transform: translateY(-1px);
+    box-shadow: $shadow_md;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// REPORT DETAIL ERROR STATE
+// ----------------------------------------------------------------------------
+
+.report_detail__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: $spacing_12 $spacing_4;
+  min-height: 400px;
+  background-color: $bg_white;
+  border-radius: $border_radius_xl;
+  box-shadow: $shadow_sm;
+}
+
+.report_detail__error_icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: $spacing_6;
+  color: $danger_color;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.report_detail__error_title {
+  font-size: $font_size_2xl;
+  font-weight: $font_weight_bold;
+  color: $color_navy;
+  margin: 0 0 $spacing_4 0;
+}
+
+.report_detail__error_message {
+  font-size: $font_size_base;
+  color: $text_main;
+  margin: 0 0 $spacing_8 0;
+  max-width: 500px;
+}
+
+// ----------------------------------------------------------------------------
+// REPORT DETAIL LOADING STATE
+// ----------------------------------------------------------------------------
+
+.report_detail__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: $spacing_12 $spacing_4;
+  min-height: 400px;
+  background-color: $bg_white;
+  border-radius: $border_radius_xl;
+  box-shadow: $shadow_sm;
+}
+
+.report_detail__loading_spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid $border_color;
+  border-top-color: $primary_color;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: $spacing_4;
+}
+
+.report_detail__loading_text {
+  font-size: $font_size_base;
+  color: $text_light;
+  margin: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ============================================================================
+// END OF REPORT DETAIL
+// ============================================================================

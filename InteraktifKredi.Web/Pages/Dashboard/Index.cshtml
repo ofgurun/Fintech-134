@@ -159,12 +159,11 @@
                         </div>
                     </div>
                     <div class="report_card__footer">
-                        <button type="button" 
-                                class="report_card__btn report_card__btn--primary"
-                                data-report-id="@report.Id"
-                                onclick="open_report_detail(@report.Id)">
+                        <a asp-page="/ReportDetail" 
+                           asp-route-id="@report.Id"
+                           class="report_card__btn report_card__btn--primary">
                             Raporu İncele
-                        </button>
+                        </a>
                     </div>
                 </div>
             }
