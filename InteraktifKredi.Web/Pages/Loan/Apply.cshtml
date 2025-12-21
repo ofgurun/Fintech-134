@@ -2,139 +2,586 @@
 @model InteraktifKredi.Web.Pages.Loan.ApplyModel
 @{
     ViewData["Title"] = "Kredi Başvurusu";
-    Layout = "_Layout";
+    Layout = "_DashboardLayout";
 }
+
+<style>
+    /* ========================================================================
+       LOAN APPLY PAGE - PREMIUM FINANCIAL APPLICATION FORM
+       ======================================================================== */
+    
+    /* Genel Stil */
+    .loan_apply_page {
+        font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: #F3F4F6;
+        min-height: calc(100vh - 80px);
+        padding: 2rem 1rem;
+    }
+    
+    /* Container - Grid Layout */
+    .loan_apply_container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    .loan_apply_grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    @@media (min-width: 1024px) {
+        .loan_apply_grid {
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+    }
+    
+    /* ========================================================================
+       FORM CARD (Sol Taraf)
+       ======================================================================== */
+    
+    .loan_apply_form_card {
+        background-color: #FFFFFF;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid #E5E7EB;
+        padding: 2rem;
+    }
+    
+    @@media (max-width: 1023px) {
+        .loan_apply_form_card {
+            padding: 1.5rem;
+        }
+    }
+    
+    .loan_apply_form_header {
+        margin-bottom: 2rem;
+    }
+    
+    .loan_apply_form_header__title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 0.5rem 0;
+        line-height: 1.2;
+    }
+    
+    .loan_apply_form_header__subtitle {
+        font-size: 0.875rem;
+        color: #6B7280;
+        margin: 0;
+    }
+    
+    /* Error Message */
+    .loan_apply_error {
+        background-color: #FEE2E2;
+        border: 1px solid #FCA5A5;
+        color: #991B1B;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+    }
+    
+    /* ========================================================================
+       SLIDER SECTION (Kredi Tutarı)
+       ======================================================================== */
+    
+    .loan_apply_slider_group {
+        margin-bottom: 2rem;
+    }
+    
+    .loan_apply_slider_label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.75rem;
+    }
+    
+    .loan_apply_slider_display {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .loan_apply_slider_amount {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2563EB;
+        line-height: 1;
+        margin: 0;
+    }
+    
+    @@media (max-width: 640px) {
+        .loan_apply_slider_amount {
+            font-size: 2.5rem;
+        }
+    }
+    
+    .loan_apply_slider_currency {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #6B7280;
+        margin-left: 0.5rem;
+    }
+    
+    .loan_apply_slider_input {
+        width: 100%;
+        height: 8px;
+        border-radius: 9999px;
+        background: #E5E7EB;
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+        margin-bottom: 0.75rem;
+    }
+    
+    .loan_apply_slider_input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #2563EB;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+        transition: all 0.2s;
+    }
+    
+    .loan_apply_slider_input::-webkit-slider-thumb:hover {
+        background: #1E40AF;
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(37, 99, 235, 0.4);
+    }
+    
+    .loan_apply_slider_input::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #2563EB;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+        transition: all 0.2s;
+    }
+    
+    .loan_apply_slider_input::-moz-range-thumb:hover {
+        background: #1E40AF;
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(37, 99, 235, 0.4);
+    }
+    
+    .loan_apply_slider_limits {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: #6B7280;
+        margin-top: 0.5rem;
+    }
+    
+    /* ========================================================================
+       INPUT FIELDS
+       ======================================================================== */
+    
+    .loan_apply_input_group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    
+    .loan_apply_input_label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    
+    .loan_apply_input,
+    .loan_apply_select,
+    .loan_apply_textarea {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        font-size: 0.875rem;
+        color: #111827;
+        background-color: #FFFFFF;
+        border: 2px solid #E5E7EB;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+    
+    .loan_apply_input:focus,
+    .loan_apply_select:focus,
+    .loan_apply_textarea:focus {
+        outline: none;
+        border-color: #2563EB;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .loan_apply_input::placeholder,
+    .loan_apply_textarea::placeholder {
+        color: #9CA3AF;
+    }
+    
+    .loan_apply_select {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23374151' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        padding-right: 2.5rem;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    .loan_apply_textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    .loan_apply_input_error {
+        display: block;
+        font-size: 0.75rem;
+        color: #DC2626;
+        margin-top: 0.25rem;
+    }
+    
+    .loan_apply_input_helper {
+        display: block;
+        font-size: 0.75rem;
+        color: #6B7280;
+        margin-top: 0.25rem;
+    }
+    
+    /* Dynamic Fields (Kamu Çalışanı) */
+    .loan_apply_dynamic_fields {
+        background-color: #F9FAFB;
+        border: 1px solid #E5E7EB;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-top: 1rem;
+    }
+    
+    /* ========================================================================
+       SUMMARY CARD (Sağ Taraf - Sticky)
+       ======================================================================== */
+    
+    .loan_apply_summary_card {
+        position: sticky;
+        top: 1rem;
+        background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px rgba(30, 58, 138, 0.25), 0 20px 40px rgba(30, 58, 138, 0.15);
+        padding: 2rem;
+        color: #FFFFFF;
+        height: fit-content;
+    }
+    
+    @@media (max-width: 1023px) {
+        .loan_apply_summary_card {
+            position: relative;
+            top: 0;
+        }
+    }
+    
+    .loan_apply_summary_header {
+        margin-bottom: 2rem;
+    }
+    
+    .loan_apply_summary_title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #FFFFFF;
+        margin: 0 0 0.5rem 0;
+    }
+    
+    .loan_apply_summary_subtitle {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0;
+    }
+    
+    .loan_apply_summary_item {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .loan_apply_summary_item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .loan_apply_summary_label {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    
+    .loan_apply_summary_value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.2;
+        margin: 0;
+    }
+    
+    @@media (max-width: 640px) {
+        .loan_apply_summary_value {
+            font-size: 1.75rem;
+        }
+    }
+    
+    .loan_apply_summary_detail {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0.25rem 0 0 0;
+    }
+    
+    /* Submit Button (Summary Card içinde) */
+    .loan_apply_submit_btn {
+        width: 100%;
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1E40AF;
+        background-color: #FFFFFF;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
+    }
+    
+    .loan_apply_submit_btn:hover {
+        background-color: #F8FAFC;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .loan_apply_submit_btn:active {
+        transform: translateY(0);
+    }
+    
+    .loan_apply_submit_btn:disabled {
+        background-color: #9CA3AF;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        border-color: #9CA3AF;
+        color: #FFFFFF;
+    }
+    
+    .loan_apply_submit_loading {
+        display: none;
+    }
+</style>
+
+<!-- ========================================================================
+     LOAN APPLY PAGE
+======================================================================== -->
 
 <div class="loan_apply_page">
     <div class="loan_apply_container">
-        <div class="loan_apply_header">
-            <h2 class="loan_apply_header__title">Kredi Başvurusu</h2>
-            <p class="loan_apply_header__subtitle">Lütfen aşağıdaki bilgileri eksiksiz doldurun</p>
-        </div>
-
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-            <div class="alert alert--error">
-            @Model.ErrorMessage
-        </div>
-    }
-
-        <form method="post" id="loan_application_form" class="loan_apply_form" novalidate>
-        <!-- Kredi Türü -->
-            <div class="input_group" id="loan_type_group">
-                <select asp-for="LoanRequest.LoanType" 
-                        id="loan_type" 
-                        class="input_group__field input_group__field--select" 
-                        required>
-                <option value="">Seçiniz</option>
-                <option value="ihtiyac">İhtiyaç Kredisi</option>
-                <option value="tasit">Taşıt Kredisi</option>
-                <option value="konut">Konut Kredisi</option>
-                <option value="ticari">Ticari Kredi</option>
-            </select>
-                <label for="loan_type" class="input_group__label">Kredi Türü</label>
-                <span asp-validation-for="LoanRequest.LoanType" class="input_group__error"></span>
-        </div>
-
-        <!-- Kredi Tutarı - Slider -->
-            <div class="input_group" id="loan_amount_group">
-                <label for="loan_amount_slider" class="input_group__label input_group__label--static">
-                    Kredi Tutarı
-                </label>
-                <div class="input_group__slider_display">
-                    <span id="loan_amount_display">100.000</span> TL
+        <div class="loan_apply_grid">
+            <!-- Sol Taraf: Form Kartı -->
+            <div class="loan_apply_form_card">
+                <div class="loan_apply_form_header">
+                    <h1 class="loan_apply_form_header__title">Kredi Başvuru Detayları</h1>
+                    <p class="loan_apply_form_header__subtitle">Lütfen aşağıdaki bilgileri eksiksiz doldurun</p>
                 </div>
-                <input type="range" 
-                       id="loan_amount_slider" 
-                       class="input_group__slider"
-                       min="10000" 
-                       max="1000000" 
-                       step="1000"
-                       value="100000" />
-            <input type="hidden" 
-                   asp-for="LoanRequest.LoanAmount" 
-                   id="loan_amount" 
-                   value="100000" />
-                <span asp-validation-for="LoanRequest.LoanAmount" class="input_group__error"></span>
-                <span class="input_group__helper">Minimum: 10.000 TL, Maksimum: 1.000.000 TL</span>
-        </div>
 
-        <!-- Kredi Vadesi -->
-            <div class="input_group" id="loan_term_group">
-                <select asp-for="LoanRequest.LoanTerm" 
-                        id="loan_term" 
-                        class="input_group__field input_group__field--select" 
-                        required>
-                <option value="">Seçiniz</option>
-                <option value="12">12 ay</option>
-                <option value="24">24 ay</option>
-                <option value="36">36 ay</option>
-                <option value="48">48 ay</option>
-                <option value="60">60 ay</option>
-            </select>
-                <label for="loan_term" class="input_group__label">Kredi Vadesi</label>
-                <span asp-validation-for="LoanRequest.LoanTerm" class="input_group__error"></span>
-        </div>
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="loan_apply_error">
+                        @Model.ErrorMessage
+                    </div>
+                }
 
-        <!-- Meslek -->
-            <div class="input_group" id="job_id_group">
-                <select asp-for="LoanRequest.JobId" 
-                        id="job_id" 
-                        class="input_group__field input_group__field--select">
-                <option value="">Seçiniz</option>
-            </select>
-                <label for="job_id" class="input_group__label">Meslek</label>
-        </div>
+                <form method="post" id="loan_application_form" class="loan_apply_form" novalidate>
+                    <!-- Kredi Tutarı - Slider -->
+                    <div class="loan_apply_slider_group">
+                        <label class="loan_apply_slider_label">Kredi Tutarı</label>
+                        <div class="loan_apply_slider_display">
+                            <span id="loan_amount_display" class="loan_apply_slider_amount">100.000</span>
+                            <span class="loan_apply_slider_currency">TL</span>
+                        </div>
+                        <input type="range" 
+                               id="loan_amount_slider" 
+                               class="loan_apply_slider_input"
+                               min="10000" 
+                               max="1000000" 
+                               step="1000"
+                               value="100000" />
+                        <input type="hidden" 
+                               asp-for="LoanRequest.LoanAmount" 
+                               id="loan_amount" 
+                               value="100000" />
+                        <div class="loan_apply_slider_limits">
+                            <span>Min: 10.000 TL</span>
+                            <span>Max: 1.000.000 TL</span>
+                        </div>
+                        <span asp-validation-for="LoanRequest.LoanAmount" class="loan_apply_input_error"></span>
+                    </div>
 
-        <!-- Dinamik Form - Kamu Çalışanı için ek alanlar -->
-            <div id="public_employee_fields" class="loan_apply_form__dynamic_fields" style="display: none;">
-                <div class="input_group">
-                <input type="text" 
-                       asp-for="LoanRequest.InstitutionName" 
-                       id="institution_name" 
-                           class="input_group__field" 
-                       placeholder=" " 
-                       maxlength="200" />
-                    <label for="institution_name" class="input_group__label">Kurum Adı</label>
-                    <span class="input_group__helper">Çalıştığınız kurumun adını giriniz</span>
+                    <!-- Kredi Türü -->
+                    <div class="loan_apply_input_group">
+                        <label for="loan_type" class="loan_apply_input_label">Kredi Türü</label>
+                        <select asp-for="LoanRequest.LoanType" 
+                                id="loan_type" 
+                                class="loan_apply_select" 
+                                required>
+                            <option value="">Seçiniz</option>
+                            <option value="ihtiyac">İhtiyaç Kredisi</option>
+                            <option value="tasit">Taşıt Kredisi</option>
+                            <option value="konut">Konut Kredisi</option>
+                            <option value="ticari">Ticari Kredi</option>
+                        </select>
+                        <span asp-validation-for="LoanRequest.LoanType" class="loan_apply_input_error"></span>
+                    </div>
+
+                    <!-- Kredi Vadesi -->
+                    <div class="loan_apply_input_group">
+                        <label for="loan_term" class="loan_apply_input_label">Kredi Vadesi</label>
+                        <select asp-for="LoanRequest.LoanTerm" 
+                                id="loan_term" 
+                                class="loan_apply_select" 
+                                required>
+                            <option value="">Seçiniz</option>
+                            <option value="12">12 ay</option>
+                            <option value="24">24 ay</option>
+                            <option value="36">36 ay</option>
+                            <option value="48">48 ay</option>
+                            <option value="60">60 ay</option>
+                        </select>
+                        <span asp-validation-for="LoanRequest.LoanTerm" class="loan_apply_input_error"></span>
+                    </div>
+
+                    <!-- Meslek -->
+                    <div class="loan_apply_input_group">
+                        <label for="job_id" class="loan_apply_input_label">Meslek</label>
+                        <select asp-for="LoanRequest.JobId" 
+                                id="job_id" 
+                                class="loan_apply_select">
+                            <option value="">Seçiniz</option>
+                        </select>
+                    </div>
+
+                    <!-- Dinamik Form - Kamu Çalışanı için ek alanlar -->
+                    <div id="public_employee_fields" class="loan_apply_dynamic_fields" style="display: none;">
+                        <div class="loan_apply_input_group">
+                            <label for="institution_name" class="loan_apply_input_label">Kurum Adı</label>
+                            <input type="text" 
+                                   asp-for="LoanRequest.InstitutionName" 
+                                   id="institution_name" 
+                                   class="loan_apply_input" 
+                                   placeholder="Kurum adınızı giriniz" 
+                                   maxlength="200" />
+                            <span class="loan_apply_input_helper">Çalıştığınız kurumun adını giriniz</span>
+                        </div>
+
+                        <div class="loan_apply_input_group">
+                            <label for="position" class="loan_apply_input_label">Görev</label>
+                            <input type="text" 
+                                   asp-for="LoanRequest.Position" 
+                                   id="position" 
+                                   class="loan_apply_input" 
+                                   placeholder="Görev unvanınızı giriniz" 
+                                   maxlength="100" />
+                            <span class="loan_apply_input_helper">Görev unvanınızı giriniz</span>
+                        </div>
+                    </div>
+
+                    <!-- Açıklama (Opsiyonel) -->
+                    <div class="loan_apply_input_group">
+                        <label for="loan_description" class="loan_apply_input_label">Açıklama (Opsiyonel)</label>
+                        <textarea asp-for="LoanRequest.Description" 
+                                  id="loan_description" 
+                                  class="loan_apply_textarea" 
+                                  placeholder="Varsa eklemek istediğiniz açıklamalar..." 
+                                  maxlength="500"
+                                  rows="4"></textarea>
+                        <span class="loan_apply_input_helper">Maksimum 500 karakter (<span id="char_count">0</span>/500)</span>
+                    </div>
+                </form>
             </div>
 
-                <div class="input_group">
-                <input type="text" 
-                       asp-for="LoanRequest.Position" 
-                       id="position" 
-                           class="input_group__field" 
-                       placeholder=" " 
-                       maxlength="100" />
-                    <label for="position" class="input_group__label">Görev</label>
-                    <span class="input_group__helper">Görev unvanınızı giriniz</span>
+            <!-- Sağ Taraf: Sticky Özet Kartı -->
+            <div class="loan_apply_summary_card">
+                <div class="loan_apply_summary_header">
+                    <h2 class="loan_apply_summary_title">Ödeme Planınız</h2>
+                    <p class="loan_apply_summary_subtitle">Tahmini ödeme bilgileri</p>
+                </div>
+
+                <div class="loan_apply_summary_item">
+                    <label class="loan_apply_summary_label">Aylık Taksit</label>
+                    <p class="loan_apply_summary_value" id="monthly_payment_display">0 TL</p>
+                    <p class="loan_apply_summary_detail">Tahmini faiz dahil</p>
+                </div>
+
+                <div class="loan_apply_summary_item">
+                    <label class="loan_apply_summary_label">Toplam Geri Ödeme</label>
+                    <p class="loan_apply_summary_value" id="total_payment_display">0 TL</p>
+                    <p class="loan_apply_summary_detail">Anapara + Faiz</p>
+                </div>
+
+                <div class="loan_apply_summary_item">
+                    <label class="loan_apply_summary_label">Faiz Oranı (Tahmini)</label>
+                    <p class="loan_apply_summary_value" style="font-size: 1.5rem;">%2.49</p>
+                </div>
+
+                <button type="submit" 
+                        form="loan_application_form" 
+                        id="submit_btn" 
+                        class="loan_apply_submit_btn">
+                    <span id="submit_btn_text">Hemen Başvur</span>
+                    <span id="submit_btn_loading" class="loan_apply_submit_loading">
+                        Lütfen Bekleyin...
+                    </span>
+                </button>
             </div>
         </div>
-
-        <!-- Açıklama (Opsiyonel) -->
-            <div class="input_group">
-            <textarea asp-for="LoanRequest.Description" 
-                      id="loan_description" 
-                          class="input_group__field input_group__field--textarea" 
-                      placeholder=" " 
-                      maxlength="500"
-                      rows="4"></textarea>
-                <label for="loan_description" class="input_group__label">Açıklama (Opsiyonel)</label>
-                <span class="input_group__helper">Maksimum 500 karakter (<span id="char_count">0</span>/500)</span>
-        </div>
-
-        <!-- Submit Button -->
-            <button type="submit" id="submit_btn" class="btn_primary">
-                <span id="submit_btn_text">Devam Et</span>
-                <span id="submit_btn_loading" style="display: none;">
-                    Lütfen Bekleyin...
-                </span>
-            </button>
-        </form>
-        </div>
+    </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/loan_apply.js"></script>
+    <script>
+        // Canlı hesaplama fonksiyonu
+        function calculateMonthlyPayment(amount, term) {
+            if (!amount || !term || term === 0) {
+                return 0;
+            }
+            // Basit hesaplama: Tutar / Vade * 1.2 (faiz dahil simülasyonu)
+            return Math.round((amount / term) * 1.2);
+        }
+
+        function updateSummaryCard() {
+            var amount = parseInt($('#loan_amount').val()) || 0;
+            var term = parseInt($('#loan_term').val()) || 0;
+            
+            var monthlyPayment = calculateMonthlyPayment(amount, term);
+            var totalPayment = monthlyPayment * term;
+            
+            // Formatla ve göster
+            $('#monthly_payment_display').text(new Intl.NumberFormat('tr-TR').format(monthlyPayment) + ' TL');
+            $('#total_payment_display').text(new Intl.NumberFormat('tr-TR').format(totalPayment) + ' TL');
+        }
+
+        $(document).ready(function() {
+            // Slider ve vade değişikliklerinde özeti güncelle
+            $('#loan_amount_slider, #loan_term').on('input change', function() {
+                updateSummaryCard();
+            });
+            
+            // İlk yüklemede hesapla
+            updateSummaryCard();
+        });
+    </script>
 }

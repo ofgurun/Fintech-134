@@ -2,7 +2,317 @@
 @model InteraktifKredi.Web.Pages.Loan.ResultModel
 @{
     ViewData["Title"] = "Başvuru Sonucu";
+    Layout = "_DashboardLayout";
 }
 
-<h1>@ViewData["Title"]</h1>
+<style>
+    /* ========================================================================
+       LOAN RESULT PAGE - PREMIUM SUCCESS/ERROR CARD
+       ======================================================================== */
+    
+    .loan_result_page {
+        font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: #F3F4F6;
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+    }
+    
+    .loan_result_card {
+        background-color: #FFFFFF;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+        max-width: 28rem;
+        width: 100%;
+        padding: 3rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    @@media (max-width: 640px) {
+        .loan_result_card {
+            padding: 2rem 1.5rem;
+        }
+    }
+    
+    /* ========================================================================
+       ICON SECTION (Success/Error)
+       ======================================================================== */
+    
+    .loan_result_icon_wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Success Icon - Yeşil */
+    .loan_result_icon--success {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        animation: loan_result_icon_bounce 0.6s ease-out;
+    }
+    
+    .loan_result_icon--success::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: rgba(16, 185, 129, 0.2);
+        animation: loan_result_icon_pulse 2s ease-out infinite;
+    }
+    
+    /* Error Icon - Kırmızı */
+    .loan_result_icon--error {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        animation: loan_result_icon_bounce 0.6s ease-out;
+    }
+    
+    .loan_result_icon--error::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.2);
+        animation: loan_result_icon_pulse 2s ease-out infinite;
+    }
+    
+    .loan_result_icon_svg {
+        width: 48px;
+        height: 48px;
+        stroke: #FFFFFF;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        position: relative;
+        z-index: 1;
+    }
+    
+    @@keyframes loan_result_icon_bounce {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    @@keyframes loan_result_icon_pulse {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 0.6;
+        }
+        50% {
+            transform: scale(1.3);
+            opacity: 0;
+        }
+    }
+    
+    /* ========================================================================
+       TYPOGRAPHY
+       ======================================================================== */
+    
+    .loan_result_title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 0.75rem 0;
+        line-height: 1.2;
+    }
+    
+    .loan_result_description {
+        font-size: 0.875rem;
+        color: #6B7280;
+        line-height: 1.6;
+        margin: 0 0 2rem 0;
+    }
+    
+    /* Error durumu için */
+    .loan_result_card--error .loan_result_title {
+        color: #DC2626;
+    }
+    
+    .loan_result_card--error .loan_result_description {
+        color: #991B1B;
+    }
+    
+    /* ========================================================================
+       ACTION BUTTONS
+       ======================================================================== */
+    
+    .loan_result_actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    @@media (min-width: 640px) {
+        .loan_result_actions {
+            flex-direction: row;
+        }
+    }
+    
+    .loan_result_btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        font-family: inherit;
+    }
+    
+    /* Primary Button (Anasayfaya Dön) */
+    .loan_result_btn--primary {
+        background-color: #2563EB;
+        color: #FFFFFF;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+    
+    .loan_result_btn--primary:hover {
+        background-color: #1E40AF;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    .loan_result_btn--primary:active {
+        transform: translateY(0);
+    }
+    
+    /* Secondary Button (Başvurularımı Görüntüle) */
+    .loan_result_btn--secondary {
+        background-color: #FFFFFF;
+        color: #2563EB;
+        border: 2px solid #2563EB;
+    }
+    
+    .loan_result_btn--secondary:hover {
+        background-color: #EFF6FF;
+        border-color: #1E40AF;
+        transform: translateY(-2px);
+    }
+    
+    .loan_result_btn--secondary:active {
+        transform: translateY(0);
+    }
+</style>
 
+<!-- ========================================================================
+     LOAN RESULT PAGE
+======================================================================== -->
+
+<div class="loan_result_page">
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <!-- Success Card -->
+        <div class="loan_result_card">
+            <div class="loan_result_icon_wrapper">
+                <div class="loan_result_icon--success">
+                    <svg class="loan_result_icon_svg" viewBox="0 0 24 24">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <h1 class="loan_result_title">Tebrikler! Başvurunuz Alındı.</h1>
+            
+            <p class="loan_result_description">
+                Kredi başvurunuz başarıyla sistemimize iletilmiştir. Değerlendirme sonucunuz en kısa sürede SMS ve E-posta yoluyla tarafınıza bildirilecektir.
+            </p>
+            
+            <div class="loan_result_actions">
+                <a asp-page="/Dashboard/Index" class="loan_result_btn loan_result_btn--primary">
+                    Anasayfaya Dön
+                </a>
+                <a asp-page="/Dashboard/Index" class="loan_result_btn loan_result_btn--secondary">
+                    Başvurularımı Görüntüle
+                </a>
+            </div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <!-- Error Card -->
+        <div class="loan_result_card loan_result_card--error">
+            <div class="loan_result_icon_wrapper">
+                <div class="loan_result_icon--error">
+                    <svg class="loan_result_icon_svg" viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <h1 class="loan_result_title">Başvuru Başarısız</h1>
+            
+            <p class="loan_result_description">
+                @Model.ErrorMessage
+            </p>
+            
+            <div class="loan_result_actions">
+                <a asp-page="/Loan/Apply" class="loan_result_btn loan_result_btn--primary">
+                    Tekrar Dene
+                </a>
+                <a asp-page="/Dashboard/Index" class="loan_result_btn loan_result_btn--secondary">
+                    Anasayfaya Dön
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Default - No Message (Should not happen, but just in case) -->
+        <div class="loan_result_card">
+            <div class="loan_result_icon_wrapper">
+                <div class="loan_result_icon--success">
+                    <svg class="loan_result_icon_svg" viewBox="0 0 24 24">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <h1 class="loan_result_title">Başvuru Durumu</h1>
+            
+            <p class="loan_result_description">
+                Başvurunuzla ilgili bilgi bulunamadı. Lütfen tekrar deneyin.
+            </p>
+            
+            <div class="loan_result_actions">
+                <a asp-page="/Loan/Apply" class="loan_result_btn loan_result_btn--primary">
+                    Yeni Başvuru Yap
+                </a>
+                <a asp-page="/Dashboard/Index" class="loan_result_btn loan_result_btn--secondary">
+                    Anasayfaya Dön
+                </a>
+            </div>
+        </div>
+    }
+</div>
