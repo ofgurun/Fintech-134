@@ -9,26 +9,24 @@ namespace InteraktifKredi.Web.Models.Api.Dashboard
 
     /// <summary>
     /// Customer address response model
+    /// API Response: { "statusCode": 200, "value": { "cityId": 34, "townId": 12, "address": "...", "customerId": 1, "source": 2 } }
     /// </summary>
     public class AddressResponse
     {
-        [JsonPropertyName("city")]
-        public string City { get; set; } = string.Empty;
+        [JsonPropertyName("cityId")]
+        public int? CityId { get; set; }
 
-        [JsonPropertyName("county")]
-        public string County { get; set; } = string.Empty;
+        [JsonPropertyName("townId")]
+        public int? TownId { get; set; }
 
-        [JsonPropertyName("district")]
-        public string District { get; set; } = string.Empty;
+        [JsonPropertyName("address")]
+        public string Address { get; set; } = string.Empty;
 
-        [JsonPropertyName("addressDetail")]
-        public string AddressDetail { get; set; } = string.Empty;
+        [JsonPropertyName("customerId")]
+        public long? CustomerId { get; set; }
 
-        [JsonPropertyName("residenceDuration")]
-        public int? ResidenceDuration { get; set; }
-
-        [JsonPropertyName("homeType")]
-        public string? HomeType { get; set; }
+        [JsonPropertyName("source")]
+        public int? Source { get; set; }
     }
 
     /// <summary>
@@ -90,26 +88,27 @@ namespace InteraktifKredi.Web.Models.Api.Dashboard
 
     /// <summary>
     /// Job information response model
+    /// API Response: { "statusCode": 200, "value": { "titleCompany": "...", "companyPosition": "...", "jobGroupId": 3, "customerWork": 5, "workingYears": 5, "workingMonth": 2 } }
     /// </summary>
     public class JobResponse
     {
-        [JsonPropertyName("company")]
-        public string Company { get; set; } = string.Empty;
+        [JsonPropertyName("titleCompany")]
+        public string? TitleCompany { get; set; }
 
-        [JsonPropertyName("position")]
-        public string Position { get; set; } = string.Empty;
+        [JsonPropertyName("companyPosition")]
+        public string? CompanyPosition { get; set; }
 
-        [JsonPropertyName("sector")]
-        public string? Sector { get; set; }
+        [JsonPropertyName("jobGroupId")]
+        public int? JobGroupId { get; set; }
 
-        [JsonPropertyName("employmentType")]
-        public string? EmploymentType { get; set; }
+        [JsonPropertyName("customerWork")]
+        public int? CustomerWork { get; set; }
 
-        [JsonPropertyName("startDate")]
-        public DateTime? StartDate { get; set; }
+        [JsonPropertyName("workingYears")]
+        public int? WorkingYears { get; set; }
 
-        [JsonPropertyName("monthlyIncome")]
-        public decimal? MonthlyIncome { get; set; }
+        [JsonPropertyName("workingMonth")]
+        public int? WorkingMonth { get; set; }
     }
 
     // ========================================================================
@@ -118,29 +117,24 @@ namespace InteraktifKredi.Web.Models.Api.Dashboard
 
     /// <summary>
     /// Save customer address request model
+    /// API Request: { "customerId": 1, "adress": "string", "cityId": 34, "townId": 12, "source": 2 }
     /// </summary>
     public class SaveAddressRequest
     {
         [JsonPropertyName("customerId")]
         public long CustomerId { get; set; }
 
-        [JsonPropertyName("city")]
-        public string? City { get; set; }
+        [JsonPropertyName("adress")]
+        public string Address { get; set; } = string.Empty;
 
-        [JsonPropertyName("county")]
-        public string? County { get; set; }
+        [JsonPropertyName("cityId")]
+        public int CityId { get; set; }
 
-        [JsonPropertyName("district")]
-        public string? District { get; set; }
+        [JsonPropertyName("townId")]
+        public int TownId { get; set; }
 
-        [JsonPropertyName("addressDetail")]
-        public string? AddressDetail { get; set; }
-
-        [JsonPropertyName("residenceDuration")]
-        public int? ResidenceDuration { get; set; }
-
-        [JsonPropertyName("homeType")]
-        public string? HomeType { get; set; }
+        [JsonPropertyName("source")]
+        public int Source { get; set; } = 2; // Sabit değer: 2 = Kişi ekler
     }
 
     /// <summary>
@@ -148,23 +142,17 @@ namespace InteraktifKredi.Web.Models.Api.Dashboard
     /// </summary>
     public class SaveWifeInfoRequest
     {
-        [JsonPropertyName("wifeName")]
-        public string? WifeName { get; set; }
-
-        [JsonPropertyName("wifeTCKN")]
-        public string? WifeTCKN { get; set; }
-
-        [JsonPropertyName("wifePhone")]
-        public string? WifePhone { get; set; }
+        [JsonPropertyName("customerId")]
+        public long CustomerId { get; set; }
 
         [JsonPropertyName("maritalStatus")]
-        public string? MaritalStatus { get; set; }
+        public bool MaritalStatus { get; set; }
 
-        [JsonPropertyName("numberOfChildren")]
-        public int? NumberOfChildren { get; set; }
+        [JsonPropertyName("workWife")]
+        public bool WorkWife { get; set; }
 
-        [JsonPropertyName("isWifeWorking")]
-        public bool? IsWifeWorking { get; set; }
+        [JsonPropertyName("wifeSalaryAmount")]
+        public decimal? WifeSalaryAmount { get; set; }
     }
 
     /// <summary>
@@ -175,58 +163,51 @@ namespace InteraktifKredi.Web.Models.Api.Dashboard
         [JsonPropertyName("customerId")]
         public long CustomerId { get; set; }
 
-        [JsonPropertyName("hasCar")]
-        public bool? HasCar { get; set; }
+        [JsonPropertyName("workSector")]
+        public int WorkSector { get; set; }
 
-        [JsonPropertyName("carValue")]
-        public decimal? CarValue { get; set; }
+        [JsonPropertyName("salaryBank")]
+        public string? SalaryBank { get; set; }
 
-        [JsonPropertyName("hasRealEstate")]
-        public bool? HasRealEstate { get; set; }
+        [JsonPropertyName("salaryAmount")]
+        public decimal? SalaryAmount { get; set; }
 
-        [JsonPropertyName("realEstateValue")]
-        public decimal? RealEstateValue { get; set; }
+        [JsonPropertyName("carStatus")]
+        public bool CarStatus { get; set; }
 
-        [JsonPropertyName("bankName")]
-        public string? BankName { get; set; }
-
-        [JsonPropertyName("accountBalance")]
-        public decimal? AccountBalance { get; set; }
-
-        [JsonPropertyName("hasCreditCard")]
-        public bool? HasCreditCard { get; set; }
-
-        [JsonPropertyName("creditCardLimit")]
-        public decimal? CreditCardLimit { get; set; }
-
-        [JsonPropertyName("monthlyExpenses")]
-        public decimal? MonthlyExpenses { get; set; }
+        [JsonPropertyName("houseStatus")]
+        public bool HouseStatus { get; set; }
     }
 
     /// <summary>
     /// Save job information request model
+    /// API Request: { "customerId": 1000849, "customerWork": 5, "jobGroupId": 3, "workingYears": 5, "workingMonth": 2, "titleCompany": "...", "companyPosition": "..." }
     /// </summary>
     public class SaveJobRequest
     {
         [JsonPropertyName("customerId")]
         public long CustomerId { get; set; }
 
-        [JsonPropertyName("company")]
-        public string? Company { get; set; }
+        [JsonPropertyName("customerWork")]
+        public int CustomerWork { get; set; }
 
-        [JsonPropertyName("position")]
-        public string? Position { get; set; }
+        [JsonPropertyName("jobGroupId")]
+        public int JobGroupId { get; set; }
 
-        [JsonPropertyName("sector")]
-        public string? Sector { get; set; }
+        [JsonPropertyName("workingYears")]
+        public int WorkingYears { get; set; }
 
-        [JsonPropertyName("employmentType")]
-        public string? EmploymentType { get; set; }
+        [JsonPropertyName("workingMonth")]
+        public int WorkingMonth { get; set; }
 
-        [JsonPropertyName("startDate")]
+        [JsonPropertyName("titleCompany")]
+        public string TitleCompany { get; set; } = string.Empty;
+
+        [JsonPropertyName("companyPosition")]
+        public string CompanyPosition { get; set; } = string.Empty;
+
+        // UI-only fields (not sent to API)
         public DateTime? StartDate { get; set; }
-
-        [JsonPropertyName("monthlyIncome")]
         public decimal? MonthlyIncome { get; set; }
     }
 }
