@@ -23,9 +23,10 @@
 // ----------------------------------------------------------------------------
 // 3. LAYOUT
 // ----------------------------------------------------------------------------
-// Layout bileşenleri (Header, Footer)
+// Layout bileşenleri (Header, Footer, Dashboard)
 @use 'layout/header';
 @use 'layout/footer';
+@use 'layouts/dashboard' as dashboard-layout;
 
 // ----------------------------------------------------------------------------
 // 4. COMPONENTS
@@ -44,6 +45,7 @@
 @use 'pages/otp_verify';
 @use 'pages/loan_apply';
 @use 'pages/dashboard';
+@use 'pages/profile';
 @use 'pages/loan_wizard';
 @use 'pages/terms';
 @use 'pages/contact';

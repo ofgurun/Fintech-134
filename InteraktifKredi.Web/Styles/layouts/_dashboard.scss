@@ -1,0 +1,599 @@
+// ============================================================================
+// DASHBOARD LAYOUT - İNTERAKTİF KREDİ
+// ============================================================================
+// Modern sidebar-based admin panel layout
+// Fixed sidebar, scrollable content area
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// DASHBOARD LAYOUT - Body & Main Container
+// ----------------------------------------------------------------------------
+
+.dashboard_layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: $bg_lighter;
+  overflow-x: hidden;
+}
+
+// ----------------------------------------------------------------------------
+// SIDEBAR - Fixed Left Menu
+// ----------------------------------------------------------------------------
+
+.dashboard_sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, $color_navy 0%, $color_primary_dark 100%);
+  box-shadow: $shadow_lg;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow-y: auto;
+  
+  @include respond_to_max(md) {
+    width: 240px;
+  }
+  
+  @include respond_to_max(sm) {
+    width: 100%;
+    transform: translateX(-100%);
+    transition: $transition_all;
+    
+    &--open {
+      transform: translateX(0);
+    }
+  }
+  
+  // Logo Section
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: $spacing_3;
+    padding: $spacing_6 $spacing_5;
+    border-bottom: 1px solid rgba(white, 0.1);
+    
+    @include respond_to_max(md) {
+      padding: $spacing_5 $spacing_4;
+    }
+  }
+  
+  &__logo_img {
+    width: 40px;
+    height: auto;
+    flex-shrink: 0;
+  }
+  
+  &__logo_text {
+    font-family: $font_family_heading;
+    font-size: $font_size_lg;
+    font-weight: $font_weight_bold;
+    color: white;
+    line-height: 1.2;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_base;
+    }
+  }
+  
+  // Navigation
+  &__nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: $spacing_4 0;
+  }
+  
+  &__menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  &__menu_item {
+    margin-bottom: $spacing_1;
+    
+    &--active {
+      .dashboard_sidebar__menu_link {
+        background-color: rgba(white, 0.15);
+        color: white;
+        font-weight: $font_weight_semibold;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background-color: white;
+          border-radius: 0 $border_radius_sm $border_radius_sm 0;
+        }
+      }
+    }
+  }
+  
+  &__menu_link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $spacing_3;
+    padding: $spacing_4 $spacing_5;
+    color: rgba(white, 0.8);
+    text-decoration: none;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_medium;
+    transition: $transition_all;
+    
+    &:hover {
+      background-color: rgba(white, 0.08);
+      color: white;
+    }
+    
+    @include respond_to_max(md) {
+      padding: $spacing_3 $spacing_4;
+    }
+  }
+  
+  &__menu_icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: currentColor;
+  }
+  
+  &__menu_text {
+    flex: 1;
+    line-height: 1.5;
+  }
+  
+  // Footer (Logout)
+  &__footer {
+    margin-top: auto;
+    padding: $spacing_4 0;
+    border-top: 1px solid rgba(white, 0.1);
+  }
+  
+  &__logout_form {
+    margin: 0;
+    padding: 0;
+  }
+  
+  &__logout_btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: $spacing_3;
+    padding: $spacing_4 $spacing_5;
+    background: none;
+    border: none;
+    color: rgba(white, 0.8);
+    font-size: $font_size_sm;
+    font-weight: $font_weight_medium;
+    cursor: pointer;
+    transition: $transition_all;
+    text-align: left;
+    
+    &:hover {
+      background-color: rgba($color_error, 0.2);
+      color: white;
+    }
+    
+    @include respond_to_max(md) {
+      padding: $spacing_3 $spacing_4;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// MAIN CONTENT AREA
+// ----------------------------------------------------------------------------
+
+.dashboard_main {
+  flex: 1;
+  margin-left: 280px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  @include respond_to_max(md) {
+    margin-left: 240px;
+  }
+  
+  @include respond_to_max(sm) {
+    margin-left: 0;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// DASHBOARD HEADER (Top Bar)
+// ----------------------------------------------------------------------------
+
+.dashboard_header {
+  background-color: white;
+  border-bottom: 1px solid $border_color;
+  padding: $spacing_6 $spacing_8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $spacing_4;
+  box-shadow: $shadow_sm;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  
+  @include respond_to_max(md) {
+    padding: $spacing_5 $spacing_4;
+    flex-wrap: wrap;
+  }
+  
+  &__welcome {
+    flex: 1;
+  }
+  
+  &__title {
+    font-family: $font_family_heading;
+    font-size: $font_h2;
+    font-weight: $font_weight_bold;
+    color: $color_navy;
+    margin: 0 0 $spacing_2 0;
+    line-height: 1.2;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_xl;
+    }
+  }
+  
+  &__subtitle {
+    font-size: $font_size_sm;
+    color: $text_light;
+    margin: 0;
+    line-height: 1.5;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_xs;
+    }
+  }
+  
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing_4;
+  }
+  
+  &__notification {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $bg_lighter;
+    border: none;
+    border-radius: $border_radius_md;
+    color: $text_dark;
+    cursor: pointer;
+    transition: $transition_all;
+    
+    &:hover {
+      background-color: $color_primary_light;
+      color: $color_primary;
+    }
+  }
+  
+  &__notification_badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background-color: $color_error;
+    color: white;
+    font-size: 10px;
+    font-weight: $font_weight_bold;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+  }
+  
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: $spacing_3;
+    cursor: pointer;
+  }
+  
+  &__user_avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: $border_radius_full;
+    background: linear-gradient(135deg, $color_primary, $color_primary_light);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_bold;
+    box-shadow: $shadow_md;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// DASHBOARD CONTENT - Main Content Area
+// ----------------------------------------------------------------------------
+
+.dashboard_content {
+  flex: 1;
+  padding: $spacing_8;
+  
+  @include respond_to_max(md) {
+    padding: $spacing_5;
+  }
+  
+  @include respond_to_max(sm) {
+    padding: $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// DASHBOARD PAGE - Content Wrapper
+// ----------------------------------------------------------------------------
+
+.dashboard_page {
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  &__header {
+    margin-bottom: $spacing_8;
+    
+    @include respond_to_max(md) {
+      margin-bottom: $spacing_6;
+    }
+  }
+  
+  &__title {
+    font-family: $font_family_heading;
+    font-size: $font_h1;
+    font-weight: $font_weight_bold;
+    color: $color_navy;
+    margin: 0 0 $spacing_3 0;
+    line-height: 1.2;
+    
+    @include respond_to_max(md) {
+      font-size: $font_h2;
+    }
+  }
+  
+  &__description {
+    font-size: $font_size_base;
+    color: $text_light;
+    margin: 0;
+    line-height: 1.6;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_sm;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// DASHBOARD REPORTS - Reports Grid
+// ----------------------------------------------------------------------------
+
+.dashboard_reports {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: $spacing_6;
+  
+  @include respond_to_max(md) {
+    grid-template-columns: 1fr;
+    gap: $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// REPORT CARD - Individual Report Card
+// ----------------------------------------------------------------------------
+
+.report_card {
+  background-color: white;
+  border-radius: $border_radius_lg;
+  box-shadow: $shadow_base;
+  padding: $spacing_6;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_4;
+  transition: $transition_all;
+  border: 1px solid $border_color;
+  
+  &:hover {
+    box-shadow: $shadow_lg;
+    transform: translateY(-4px);
+  }
+  
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: $border_radius_md;
+    background-color: $color_primary_light;
+    color: $color_primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &__badge {
+    padding: $spacing_2 $spacing_3;
+    border-radius: $border_radius_sm;
+    font-size: $font_size_xs;
+    font-weight: $font_weight_semibold;
+    
+    &--success {
+      background-color: $success_light;
+      color: $success_color;
+    }
+    
+    &--pending {
+      background-color: $warning_light;
+      color: $warning_color;
+    }
+  }
+  
+  &__body {
+    flex: 1;
+  }
+  
+  &__title {
+    font-size: $font_size_lg;
+    font-weight: $font_weight_semibold;
+    color: $color_navy;
+    margin: 0 0 $spacing_2 0;
+  }
+  
+  &__date {
+    font-size: $font_size_sm;
+    color: $text_light;
+    margin: 0 0 $spacing_4 0;
+  }
+  
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing_2;
+  }
+  
+  &__meta_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing_2 0;
+    border-bottom: 1px solid $border_color;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  &__meta_label {
+    font-size: $font_size_xs;
+    color: $text_light;
+    font-weight: $font_weight_medium;
+  }
+  
+  &__meta_value {
+    font-size: $font_size_sm;
+    color: $text_dark;
+    font-weight: $font_weight_semibold;
+  }
+  
+  &__score {
+    display: flex;
+    align-items: baseline;
+    gap: $spacing_2;
+    padding-top: $spacing_2;
+  }
+  
+  &__score_label {
+    font-size: $font_size_sm;
+    color: $text_light;
+  }
+  
+  &__score_value {
+    font-size: $font_size_xl;
+    font-weight: $font_weight_bold;
+    color: $color_primary;
+  }
+  
+  &__footer {
+    padding-top: $spacing_4;
+    border-top: 1px solid $border_color;
+  }
+  
+  &__btn {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border_radius_md;
+    font-size: $font_size_sm;
+    font-weight: $font_weight_semibold;
+    cursor: pointer;
+    transition: $transition_all;
+    border: none;
+    
+    &--primary {
+      background-color: $color_primary;
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background-color: $primary_color_dark;
+        box-shadow: $shadow_md;
+      }
+    }
+    
+    &--secondary {
+      background-color: $bg_lighter;
+      color: $text_light;
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  // Empty State
+  &--empty {
+    text-align: center;
+    padding: $spacing_10;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+  
+  &__empty_icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto $spacing_5;
+    border-radius: $border_radius_full;
+    background-color: $bg_lighter;
+    color: $text_lighter;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &__empty_title {
+    font-size: $font_size_xl;
+    font-weight: $font_weight_semibold;
+    color: $color_navy;
+    margin: 0 0 $spacing_3 0;
+  }
+  
+  &__empty_text {
+    font-size: $font_size_base;
+    color: $text_light;
+    margin: 0 0 $spacing_6 0;
+  }
+}
+
+// ============================================================================
+// END OF DASHBOARD LAYOUT
+// ============================================================================
+

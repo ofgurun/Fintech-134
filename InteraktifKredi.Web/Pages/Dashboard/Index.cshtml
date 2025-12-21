@@ -1,63 +1,82 @@
 @page
 @model InteraktifKredi.Web.Pages.Dashboard.IndexModel
 @{
-    ViewData["Title"] = "Web Şube";
-    Layout = null; // KVKK modalı için Layout kaldırıldı
+    ViewData["Title"] = "Raporlarım";
+    Layout = "_DashboardLayout";
 }
 
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - İnteraktif Kredi</title>
-    <link rel="stylesheet" href="~/css/main.css" />
-</head>
-<body>
-
-<div class="dashboard_container" style="@(Model.ShowKvkk ? "filter: blur(5px); pointer-events: none;" : "")">
-    <div class="dashboard_header">
-        <h1>Hoş Geldiniz</h1>
-        <p class="dashboard_subtitle">İnteraktif Kredi Web Şube'ye hoş geldiniz</p>
-    </div>
-
-    <div class="dashboard_cards">
-        <div class="card">
-            <div class="card__header">
-                <h2>Kredi Hesaplama</h2>
-            </div>
-            <div class="card__body">
-                <p>İhtiyacınıza uygun kredi seçeneklerini hesaplayın ve başvurunuzu yapın.</p>
-                <a href="/Loan/Apply" class="btn_primary btn_primary--auto mt-4">Kredi Hesapla</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card__header">
-                <h2>Hizmetlerimiz</h2>
-            </div>
-            <div class="card__body">
-                <p>Tüm bankacılık hizmetlerimize buradan ulaşabilirsiniz.</p>
-                <a href="/Dashboard" class="btn_secondary btn_secondary--auto mt-4">Hizmetleri Gör</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card__header">
-                <h2>Profil</h2>
-            </div>
-            <div class="card__body">
-                <p>Hesap bilgilerinizi görüntüleyin ve güncelleyin.</p>
-                <a href="/Account/Profile" class="btn_outline btn_outline--auto mt-4">Profili Görüntüle</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- KVKK Modal (shown on Dashboard after OTP verification) -->
+<!-- KVKK Modal Kontrolü - Layout dışında -->
 @if (Model.ShowKvkk)
 {
-    <div id="kvkkModal" class="modal-overlay active">
+    <!-- KVKK Modal (Full screen overlay) -->
+    <script>
+        // Global fonksiyon - inline onclick için
+        function approveKvkk() {
+            var $btn = $('#btn-approve-kvkk');
+            var kvkkId = @Model.KvkkId;
+            var customerId = @Model.CustomerId;
+            
+            console.log('🔵 KVKK Onay butonu tıklandı', { kvkkId, customerId });
+            
+            $btn.prop('disabled', true).text('Kaydediliyor...');
+            
+            $.ajax({
+                url: '/Dashboard/Index?handler=ApproveKvkk',
+                type: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                data: JSON.stringify({
+                    kvkkId: kvkkId,
+                    customerId: customerId
+                }),
+                success: function(response) {
+                    console.log('✅ KVKK onay response:', response);
+                    
+                    if (response && response.success === true) {
+                        console.log('✅ KVKK onaylandı, modal kapatılıyor...');
+                        
+                        // Modal'ı kapat
+                        $('#kvkkModal').fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        
+                        // Blur'u kaldır
+                        $('.dashboard_sidebar, .dashboard_main').css({
+                            'filter': 'none',
+                            'pointer-events': 'auto'
+                        });
+                        
+                        console.log('✅ Dashboard aktif!');
+                    } else {
+                        console.error('❌ KVKK onayı başarısız:', response);
+                        alert('KVKK onayı kaydedilemedi. Lütfen tekrar deneyin.');
+                        $btn.prop('disabled', false).text('Okudum, Onaylıyorum');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('❌ AJAX hatası:', { status, error, response: xhr.responseText });
+                    alert('Bir hata oluştu. Lütfen sayfayı yenileyip tekrar deneyin.');
+                    $btn.prop('disabled', false).text('Okudum, Onaylıyorum');
+                }
+            });
+            
+            return false; // Form submit'i engelle
+        }
+        
+        // DOM hazır olunca blur uygula
+        $(document).ready(function() {
+            $('.dashboard_sidebar, .dashboard_main').css({
+                'filter': 'blur(5px)',
+                'pointer-events': 'none'
+            });
+            console.log('✅ KVKK Modal aktif - Dashboard blur edildi');
+        });
+    </script>
+    
+    <!-- KVKK Modal HTML -->
+    <div id="kvkkModal" class="modal-overlay active" style="position: fixed; z-index: 10000; top: 0; left: 0; width: 100%; height: 100%;">
         <div class="modal-container">
             <div class="modal-header">
                 <h3>Aydınlatma Metni</h3>
@@ -66,73 +85,337 @@
                 @Html.Raw(Model.KvkkTextContent ?? "Metin yükleniyor...")
             </div>
             <div class="modal-footer">
-                <form method="post" id="kvkk-form">
-                    @Html.AntiForgeryToken()
-                    <button type="button" class="btn_primary" id="btn-approve-kvkk">
-                        Okudum, Onaylıyorum
-                    </button>
-                </form>
+                @Html.AntiForgeryToken()
+                <button type="button" class="btn_primary" id="btn-approve-kvkk" onclick="approveKvkk(); return false;">
+                    Okudum, Onaylıyorum
+                </button>
             </div>
         </div>
     </div>
 }
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-@if (Model.ShowKvkk)
-{
+<!-- ========================================================================
+     DASHBOARD CONTENT - Raporlarım
+======================================================================== -->
+
+<div class="dashboard_page">
+    <!-- Page Header -->
+    <div class="dashboard_page__header">
+        <h2 class="dashboard_page__title">Raporlarım</h2>
+        <p class="dashboard_page__description">
+            Kredi başvuru raporlarınızı görüntüleyin ve detaylı analiz yapın.
+        </p>
+    </div>
+
+    <!-- Reports Grid -->
+    <div class="dashboard_reports">
+        @if (Model.Reports == null || !Model.Reports.Any())
+        {
+            <!-- Empty State (No reports) -->
+            <div class="report_card report_card--empty">
+                <div class="report_card__empty_icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <path d="M20 24H44M20 32H44M20 40H32M16 56H48C50.2091 56 52 54.2091 52 52V12C52 9.79086 50.2091 8 48 8H16C13.7909 8 12 9.79086 12 12V52C12 54.2091 13.7909 56 16 56Z" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3 class="report_card__empty_title">Henüz Rapor Yok</h3>
+                <p class="report_card__empty_text">
+                    Kredi başvurusu yaparak ilk raporunuzu oluşturun.
+                </p>
+                <a asp-page="/Loan/Apply" class="report_card__btn report_card__btn--primary">
+                    Kredi Başvurusu Yap
+                </a>
+            </div>
+        }
+        else
+        {
+            <!-- Report Cards (API'den gelen veriler) -->
+            @foreach (var report in Model.Reports)
+            {
+                <div class="report_card">
+                    <div class="report_card__header">
+                        <div class="report_card__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 12H15M9 16H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L18.7071 8.70711C18.8946 8.89464 19 9.149 19 9.41421V19C19 20.1046 18.1046 21 17 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <span class="report_card__badge @report.StatusBadgeClass">@report.StatusDisplay</span>
+                    </div>
+                    <div class="report_card__body">
+                        <h3 class="report_card__title">@report.ReportName</h3>
+                        <p class="report_card__date">@report.CreatedDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</p>
+                        <div class="report_card__meta">
+                            <div class="report_card__meta_item">
+                                <span class="report_card__meta_label">Rapor No:</span>
+                                <span class="report_card__meta_value">@report.ReportNumber</span>
+                            </div>
+                            @if (report.CreditScore.HasValue)
+                            {
+                                <div class="report_card__score">
+                                    <span class="report_card__score_label">Kredi Skoru:</span>
+                                    <span class="report_card__score_value">@report.CreditScore</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="report_card__footer">
+                        <button type="button" 
+                                class="report_card__btn report_card__btn--primary"
+                                data-report-id="@report.Id"
+                                onclick="open_report_detail(@report.Id)">
+                            Raporu İncele
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- ========================================================================
+     REPORT DETAIL MODAL
+======================================================================== -->
+<div id="reportDetailModal" class="modal-overlay" style="display: none;">
+    <div class="modal-container modal-container--large">
+        <div class="modal-header">
+            <h3 id="modal_report_title">Rapor Detayları</h3>
+            <button type="button" class="modal-close" onclick="close_report_detail()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Loading State -->
+            <div id="report_loading" class="report_detail__loading">
+                <div class="spinner"></div>
+                <p>Rapor detayları yükleniyor...</p>
+            </div>
+
+            <!-- Report Content -->
+            <div id="report_content" class="report_detail" style="display: none;">
+                <!-- Report Header -->
+                <div class="report_detail__header">
+                    <div class="report_detail__header_left">
+                        <h4 id="detail_report_name">-</h4>
+                        <p id="detail_report_number" class="report_detail__meta">-</p>
+                    </div>
+                    <div class="report_detail__header_right">
+                        <span id="detail_status_badge" class="report_card__badge">-</span>
+                    </div>
+                </div>
+
+                <!-- Report Info Grid -->
+                <div class="report_detail__grid">
+                    <!-- Kredi Skoru -->
+                    <div class="report_detail__item">
+                        <label class="report_detail__label">Kredi Skoru</label>
+                        <div id="detail_credit_score" class="report_detail__value report_detail__value--highlight">-</div>
+                    </div>
+
+                    <!-- Oluşturma Tarihi -->
+                    <div class="report_detail__item">
+                        <label class="report_detail__label">Oluşturma Tarihi</label>
+                        <div id="detail_created_date" class="report_detail__value">-</div>
+                    </div>
+
+                    <!-- Kredi Tutarı -->
+                    <div class="report_detail__item">
+                        <label class="report_detail__label">Kredi Tutarı</label>
+                        <div id="detail_loan_amount" class="report_detail__value">-</div>
+                    </div>
+
+                    <!-- Vade -->
+                    <div class="report_detail__item">
+                        <label class="report_detail__label">Vade</label>
+                        <div id="detail_loan_term" class="report_detail__value">-</div>
+                    </div>
+
+                    <!-- Faiz Oranı -->
+                    <div class="report_detail__item">
+                        <label class="report_detail__label">Faiz Oranı</label>
+                        <div id="detail_interest_rate" class="report_detail__value">-</div>
+                    </div>
+
+                    <!-- Aylık Ödeme -->
+                    <div class="report_detail__item">
+                        <label class="report_detail__label">Aylık Ödeme</label>
+                        <div id="detail_monthly_payment" class="report_detail__value">-</div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div id="report_notes_section" class="report_detail__notes" style="display: none;">
+                    <label class="report_detail__label">Notlar</label>
+                    <p id="detail_notes" class="report_detail__notes_text">-</p>
+        </div>
+
+                <!-- Approval Info -->
+                <div id="report_approval_section" class="report_detail__approval" style="display: none;">
+                    <div class="report_detail__approval_item">
+                        <span class="report_detail__label">Onaylayan:</span>
+                        <span id="detail_approved_by">-</span>
+                    </div>
+                    <div class="report_detail__approval_item">
+                        <span class="report_detail__label">Onay Tarihi:</span>
+                        <span id="detail_approved_date">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="report_error" class="report_detail__error" style="display: none;">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <path d="M24 4C12.96 4 4 12.96 4 24C4 35.04 12.96 44 24 44C35.04 44 44 35.04 44 24C44 12.96 35.04 4 24 4ZM26 34H22V30H26V34ZM26 26H22V14H26V26Z" fill="currentColor"/>
+                </svg>
+                <p id="report_error_message">Rapor detayları yüklenirken bir hata oluştu.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn_secondary" onclick="close_report_detail()">
+                Kapat
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
     <script>
-        $(document).ready(function() {
-            console.log('KVKK Modal is active on Dashboard');
+        // Dashboard specific JavaScript
+        console.log('Dashboard Index loaded - Reports:', @Model.Reports.Count);
+
+        // ====================================================================
+        // REPORT DETAIL MODAL
+        // ====================================================================
+
+        function open_report_detail(report_id) {
+            console.log('Opening report detail modal for report ID:', report_id);
             
-            var kvkkId = @Model.KvkkId;
-            var customerId = @Model.CustomerId;
+            // Show modal
+            $('#reportDetailModal').fadeIn(300);
             
-            $('#btn-approve-kvkk').on('click', function() {
-                var $btn = $(this);
-                console.log('KVKK approved, sending to backend...', { kvkkId, customerId });
-                
-                $btn.prop('disabled', true).text('Kaydediliyor...');
-                
-                $.ajax({
-                    url: '/Dashboard/Index?handler=ApproveKvkk',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    headers: {
-                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                    },
-                    data: JSON.stringify({
-                        kvkkId: kvkkId,
-                        customerId: customerId
-                    }),
-                    success: function(response) {
-                        console.log('KVKK approval response:', response);
-                        
-                        if (response.success) {
-                            console.log('KVKK approved successfully, removing modal...');
-                            $('#kvkkModal').fadeOut(300, function() {
-                                $(this).remove();
-                            });
-                            $('.dashboard_container').css({
-                                'filter': 'none',
-                                'pointer-events': 'auto',
-                                'transition': 'filter 0.3s ease'
-                            });
-                        } else {
-                            alert('KVKK onayı kaydedilemedi: ' + (response.message || 'Bilinmeyen hata'));
-                            $btn.prop('disabled', false).text('Okudum, Onaylıyorum');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('KVKK approval error:', error);
-                        console.error('Response:', xhr.responseText);
-                        alert('Bir hata oluştu: ' + (xhr.responseText || error));
-                        $btn.prop('disabled', false).text('Okudum, Onaylıyorum');
-                    }
-                });
+            // Show loading state
+            $('#report_loading').show();
+            $('#report_content').hide();
+            $('#report_error').hide();
+            
+            // Fetch report details via AJAX
+            $.ajax({
+                url: '/Dashboard/Index?handler=GetReportDetail',
+                type: 'GET',
+                data: { reportId: report_id },
+                success: function(response) {
+                    console.log('Report detail response:', response);
+                    populate_report_detail(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Report detail error:', error);
+                    show_report_error('Rapor detayları yüklenirken bir hata oluştu.');
+                }
             });
+        }
+
+        function close_report_detail() {
+            $('#reportDetailModal').fadeOut(300);
+        }
+
+        function populate_report_detail(report) {
+            // Hide loading, show content
+            $('#report_loading').hide();
+            $('#report_content').show();
+
+            // Populate fields
+            $('#detail_report_name').text(report.reportName || '-');
+            $('#detail_report_number').text('Rapor No: ' + (report.reportNumber || '-'));
+            
+            // Status badge
+            var status_class = get_status_badge_class(report.status);
+            var status_text = get_status_display(report.status);
+            $('#detail_status_badge').attr('class', 'report_card__badge ' + status_class).text(status_text);
+
+            // Credit Score
+            $('#detail_credit_score').text(report.creditScore || '-');
+
+            // Created Date
+            var created_date = report.createdDate ? new Date(report.createdDate).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' }) : '-';
+            $('#detail_created_date').text(created_date);
+
+            // Loan Amount
+            $('#detail_loan_amount').text(report.loanAmount ? format_currency(report.loanAmount) : '-');
+
+            // Loan Term
+            $('#detail_loan_term').text(report.loanTerm ? report.loanTerm + ' Ay' : '-');
+
+            // Interest Rate
+            $('#detail_interest_rate').text(report.interestRate ? '%' + report.interestRate.toFixed(2) : '-');
+
+            // Monthly Payment
+            $('#detail_monthly_payment').text(report.monthlyPayment ? format_currency(report.monthlyPayment) : '-');
+
+            // Notes (optional)
+            if (report.notes) {
+                $('#detail_notes').text(report.notes);
+                $('#report_notes_section').show();
+            } else {
+                $('#report_notes_section').hide();
+            }
+
+            // Approval Info (if approved)
+            if (report.status === 'approved' && report.approvedBy) {
+                $('#detail_approved_by').text(report.approvedBy);
+                var approved_date = report.approvedDate ? new Date(report.approvedDate).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' }) : '-';
+                $('#detail_approved_date').text(approved_date);
+                $('#report_approval_section').show();
+            } else {
+                $('#report_approval_section').hide();
+            }
+        }
+
+        function show_report_error(message) {
+            $('#report_loading').hide();
+            $('#report_content').hide();
+            $('#report_error').show();
+            $('#report_error_message').text(message);
+        }
+
+        function get_status_badge_class(status) {
+            switch(status) {
+                case 'approved': return 'report_card__badge--success';
+                case 'pending': return 'report_card__badge--pending';
+                case 'rejected': return 'report_card__badge--error';
+                default: return 'report_card__badge--default';
+            }
+        }
+
+        function get_status_display(status) {
+            switch(status) {
+                case 'approved': return 'Onaylandı';
+                case 'pending': return 'İşlemde';
+                case 'rejected': return 'Reddedildi';
+                default: return 'Bilinmiyor';
+            }
+        }
+
+        function format_currency(amount) {
+            return new Intl.NumberFormat('tr-TR', {
+                style: 'currency',
+                currency: 'TRY',
+                minimumFractionDigits: 2
+            }).format(amount);
+        }
+
+        // Close modal on ESC key
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && $('#reportDetailModal').is(':visible')) {
+                close_report_detail();
+            }
+        });
+
+        // Close modal on backdrop click
+        $('#reportDetailModal').on('click', function(e) {
+            if ($(e.target).is('#reportDetailModal')) {
+                close_report_detail();
+            }
         });
     </script>
 }
-
-</body>
-</html>

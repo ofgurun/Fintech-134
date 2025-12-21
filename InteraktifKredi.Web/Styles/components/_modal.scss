@@ -35,6 +35,11 @@
   position: relative; // İçerik hizalaması için
   animation: modal_fade_in 0.3s ease-out;
 
+  // Large modal variant (for report details)
+  &--large {
+    max-width: 900px;
+  }
+
   @include respond_to_max(md) {
     width: 95%;
     max-height: 90vh;
@@ -168,6 +173,220 @@
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+// ============================================================================
+// REPORT DETAIL MODAL - Specific Styles
+// ============================================================================
+
+.report_detail {
+  &__loading,
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing_10;
+    text-align: center;
+    color: $text_light;
+    
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid $bg_lighter;
+      border-top-color: $color_primary;
+      border-radius: 50%;
+      animation: spinner_rotate 1s linear infinite;
+      margin-bottom: $spacing_4;
+    }
+    
+    svg {
+      color: $text_lighter;
+      margin-bottom: $spacing_4;
+    }
+    
+    p {
+      margin: 0;
+      font-size: $font_size_base;
+    }
+  }
+  
+  &__error {
+    color: $color_error;
+    
+    svg {
+      color: $color_error;
+    }
+  }
+  
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding-bottom: $spacing_4;
+    border-bottom: 2px solid $border_color;
+    margin-bottom: $spacing_6;
+    
+    @include respond_to_max(sm) {
+      flex-direction: column;
+      gap: $spacing_3;
+    }
+  }
+  
+  &__header_left {
+    flex: 1;
+    
+    h4 {
+      font-size: $font_size_xl;
+      font-weight: $font_weight_bold;
+      color: $color_navy;
+      margin: 0 0 $spacing_2 0;
+    }
+  }
+  
+  &__meta {
+    font-size: $font_size_sm;
+    color: $text_light;
+    margin: 0;
+  }
+  
+  &__header_right {
+    flex-shrink: 0;
+  }
+  
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing_5;
+    margin-bottom: $spacing_6;
+    
+    @include respond_to_max(sm) {
+      grid-template-columns: 1fr;
+      gap: $spacing_4;
+    }
+  }
+  
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing_2;
+  }
+  
+  &__label {
+    font-size: $font_size_xs;
+    font-weight: $font_weight_semibold;
+    color: $text_light;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  &__value {
+    font-size: $font_size_lg;
+    font-weight: $font_weight_semibold;
+    color: $text_dark;
+    
+    &--highlight {
+      font-size: $font_h2;
+      font-weight: $font_weight_bold;
+      color: $color_primary;
+    }
+  }
+  
+  &__notes {
+    background-color: $bg_lighter;
+    border-radius: $border_radius_md;
+    padding: $spacing_5;
+    margin-bottom: $spacing_6;
+    
+    .report_detail__label {
+      margin-bottom: $spacing_3;
+      display: block;
+    }
+  }
+  
+  &__notes_text {
+    margin: 0;
+    font-size: $font_size_base;
+    color: $text_dark;
+    line-height: 1.6;
+  }
+  
+  &__approval {
+    display: flex;
+    gap: $spacing_6;
+    padding: $spacing_5;
+    background-color: $success_light;
+    border-radius: $border_radius_md;
+    border-left: 4px solid $success_color;
+    
+    @include respond_to_max(sm) {
+      flex-direction: column;
+      gap: $spacing_3;
+    }
+  }
+  
+  &__approval_item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing_1;
+    
+    .report_detail__label {
+      font-size: $font_size_xs;
+      margin-bottom: 0;
+    }
+    
+    span:last-child {
+      font-size: $font_size_base;
+      font-weight: $font_weight_medium;
+      color: $text_dark;
+    }
+  }
+}
+
+// Badge error variant
+.report_card__badge--error {
+  background-color: #FEE2E2;
+  color: $color_error;
+}
+
+.report_card__badge--default {
+  background-color: $bg_lighter;
+  color: $text_light;
+}
+
+// Spinner animation
+@keyframes spinner_rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Modal close button
+.modal-close {
+  position: absolute;
+  top: $spacing_5;
+  right: $spacing_5;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: $text_light;
+  cursor: pointer;
+  border-radius: $border_radius_sm;
+  transition: $transition_all;
+  
+  &:hover {
+    background-color: $bg_lighter;
+    color: $text_dark;
+  }
+  
+  svg {
+    width: 20px;
+    height: 20px;
   }
 }
 

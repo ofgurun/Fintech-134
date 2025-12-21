@@ -59,6 +59,70 @@ namespace InteraktifKredi.Web.Models.Api
         /// </summary>
         public string OtpVerifyKey { get; set; } = string.Empty;
 
+        // ========================================================================
+        // Dashboard API Keys
+        // ========================================================================
+
+        /// <summary>
+        /// Function Key for Dummy Report List endpoint
+        /// Endpoint: api/dummy/report-list
+        /// </summary>
+        public string DummyReportKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Report Detail endpoint
+        /// Endpoint: api/GetReportDetail
+        /// </summary>
+        public string ReportDetailKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Customer Address (GET) endpoint
+        /// Endpoint: api/customer/address/{customerId}
+        /// </summary>
+        public string CustomerAddressKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Job Information (GET) endpoint
+        /// Endpoint: api/customer/job-info/{customerId}
+        /// </summary>
+        public string JobInformationKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Wife Information (GET) endpoint
+        /// Endpoint: api/customer/wife-info/{customerId}
+        /// </summary>
+        public string WifeInformationKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Customer Finance (GET) endpoint
+        /// Endpoint: api/customer/finance-assets/{customerId}
+        /// </summary>
+        public string CustomerFinanceKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Save Customer Address (POST) endpoint
+        /// Endpoint: api/customer/address
+        /// </summary>
+        public string SaveCustomerAddressKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Save Job Information (POST) endpoint
+        /// Endpoint: api/customer/job-info
+        /// </summary>
+        public string SaveJobInformationKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Save Wife Information (POST) endpoint
+        /// Endpoint: api/customer/wife-info/{customerId}
+        /// </summary>
+        public string SaveWifeInformationKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Function Key for Save Customer Finance (POST) endpoint
+        /// Endpoint: api/customer/finance-assets
+        /// </summary>
+        public string SaveCustomerFinanceKey { get; set; } = string.Empty;
+
         /// <summary>
         /// Request timeout in seconds
         /// </summary>

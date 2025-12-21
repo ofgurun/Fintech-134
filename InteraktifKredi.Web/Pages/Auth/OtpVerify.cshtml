@@ -67,6 +67,12 @@
 
                 <!-- OTP Form -->
                 <form method="post" class="otp_form" novalidate>
+                    @Html.AntiForgeryToken()
+                    
+                    <!-- Hidden fields to preserve TCKN and GSM for AJAX resend -->
+                    <input type="hidden" name="TCKN" value="@Model.TCKN" />
+                    <input type="hidden" name="GSM" value="@Model.GSM" />
+                    
                     <!-- SMS Code Input -->
                     <div class="input_group" id="code_group">
                         <input asp-for="Code" 
@@ -89,7 +95,7 @@
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
                             <path d="M8 4V8L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
-                        <span class="otp_timer__text">SMS giriş süresi: <span id="timer_value">180</span> saniye</span>
+                        <span class="otp_timer__text">SMS giriş süresi: <span id="timer_value">30</span> saniye</span>
                     </div>
 
                     <!-- Submit Button -->
@@ -99,9 +105,9 @@
 
                     <!-- Resend Link -->
                     <div class="otp_resend">
-                        <span class="otp_resend__text">Kodu almadınız mı?</span>
-                        <button type="button" class="otp_resend__link" id="resend_code" disabled>
-                            Tekrar Gönder
+                        <span class="otp_resend__text">SMS gelmedi mi?</span>
+                        <button type="button" class="otp_resend__link" id="resend_code">
+                            Yeniden Gönder
                         </button>
                     </div>
                 </form>
