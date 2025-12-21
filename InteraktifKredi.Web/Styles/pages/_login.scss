@@ -32,38 +32,27 @@
   flex: 0 0 50%;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, $color_primary_dark 0%, $color_primary 100%);
+  background-color: $bg_lighter; // Fallback renk (resim yüklenene kadar)
   
   // Mobilde gizle
   @include respond_to_max(md) {
     display: none;
   }
   
-  // Görsel
+  // Görsel - ORİJİNAL RENKLERİYLE
   &__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-    opacity: 0.85;
-    mix-blend-mode: multiply;
+    opacity: 1; // Tam opak - hiç soluk değil
+    // mix-blend-mode kaldırıldı - resim kendi renkleriyle görünsün
   }
   
-  // Overlay (İsteğe bağlı - görsel üzerine koyu katman)
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      180deg,
-      rgba($color_primary_dark, 0.3) 0%,
-      rgba($color_primary, 0.5) 100%
-    );
-    pointer-events: none;
-  }
+  // Overlay KALDIRILDI - Artık mavi perde yok!
+  // &::after {
+  //   ...kaldırıldı...
+  // }
 }
 
 // ----------------------------------------------------------------------------

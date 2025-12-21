@@ -10,7 +10,8 @@
     'use strict';
 
     // Configuration
-    const TIMER_DURATION = 180; // 180 seconds (3 minutes)
+    // TODO: Production'da 180 saniye olacak
+    const TIMER_DURATION = 30; // 30 seconds for TESTING (change to 180 in production)
     let timer_interval = null;
     let remaining_time = TIMER_DURATION;
 
@@ -32,9 +33,16 @@
     }
 
     // ========================================================================
-    // TIMER - Countdown 180 seconds
+    // TIMER - Countdown 30 seconds (TEST MODE)
     // ========================================================================
     function init_timer() {
+        // TEST MODE: Enable resend button immediately for testing
+        const $resend_button = $('#resend_code');
+        $resend_button.prop('disabled', false);
+        
+        console.log('⚠️ TEST MODE: Resend button enabled immediately');
+        console.log('⚠️ Timer duration: 30 seconds (change to 180 in production)');
+        
         start_timer();
     }
 
@@ -156,25 +164,70 @@
 
     function resend_otp_code() {
         const $resend_button = $('#resend_code');
+        const $form = $('.otp_form');
+        
+        console.log('Resending OTP code via AJAX...');
 
-        // TODO: API call to resend OTP
-        console.log('Resending OTP code...');
-
-        // Simulate API call
+        // Disable button and show loading state
         $resend_button.prop('disabled', true).text('Gönderiliyor...');
 
-        setTimeout(function () {
-            // Reset timer
-            start_timer();
+        // Get anti-forgery token
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        
+        // Get TCKN and GSM from hidden fields
+        var tckn = $form.find('input[name="TCKN"]').val();
+        var gsm = $form.find('input[name="GSM"]').val();
+        
+        console.log('Form data - TCKN:', tckn, 'GSM:', gsm);
 
-            // Reset button
-            $resend_button.text('Tekrar Gönder');
+        // Prepare form data
+        var formData = new FormData();
+        formData.append('TCKN', tckn);
+        formData.append('GSM', gsm);
 
-            // Show success message (optional)
-            show_temporary_message('SMS şifresi tekrar gönderildi.', 'success');
+        // AJAX call to backend
+        $.ajax({
+            url: '/Auth/OtpVerify?handler=ResendOtp',
+            type: 'POST',
+            headers: {
+                'RequestVerificationToken': token
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    // Reset timer
+                    start_timer();
 
-            console.log('OTP code resent successfully');
-        }, 1500);
+                    // Reset button text
+                    $resend_button.text('Yeniden Gönder');
+
+                    // Show success message
+                    show_temporary_message('SMS şifresi tekrar gönderildi.', 'success');
+
+                    console.log('✅ OTP resent successfully');
+                } else {
+                    // Show error message
+                    show_temporary_message(response.message || 'SMS gönderilemedi.', 'error');
+                    
+                    // Re-enable button
+                    $resend_button.prop('disabled', false).text('Yeniden Gönder');
+                    
+                    console.error('❌ Resend OTP failed:', response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                // Show error message
+                show_temporary_message('Bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+                
+                // Re-enable button
+                $resend_button.prop('disabled', false).text('Yeniden Gönder');
+                
+                console.error('❌ AJAX error:', error);
+                console.error('Response:', xhr.responseText);
+            }
+        });
     }
 
     // ========================================================================
