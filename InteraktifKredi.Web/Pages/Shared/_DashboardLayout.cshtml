@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - İnteraktif Kredi Dashboard</title>
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+<body class="dashboard_layout">
+    <!-- ========================================================================
+         SIDEBAR (Sol Menü)
+    ======================================================================== -->
+    <aside class="dashboard_sidebar">
+        <!-- Logo -->
+        <div class="dashboard_sidebar__logo">
+            <img src="~/img/logo.svg" alt="İnteraktif Kredi" class="dashboard_sidebar__logo_img" />
+            <span class="dashboard_sidebar__logo_text">İnteraktif Kredi</span>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="dashboard_sidebar__nav">
+            <ul class="dashboard_sidebar__menu">
+                <!-- Raporlarım -->
+                <li class="dashboard_sidebar__menu_item dashboard_sidebar__menu_item--active">
+                    <a asp-page="/Dashboard/Index" class="dashboard_sidebar__menu_link">
+                        <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M3 5C3 3.89543 3.89543 3 5 3H7C8.10457 3 9 3.89543 9 5V7C9 8.10457 8.10457 9 7 9H5C3.89543 9 3 8.10457 3 7V5Z" fill="currentColor"/>
+                            <path d="M11 5C11 3.89543 11.8954 3 13 3H15C16.1046 3 17 3.89543 17 5V7C17 8.10457 16.1046 9 15 9H13C11.8954 9 11 8.10457 11 7V5Z" fill="currentColor"/>
+                            <path d="M3 13C3 11.8954 3.89543 11 5 11H7C8.10457 11 9 11.8954 9 13V15C9 16.1046 8.10457 17 7 17H5C3.89543 17 3 16.1046 3 15V13Z" fill="currentColor"/>
+                            <path d="M13 11C11.8954 11 11 11.8954 11 13V15C11 16.1046 11.8954 17 13 17H15C16.1046 17 17 16.1046 17 15V13C17 11.8954 16.1046 11 15 11H13Z" fill="currentColor"/>
+                        </svg>
+                        <span class="dashboard_sidebar__menu_text">Raporlarım</span>
+                    </a>
+                </li>
+
+                <!-- Profil & Ayarlar -->
+                <li class="dashboard_sidebar__menu_item">
+                    <a asp-page="/Dashboard/Profile" class="dashboard_sidebar__menu_link">
+                        <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 9C11.6569 9 13 7.65685 13 6C13 4.34315 11.6569 3 10 3C8.34315 3 7 4.34315 7 6C7 7.65685 8.34315 9 10 9ZM3 18C3 14.134 6.13401 11 10 11C13.866 11 17 14.134 17 18H3Z" fill="currentColor"/>
+                        </svg>
+                        <span class="dashboard_sidebar__menu_text">Profil & Ayarlar</span>
+                    </a>
+                </li>
+
+                <!-- Yardım Merkezi -->
+                <li class="dashboard_sidebar__menu_item">
+                    <a asp-page="/Dashboard/Help" class="dashboard_sidebar__menu_link">
+                        <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM11 6C11 6.55228 10.5523 7 10 7C9.44772 7 9 6.55228 9 6C9 5.44772 9.44772 5 10 5C10.5523 5 11 5.44772 11 6ZM9 9C8.44772 9 8 9.44772 8 10C8 10.5523 8.44772 11 9 11V14C9 14.5523 9.44772 15 10 15H11C11.5523 15 12 14.5523 12 14C12 13.4477 11.5523 13 11 13V10C11 9.44772 10.5523 9 10 9H9Z" fill="currentColor"/>
+                        </svg>
+                        <span class="dashboard_sidebar__menu_text">Yardım Merkezi</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Çıkış Yap (Alt kısımda) -->
+            <div class="dashboard_sidebar__footer">
+                <form method="post" asp-page="/Auth/Logout" class="dashboard_sidebar__logout_form">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="dashboard_sidebar__logout_btn">
+                        <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M3 3C1.89543 3 1 3.89543 1 5V15C1 16.1046 1.89543 17 3 17H10C11.1046 17 12 16.1046 12 15V12C12 11.4477 11.5523 11 11 11C10.4477 11 10 11.4477 10 12V15H3V5L10 5V8C10 8.55228 10.4477 9 11 9C11.5523 9 12 8.55228 12 8V5C12 3.89543 11.1046 3 10 3H3ZM13 10L16.2929 10L14.1464 7.85355C13.7559 7.46302 13.7559 6.82986 14.1464 6.43934C14.537 6.04881 15.1701 6.04881 15.5607 6.43934L19.0607 9.93934C19.4512 10.3299 19.4512 10.963 19.0607 11.3536L15.5607 14.8536C15.1701 15.2441 14.537 15.2441 14.1464 14.8536C13.7559 14.463 13.7559 13.8299 14.1464 13.4393L16.2929 11.2929L13 11C12.4477 11 12 10.5523 12 10C12 9.44771 12.4477 9 13 9Z" fill="currentColor"/>
+                        </svg>
+                        <span class="dashboard_sidebar__menu_text">Çıkış Yap</span>
+                    </button>
+                </form>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ========================================================================
+         MAIN CONTENT AREA
+    ======================================================================== -->
+    <div class="dashboard_main">
+        <!-- Top Header -->
+        <header class="dashboard_header">
+            <div class="dashboard_header__welcome">
+                <h1 class="dashboard_header__title">Hoşgeldiniz, @User.Identity?.Name</h1>
+                <p class="dashboard_header__subtitle">Kredi başvuru ve takip işlemlerinizi buradan yönetebilirsiniz.</p>
+            </div>
+
+            <div class="dashboard_header__actions">
+                <!-- Bildirim (Opsiyonel) -->
+                <button class="dashboard_header__notification" type="button" aria-label="Bildirimler">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 17H20L18.5951 15.5951C18.2141 15.2141 18 14.6973 18 14.1585V11C18 8.38757 16.3304 6.16509 14 5.34142V5C14 3.89543 13.1046 3 12 3C10.8954 3 10 3.89543 10 5V5.34142C7.66962 6.16509 6 8.38757 6 11V14.1585C6 14.6973 5.78595 15.2141 5.40493 15.5951L4 17H9M15 17V18C15 19.6569 13.6569 21 12 21C10.3431 21 9 19.6569 9 18V17M15 17H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="dashboard_header__notification_badge">3</span>
+                </button>
+
+                <!-- User Avatar -->
+                <div class="dashboard_header__user">
+                    <div class="dashboard_header__user_avatar">
+                        @(User.Identity?.Name?.Substring(0, 2).ToUpper() ?? "KK")
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="dashboard_content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/dashboard.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

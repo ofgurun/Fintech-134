@@ -1,0 +1,275 @@
+// ============================================================================
+// PROFILE TABS - İNTERAKTİF KREDİ
+// ============================================================================
+// Tab-based profile form system
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// PROFILE TABS CONTAINER
+// ----------------------------------------------------------------------------
+
+.profile_tabs {
+  background-color: white;
+  border-radius: $border_radius_lg;
+  box-shadow: $shadow_base;
+  overflow: hidden;
+  
+  @include respond_to_max(md) {
+    border-radius: $border_radius_md;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// TAB NAVIGATION
+// ----------------------------------------------------------------------------
+
+.profile_tabs__nav {
+  display: flex;
+  border-bottom: 2px solid $border_color;
+  background-color: $bg_lighter;
+  overflow-x: auto;
+  
+  @include respond_to_max(md) {
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.profile_tabs__nav_item {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing_2;
+  padding: $spacing_4 $spacing_5;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: $text_light;
+  font-size: $font_size_sm;
+  font-weight: $font_weight_medium;
+  cursor: pointer;
+  transition: $transition_all;
+  position: relative;
+  
+  &:hover {
+    background-color: rgba($color_primary, 0.05);
+    color: $text_dark;
+  }
+  
+  &--active {
+    background-color: white;
+    color: $color_primary;
+    font-weight: $font_weight_semibold;
+    border-bottom-color: $color_primary;
+    
+    .profile_tabs__icon {
+      color: $color_primary;
+    }
+  }
+  
+  @include respond_to_max(md) {
+    min-width: 120px;
+    padding: $spacing_3 $spacing_4;
+    font-size: $font_size_xs;
+    
+    span {
+      display: none;
+    }
+  }
+  
+  @include respond_to_max(sm) {
+    min-width: 80px;
+    padding: $spacing_3;
+  }
+}
+
+.profile_tabs__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: currentColor;
+  transition: $transition_all;
+}
+
+// ----------------------------------------------------------------------------
+// TAB CONTENT PANELS
+// ----------------------------------------------------------------------------
+
+.profile_tabs__content {
+  position: relative;
+  min-height: 500px;
+}
+
+.profile_tabs__panel {
+  display: none;
+  padding: $spacing_8;
+  animation: fade_in 0.3s ease-out;
+  
+  &--active {
+    display: block;
+  }
+  
+  @include respond_to_max(md) {
+    padding: $spacing_5;
+  }
+  
+  @include respond_to_max(sm) {
+    padding: $spacing_4;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// PROFILE FORM
+// ----------------------------------------------------------------------------
+
+.profile_form {
+  max-width: 900px;
+  margin: 0 auto;
+  
+  &__header {
+    margin-bottom: $spacing_8;
+    padding-bottom: $spacing_5;
+    border-bottom: 1px solid $border_color;
+    
+    @include respond_to_max(md) {
+      margin-bottom: $spacing_6;
+    }
+  }
+  
+  &__title {
+    font-size: $font_h2;
+    font-weight: $font_weight_bold;
+    color: $color_navy;
+    margin: 0 0 $spacing_3 0;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_xl;
+    }
+  }
+  
+  &__description {
+    font-size: $font_size_base;
+    color: $text_light;
+    margin: 0;
+    line-height: 1.6;
+    
+    @include respond_to_max(md) {
+      font-size: $font_size_sm;
+    }
+  }
+  
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing_5;
+    margin-bottom: $spacing_6;
+    
+    @include respond_to_max(md) {
+      grid-template-columns: 1fr;
+      gap: $spacing_4;
+    }
+  }
+  
+  &__section {
+    margin-bottom: $spacing_8;
+    
+    @include respond_to_max(md) {
+      margin-bottom: $spacing_6;
+    }
+  }
+  
+  &__section_title {
+    font-size: $font_size_lg;
+    font-weight: $font_weight_semibold;
+    color: $color_navy;
+    margin: 0 0 $spacing_4 0;
+    padding-bottom: $spacing_3;
+    border-bottom: 1px solid $border_color;
+  }
+  
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing_4;
+    padding-top: $spacing_6;
+    border-top: 1px solid $border_color;
+    
+    @include respond_to_max(sm) {
+      flex-direction: column;
+      
+      .btn_primary,
+      .btn_secondary {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// INPUT GROUP FULL WIDTH VARIANT
+// ----------------------------------------------------------------------------
+
+.input_group--full {
+  grid-column: 1 / -1;
+}
+
+// ----------------------------------------------------------------------------
+// ALERT MESSAGES
+// ----------------------------------------------------------------------------
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: $spacing_3;
+  padding: $spacing_4 $spacing_5;
+  border-radius: $border_radius_md;
+  margin-bottom: $spacing_6;
+  font-size: $font_size_sm;
+  font-weight: $font_weight_medium;
+  
+  svg {
+    flex-shrink: 0;
+  }
+  
+  &--success {
+    background-color: $success_light;
+    color: $success_color;
+    border-left: 4px solid $success_color;
+  }
+  
+  &--error {
+    background-color: #FEE2E2;
+    color: $color_error;
+    border-left: 4px solid $color_error;
+  }
+  
+  @include respond_to_max(md) {
+    padding: $spacing_3 $spacing_4;
+    font-size: $font_size_xs;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// ANIMATIONS
+// ----------------------------------------------------------------------------
+
+@keyframes fade_in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================================================
+// END OF PROFILE TABS
+// ============================================================================
+

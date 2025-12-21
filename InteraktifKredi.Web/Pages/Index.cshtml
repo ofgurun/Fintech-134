@@ -1,44 +1,5 @@
 ﻿@page
-@model IndexModel
 @{
-    ViewData["Title"] = "Ana Sayfa";
+    // Direkt Login sayfasına yönlendir
+    Response.Redirect("/Auth/Login");
 }
-
-<div class="container">
-    <div class="text-center py-6">
-        <h1>İnteraktif Kredi Web Şube</h1>
-        <p class="dashboard_subtitle">Hoş geldiniz! Tasarımı görmek için aşağıdaki linklere tıklayın.</p>
-    </div>
-
-    <div class="dashboard_cards">
-        <div class="card">
-            <div class="card__header">
-                <h2>Dashboard</h2>
-            </div>
-            <div class="card__body">
-                <p>Ana kontrol paneli ve hizmetler</p>
-                <a href="/Dashboard" class="btn_primary btn_primary--auto mt-4">Dashboard'a Git</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card__header">
-                <h2>Kredi Başvurusu</h2>
-            </div>
-            <div class="card__body">
-                <p>Kredi hesaplama ve başvuru yapma</p>
-                <a href="/Loan/Apply" class="btn_primary btn_primary--auto mt-4">Kredi Hesapla</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card__header">
-                <h2>Giriş Yap</h2>
-            </div>
-            <div class="card__body">
-                <p>Hesabınıza giriş yapın</p>
-                <a href="/Auth/Login" class="btn_outline btn_outline--auto mt-4">Giriş Yap</a>
-            </div>
-        </div>
-    </div>
-</div>

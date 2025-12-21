@@ -1,5 +1,7 @@
 using InteraktifKredi.Web.Models.Api;
 using InteraktifKredi.Web.Models.Api.Auth;
+using InteraktifKredi.Web.Models.Api.Dashboard;
+using InteraktifKredi.Web.Models.Api.Reports;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -708,6 +710,561 @@ namespace InteraktifKredi.Web.Services
                 _logger.LogError(ex, "Error saving KVKK approval");
                 return ServiceResponse<bool>.FailureResponse(
                     "KVKK onayı kaydedilirken beklenmeyen bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        // ========================================================================
+        // DASHBOARD - REPORTS
+        // ========================================================================
+
+        /// <summary>
+        /// Retrieves dummy report list
+        /// </summary>
+        public async Task<ServiceResponse<List<Models.Api.Reports.ReportSummary>>> GetReportListAsync()
+        {
+            try
+            {
+                _logger.LogInformation("Fetching report list");
+
+                var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/dummy/report-list?code={_apiSettings.DummyReportKey}";
+
+                _logger.LogInformation("Report List URL: {Url}", requestUrl);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Report List Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // API returns ApiResponse wrapper: { "success": true, "value": [...] }
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<List<Models.Api.Reports.ReportSummary>>>(
+                        responseContent, _responseJsonOptions);
+
+                    if (apiResponse?.Success == true && apiResponse.Value != null)
+                    {
+                        _logger.LogInformation("✅ Report list retrieved successfully - Count: {Count}", apiResponse.Value.Count);
+                        return ServiceResponse<List<Models.Api.Reports.ReportSummary>>.SuccessResponse(
+                            apiResponse.Value,
+                            apiResponse.Message ?? "Raporlar başarıyla getirildi.",
+                            apiResponse.StatusCode
+                        );
+                    }
+                }
+
+                _logger.LogError("Failed to fetch report list: {StatusCode}", response.StatusCode);
+                return ServiceResponse<List<Models.Api.Reports.ReportSummary>>.FailureResponse(
+                    "Raporlar getirilemedi.",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching report list");
+                return ServiceResponse<List<Models.Api.Reports.ReportSummary>>.FailureResponse(
+                    "Raporlar getirilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Retrieves detailed report by ID
+        /// </summary>
+        public async Task<ServiceResponse<Models.Api.Reports.ReportDetail>> GetReportDetailAsync(int reportId)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching report detail for ID: {ReportId}", reportId);
+
+                var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/GetReportDetail?code={_apiSettings.ReportDetailKey}&id={reportId}";
+
+                _logger.LogInformation("Report Detail URL: {Url}", requestUrl);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Report Detail Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var reportDetail = JsonSerializer.Deserialize<Models.Api.Reports.ReportDetail>(
+                        responseContent, _responseJsonOptions);
+
+                    if (reportDetail != null)
+                    {
+                        _logger.LogInformation("✅ Report detail retrieved successfully");
+                        return ServiceResponse<Models.Api.Reports.ReportDetail>.SuccessResponse(
+                            reportDetail,
+                            "Rapor detayı başarıyla getirildi.",
+                            200
+                        );
+                    }
+                }
+
+                _logger.LogError("Failed to fetch report detail: {StatusCode}", response.StatusCode);
+                return ServiceResponse<Models.Api.Reports.ReportDetail>.FailureResponse(
+                    "Rapor detayı getirilemedi.",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching report detail");
+                return ServiceResponse<Models.Api.Reports.ReportDetail>.FailureResponse(
+                    "Rapor detayı getirilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        // ========================================================================
+        // DASHBOARD - CUSTOMER PROFILE (GET)
+        // ========================================================================
+
+        /// <summary>
+        /// Retrieves customer address information
+        /// </summary>
+        public async Task<ServiceResponse<AddressResponse>> GetCustomerAddressAsync(long customerId)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching customer address for ID: {CustomerId}", customerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/address/{customerId}?code={_apiSettings.CustomerAddressKey}";
+
+                _logger.LogInformation("Customer Address URL: {Url}", requestUrl);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Customer Address Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var address = JsonSerializer.Deserialize<AddressResponse>(
+                        responseContent, _responseJsonOptions);
+
+                    if (address != null)
+                    {
+                        _logger.LogInformation("✅ Customer address retrieved successfully");
+                        return ServiceResponse<AddressResponse>.SuccessResponse(
+                            address,
+                            "Adres bilgisi başarıyla getirildi.",
+                            200
+                        );
+                    }
+                }
+
+                _logger.LogError("Failed to fetch customer address: {StatusCode}", response.StatusCode);
+                return ServiceResponse<AddressResponse>.FailureResponse(
+                    "Adres bilgisi getirilemedi.",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching customer address");
+                return ServiceResponse<AddressResponse>.FailureResponse(
+                    "Adres bilgisi getirilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Retrieves customer job information
+        /// </summary>
+        public async Task<ServiceResponse<JobResponse>> GetJobInfoAsync(long customerId)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching job info for customer ID: {CustomerId}", customerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/job-info/{customerId}?code={_apiSettings.JobInformationKey}";
+
+                _logger.LogInformation("Job Info URL: {Url}", requestUrl);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Job Info Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jobInfo = JsonSerializer.Deserialize<JobResponse>(
+                        responseContent, _responseJsonOptions);
+
+                    if (jobInfo != null)
+                    {
+                        _logger.LogInformation("✅ Job info retrieved successfully");
+                        return ServiceResponse<JobResponse>.SuccessResponse(
+                            jobInfo,
+                            "İş bilgisi başarıyla getirildi.",
+                            200
+                        );
+                    }
+                }
+
+                _logger.LogError("Failed to fetch job info: {StatusCode}", response.StatusCode);
+                return ServiceResponse<JobResponse>.FailureResponse(
+                    "İş bilgisi getirilemedi.",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching job info");
+                return ServiceResponse<JobResponse>.FailureResponse(
+                    "İş bilgisi getirilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Retrieves wife/spouse information
+        /// </summary>
+        public async Task<ServiceResponse<WifeInfoResponse>> GetWifeInfoAsync(long customerId)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching wife info for customer ID: {CustomerId}", customerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/wife-info/{customerId}?code={_apiSettings.WifeInformationKey}";
+
+                _logger.LogInformation("Wife Info URL: {Url}", requestUrl);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Wife Info Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var wifeInfo = JsonSerializer.Deserialize<WifeInfoResponse>(
+                        responseContent, _responseJsonOptions);
+
+                    if (wifeInfo != null)
+                    {
+                        _logger.LogInformation("✅ Wife info retrieved successfully");
+                        return ServiceResponse<WifeInfoResponse>.SuccessResponse(
+                            wifeInfo,
+                            "Eş bilgisi başarıyla getirildi.",
+                            200
+                        );
+                    }
+                }
+
+                _logger.LogError("Failed to fetch wife info: {StatusCode}", response.StatusCode);
+                return ServiceResponse<WifeInfoResponse>.FailureResponse(
+                    "Eş bilgisi getirilemedi.",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching wife info");
+                return ServiceResponse<WifeInfoResponse>.FailureResponse(
+                    "Eş bilgisi getirilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Retrieves customer finance and assets information
+        /// </summary>
+        public async Task<ServiceResponse<FinanceResponse>> GetFinanceInfoAsync(long customerId)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching finance info for customer ID: {CustomerId}", customerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/finance-assets/{customerId}?code={_apiSettings.CustomerFinanceKey}";
+
+                _logger.LogInformation("Finance Info URL: {Url}", requestUrl);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Finance Info Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var financeInfo = JsonSerializer.Deserialize<FinanceResponse>(
+                        responseContent, _responseJsonOptions);
+
+                    if (financeInfo != null)
+                    {
+                        _logger.LogInformation("✅ Finance info retrieved successfully");
+                        return ServiceResponse<FinanceResponse>.SuccessResponse(
+                            financeInfo,
+                            "Finans bilgisi başarıyla getirildi.",
+                            200
+                        );
+                    }
+                }
+
+                _logger.LogError("Failed to fetch finance info: {StatusCode}", response.StatusCode);
+                return ServiceResponse<FinanceResponse>.FailureResponse(
+                    "Finans bilgisi getirilemedi.",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching finance info");
+                return ServiceResponse<FinanceResponse>.FailureResponse(
+                    "Finans bilgisi getirilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        // ========================================================================
+        // DASHBOARD - CUSTOMER PROFILE (POST/Save)
+        // ========================================================================
+
+        /// <summary>
+        /// Saves customer address information
+        /// </summary>
+        public async Task<ServiceResponse<bool>> SaveCustomerAddressAsync(SaveAddressRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Saving customer address for ID: {CustomerId}", request.CustomerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/address?code={_apiSettings.SaveCustomerAddressKey}";
+
+                _logger.LogInformation("Save Customer Address URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                _logger.LogInformation("Save Customer Address Request JSON: {Json}", requestJson);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Save Customer Address Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("✅ Customer address saved successfully");
+                    return ServiceResponse<bool>.SuccessResponse(
+                        true,
+                        "Adres bilgisi başarıyla kaydedildi.",
+                        200
+                    );
+                }
+
+                _logger.LogError("Failed to save customer address: {StatusCode}", response.StatusCode);
+                return ServiceResponse<bool>.FailureResponse(
+                    $"Adres bilgisi kaydedilemedi. Hata: {responseContent}",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving customer address");
+                return ServiceResponse<bool>.FailureResponse(
+                    "Adres bilgisi kaydedilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Saves customer job information
+        /// </summary>
+        public async Task<ServiceResponse<bool>> SaveJobInfoAsync(SaveJobRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Saving job info for customer ID: {CustomerId}", request.CustomerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/job-info?code={_apiSettings.SaveJobInformationKey}";
+
+                _logger.LogInformation("Save Job Info URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                _logger.LogInformation("Save Job Info Request JSON: {Json}", requestJson);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Save Job Info Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("✅ Job info saved successfully");
+                    return ServiceResponse<bool>.SuccessResponse(
+                        true,
+                        "İş bilgisi başarıyla kaydedildi.",
+                        200
+                    );
+                }
+
+                _logger.LogError("Failed to save job info: {StatusCode}", response.StatusCode);
+                return ServiceResponse<bool>.FailureResponse(
+                    $"İş bilgisi kaydedilemedi. Hata: {responseContent}",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving job info");
+                return ServiceResponse<bool>.FailureResponse(
+                    "İş bilgisi kaydedilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Saves wife/spouse information
+        /// </summary>
+        public async Task<ServiceResponse<bool>> SaveWifeInfoAsync(long customerId, SaveWifeInfoRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Saving wife info for customer ID: {CustomerId}", customerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/wife-info/{customerId}?code={_apiSettings.SaveWifeInformationKey}";
+
+                _logger.LogInformation("Save Wife Info URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                _logger.LogInformation("Save Wife Info Request JSON: {Json}", requestJson);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Save Wife Info Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("✅ Wife info saved successfully");
+                    return ServiceResponse<bool>.SuccessResponse(
+                        true,
+                        "Eş bilgisi başarıyla kaydedildi.",
+                        200
+                    );
+                }
+
+                _logger.LogError("Failed to save wife info: {StatusCode}", response.StatusCode);
+                return ServiceResponse<bool>.FailureResponse(
+                    $"Eş bilgisi kaydedilemedi. Hata: {responseContent}",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving wife info");
+                return ServiceResponse<bool>.FailureResponse(
+                    "Eş bilgisi kaydedilirken bir hata oluştu.",
+                    500
+                );
+            }
+        }
+
+        /// <summary>
+        /// Saves customer finance and assets information
+        /// </summary>
+        public async Task<ServiceResponse<bool>> SaveFinanceInfoAsync(SaveFinanceRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Saving finance info for customer ID: {CustomerId}", request.CustomerId);
+
+                var baseUrl = _apiSettings.CustomersApi.TrimEnd('/');
+                var requestUrl = $"{baseUrl}/api/customer/finance-assets?code={_apiSettings.SaveCustomerFinanceKey}";
+
+                _logger.LogInformation("Save Finance Info URL: {Url}", requestUrl);
+
+                var requestJson = JsonSerializer.Serialize(request, _requestJsonOptions);
+                _logger.LogInformation("Save Finance Info Request JSON: {Json}", requestJson);
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+                httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                httpRequest.Headers.Add("Authorization", $"Bearer {_apiSettings.BearerToken}");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation("Save Finance Info Response: {StatusCode}, Body: {Body}",
+                    response.StatusCode, responseContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("✅ Finance info saved successfully");
+                    return ServiceResponse<bool>.SuccessResponse(
+                        true,
+                        "Finans bilgisi başarıyla kaydedildi.",
+                        200
+                    );
+                }
+
+                _logger.LogError("Failed to save finance info: {StatusCode}", response.StatusCode);
+                return ServiceResponse<bool>.FailureResponse(
+                    $"Finans bilgisi kaydedilemedi. Hata: {responseContent}",
+                    (int)response.StatusCode
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving finance info");
+                return ServiceResponse<bool>.FailureResponse(
+                    "Finans bilgisi kaydedilirken bir hata oluştu.",
                     500
                 );
             }

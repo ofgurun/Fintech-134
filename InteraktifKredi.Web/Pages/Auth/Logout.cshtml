@@ -1,6 +1,11 @@
 @page
 @model InteraktifKredi.Web.Pages.Auth.LogoutModel
 @{
-    ViewData["Title"] = "Çıkış Yapılıyor";
+    ViewData["Title"] = "Çıkış Yap";
 }
 
+<!-- This page should only be accessed via POST, redirect if GET -->
+@if (Request.Method == "GET")
+{
+    RedirectToPage("/Dashboard/Index");
+}

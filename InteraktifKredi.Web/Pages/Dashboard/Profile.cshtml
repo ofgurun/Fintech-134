@@ -1,0 +1,353 @@
+@page
+@model InteraktifKredi.Web.Pages.Dashboard.ProfileModel
+@{
+    ViewData["Title"] = "Profil & Ayarlar";
+    Layout = "_DashboardLayout";
+}
+
+<!-- ========================================================================
+     PROFILE PAGE - TABBED FORM SYSTEM
+======================================================================== -->
+
+<div class="dashboard_page">
+    <!-- Page Header -->
+    <div class="dashboard_page__header">
+        <h2 class="dashboard_page__title">Profil & Ayarlar</h2>
+        <p class="dashboard_page__description">
+            Kişisel bilgilerinizi güncelleyin ve hesap ayarlarınızı yönetin.
+        </p>
+    </div>
+
+    <!-- Success/Error Messages -->
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert--success">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM13.7071 8.70711C14.0976 8.31658 14.0976 7.68342 13.7071 7.29289C13.3166 6.90237 12.6834 6.90237 12.2929 7.29289L9 10.5858L7.70711 9.29289C7.31658 8.90237 6.68342 8.90237 6.29289 9.29289C5.90237 9.68342 5.90237 10.3166 6.29289 10.7071L8.29289 12.7071C8.68342 13.0976 9.31658 13.0976 9.70711 12.7071L13.7071 8.70711Z" fill="currentColor"/>
+            </svg>
+            <span>@Model.SuccessMessage</span>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert--error">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM8.70711 7.29289C8.31658 6.90237 7.68342 6.90237 7.29289 7.29289C6.90237 7.68342 6.90237 8.31658 7.29289 8.70711L8.58579 10L7.29289 11.2929C6.90237 11.6834 6.90237 12.3166 7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L10 11.4142L11.2929 12.7071C11.6834 13.0976 12.3166 13.0976 12.7071 12.7071C13.0976 12.3166 13.0976 11.6834 12.7071 11.2929L11.4142 10L12.7071 8.70711C13.0976 8.31658 13.0976 7.68342 12.7071 7.29289C12.3166 6.90237 11.6834 6.90237 11.2929 7.29289L10 8.58579L8.70711 7.29289Z" fill="currentColor"/>
+            </svg>
+            <span>@Model.ErrorMessage</span>
+        </div>
+    }
+
+    <!-- Tabs Container -->
+    <div class="profile_tabs">
+        <!-- Tab Navigation -->
+        <div class="profile_tabs__nav">
+            <button type="button" class="profile_tabs__nav_item profile_tabs__nav_item--active" data-tab="address">
+                <svg class="profile_tabs__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10.7071 2.29289C10.3166 1.90237 9.68342 1.90237 9.29289 2.29289L2.29289 9.29289C1.90237 9.68342 1.90237 10.3166 2.29289 10.7071C2.68342 11.0976 3.31658 11.0976 3.70711 10.7071L4 10.4142V17C4 17.5523 4.44772 18 5 18H7C7.55228 18 8 17.5523 8 17V15C8 14.4477 8.44772 14 9 14H11C11.5523 14 12 14.4477 12 15V17C12 17.5523 12.4477 18 13 18H15C15.5523 18 16 17.5523 16 17V10.4142L16.2929 10.7071C16.6834 11.0976 17.3166 11.0976 17.7071 10.7071C18.0976 10.3166 18.0976 9.68342 17.7071 9.29289L10.7071 2.29289Z" fill="currentColor"/>
+                </svg>
+                <span>Adres Bilgileri</span>
+            </button>
+
+            <button type="button" class="profile_tabs__nav_item" data-tab="job">
+                <svg class="profile_tabs__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M6 6V5C6 3.34315 7.34315 2 9 2H11C12.6569 2 14 3.34315 14 5V6M3 6H17C17.5523 6 18 6.44772 18 7V16C18 17.1046 17.1046 18 16 18H4C2.89543 18 2 17.1046 2 16V7C2 6.44772 2.44772 6 3 6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span>Meslek & Gelir</span>
+            </button>
+
+            <button type="button" class="profile_tabs__nav_item" data-tab="wife">
+                <svg class="profile_tabs__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M5 5C5 6.65685 6.34315 8 8 8C9.65685 8 11 6.65685 11 5C11 3.34315 9.65685 2 8 2C6.34315 2 5 3.34315 5 5ZM9 10C7.14348 10 5.36301 10.7375 4.05025 12.0503C2.7375 13.363 2 15.1435 2 17H14C14 15.1435 13.2625 13.363 11.9497 12.0503C10.637 10.7375 8.85652 10 9 10Z" fill="currentColor"/>
+                    <path d="M15 5C15 6.65685 16.3431 8 18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5Z" fill="currentColor" opacity="0.6"/>
+                </svg>
+                <span>Eş & Aile Durumu</span>
+            </button>
+
+            <button type="button" class="profile_tabs__nav_item" data-tab="finance">
+                <svg class="profile_tabs__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2ZM9 6C9 5.44772 9.44772 5 10 5C10.5523 5 11 5.44772 11 6V7H12C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9H11V11H12C12.5523 11 13 11.4477 13 12C13 12.5523 12.5523 13 12 13H11V14C11 14.5523 10.5523 15 10 15C9.44772 15 9 14.5523 9 14V13H8C7.44772 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H9V9H8C7.44772 9 7 8.55228 7 8C7 7.44772 7.44772 7 8 7H9V6Z" fill="currentColor"/>
+                </svg>
+                <span>Varlık & Finans</span>
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="profile_tabs__content">
+            <!-- ADDRESS TAB -->
+            <div class="profile_tabs__panel profile_tabs__panel--active" data-panel="address">
+                <form method="post" asp-page-handler="Address" class="profile_form">
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="profile_form__header">
+                        <h3 class="profile_form__title">🏠 Adres Bilgileri</h3>
+                        <p class="profile_form__description">İkamet adresinizi ve ev durumunuzu güncelleyin.</p>
+                    </div>
+
+                    <div class="profile_form__grid">
+                        <!-- City -->
+                        <div class="input_group">
+                            <input asp-for="AddressForm.City" type="text" class="input_group__field" placeholder="Örn: İstanbul *" required />
+                            <span asp-validation-for="AddressForm.City" class="input_group__error"></span>
+                        </div>
+
+                        <!-- County -->
+                        <div class="input_group">
+                            <input asp-for="AddressForm.County" type="text" class="input_group__field" placeholder="Örn: Kadıköy *" required />
+                            <span asp-validation-for="AddressForm.County" class="input_group__error"></span>
+                        </div>
+
+                        <!-- District -->
+                        <div class="input_group">
+                            <input asp-for="AddressForm.District" type="text" class="input_group__field" placeholder="Örn: Fenerbahçe Mahallesi" />
+                        </div>
+
+                        <!-- Residence Duration -->
+                        <div class="input_group">
+                            <input asp-for="AddressForm.ResidenceDuration" type="number" class="input_group__field" placeholder="Örn: 5 yıl" min="0" />
+                        </div>
+
+                        <!-- Home Type -->
+                        <div class="input_group input_group--full">
+                            <select asp-for="AddressForm.HomeType" class="input_group__field input_group__field--select">
+                                <option value="">Ev Tipi Seçiniz</option>
+                                <option value="Kira">Kira</option>
+                                <option value="Ev Sahibi">Ev Sahibi</option>
+                                <option value="Aile">Aile ile Oturuyor</option>
+                            </select>
+                        </div>
+
+                        <!-- Address Detail -->
+                        <div class="input_group input_group--full">
+                            <textarea asp-for="AddressForm.AddressDetail" class="input_group__field input_group__field--textarea" rows="3" placeholder="Örn: Sokak, cadde, bina no, daire no..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="profile_form__actions">
+                        <button type="submit" class="btn_primary" data-loading-text="Kaydediliyor...">
+                            Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- JOB TAB -->
+            <div class="profile_tabs__panel" data-panel="job">
+                <form method="post" asp-page-handler="Job" class="profile_form">
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="profile_form__header">
+                        <h3 class="profile_form__title">💼 Meslek & Gelir Bilgileri</h3>
+                        <p class="profile_form__description">İş durumunuz ve gelir bilgilerinizi güncelleyin.</p>
+                    </div>
+
+                    <div class="profile_form__grid">
+                        <!-- Company -->
+                        <div class="input_group">
+                            <input asp-for="JobForm.Company" type="text" class="input_group__field" placeholder="Örn: ABC Teknoloji A.Ş." />
+                        </div>
+
+                        <!-- Position -->
+                        <div class="input_group">
+                            <input asp-for="JobForm.Position" type="text" class="input_group__field" placeholder="Örn: Yazılım Geliştirici" />
+                        </div>
+
+                        <!-- Sector -->
+                        <div class="input_group">
+                            <input asp-for="JobForm.Sector" type="text" class="input_group__field" placeholder="Örn: Teknoloji" />
+                        </div>
+
+                        <!-- Employment Type -->
+                        <div class="input_group">
+                            <select asp-for="JobForm.EmploymentType" class="input_group__field input_group__field--select">
+                                <option value="">Çalışma Tipi Seçiniz</option>
+                                <option value="Tam Zamanlı">Tam Zamanlı</option>
+                                <option value="Yarı Zamanlı">Yarı Zamanlı</option>
+                                <option value="Serbest Meslek">Serbest Meslek</option>
+                                <option value="Emekli">Emekli</option>
+                            </select>
+                        </div>
+
+                        <!-- Start Date -->
+                        <div class="input_group">
+                            <input asp-for="JobForm.StartDate" type="date" class="input_group__field" placeholder="İşe Başlama Tarihi" />
+                        </div>
+
+                        <!-- Monthly Income -->
+                        <div class="input_group">
+                            <input asp-for="JobForm.MonthlyIncome" type="number" class="input_group__field" placeholder="Örn: Aylık Gelir (₺) 15000" min="0" step="0.01" />
+                        </div>
+                    </div>
+
+                    <div class="profile_form__actions">
+                        <button type="submit" class="btn_primary" data-loading-text="Kaydediliyor...">
+                            Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- WIFE TAB -->
+            <div class="profile_tabs__panel" data-panel="wife">
+                <form method="post" asp-page-handler="Wife" class="profile_form">
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="profile_form__header">
+                        <h3 class="profile_form__title">💍 Eş & Aile Durumu</h3>
+                        <p class="profile_form__description">Medeni durum ve eş bilgilerinizi güncelleyin.</p>
+                    </div>
+
+                    <div class="profile_form__grid">
+                        <!-- Marital Status -->
+                        <div class="input_group">
+                            <select asp-for="WifeForm.MaritalStatus" class="input_group__field input_group__field--select">
+                                <option value="">Medeni Durum Seçiniz</option>
+                                <option value="Bekar">Bekar</option>
+                                <option value="Evli">Evli</option>
+                                <option value="Boşanmış">Boşanmış</option>
+                                <option value="Dul">Dul</option>
+                            </select>
+                        </div>
+
+                        <!-- Number of Children -->
+                        <div class="input_group">
+                            <input asp-for="WifeForm.NumberOfChildren" type="number" class="input_group__field" placeholder="Örn: Çocuk Sayısı 0" min="0" />
+                        </div>
+
+                        <!-- Wife Name -->
+                        <div class="input_group">
+                            <input asp-for="WifeForm.WifeName" type="text" class="input_group__field" placeholder="Örn: Eş Adı Soyadı - Ayşe Yılmaz" />
+                        </div>
+
+                        <!-- Wife TCKN -->
+                        <div class="input_group">
+                            <input asp-for="WifeForm.WifeTCKN" type="text" class="input_group__field" placeholder="Örn: Eş TC No 11111111111" maxlength="11" />
+                        </div>
+
+                        <!-- Wife Phone -->
+                        <div class="input_group">
+                            <input asp-for="WifeForm.WifePhone" type="tel" class="input_group__field" placeholder="Örn: Eş Telefon 0555 123 4567" />
+                        </div>
+
+                        <!-- Is Wife Working -->
+                        <div class="input_group">
+                            <select asp-for="WifeForm.IsWifeWorking" class="input_group__field input_group__field--select">
+                                <option value="">Eş Çalışıyor mu? Seçiniz</option>
+                                <option value="true">Evet</option>
+                                <option value="false">Hayır</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="profile_form__actions">
+                        <button type="submit" class="btn_primary" data-loading-text="Kaydediliyor...">
+                            Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- FINANCE TAB -->
+            <div class="profile_tabs__panel" data-panel="finance">
+                <form method="post" asp-page-handler="Finance" class="profile_form">
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="profile_form__header">
+                        <h3 class="profile_form__title">💰 Varlık & Finans Bilgileri</h3>
+                        <p class="profile_form__description">Taşınır/taşınmaz varlıklarınız ve finans durumunuzu güncelleyin.</p>
+                    </div>
+
+                    <div class="profile_form__section">
+                        <h4 class="profile_form__section_title">Taşınır/Taşınmaz Varlıklar</h4>
+                        <div class="profile_form__grid">
+                            <!-- Has Car -->
+                            <div class="input_group">
+                                <select asp-for="FinanceForm.HasCar" class="input_group__field input_group__field--select">
+                                    <option value="">Araç Sahibi misiniz? Seçiniz</option>
+                                    <option value="true">Evet</option>
+                                    <option value="false">Hayır</option>
+                                </select>
+                            </div>
+
+                            <!-- Car Value -->
+                            <div class="input_group">
+                                <input asp-for="FinanceForm.CarValue" type="number" class="input_group__field" placeholder="Örn: Araç Değeri (₺) 500000" min="0" step="0.01" />
+                            </div>
+
+                            <!-- Has Real Estate -->
+                            <div class="input_group">
+                                <select asp-for="FinanceForm.HasRealEstate" class="input_group__field input_group__field--select">
+                                    <option value="">Gayrimenkul Sahibi misiniz? Seçiniz</option>
+                                    <option value="true">Evet</option>
+                                    <option value="false">Hayır</option>
+                                </select>
+                            </div>
+
+                            <!-- Real Estate Value -->
+                            <div class="input_group">
+                                <input asp-for="FinanceForm.RealEstateValue" type="number" class="input_group__field" placeholder="Örn: Gayrimenkul Değeri (₺) 2000000" min="0" step="0.01" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile_form__section">
+                        <h4 class="profile_form__section_title">Banka & Kredi Kartı</h4>
+                        <div class="profile_form__grid">
+                            <!-- Bank Name -->
+                            <div class="input_group">
+                                <input asp-for="FinanceForm.BankName" type="text" class="input_group__field" placeholder="Örn: Ana Banka - Ziraat Bankası" />
+                            </div>
+
+                            <!-- Account Balance -->
+                            <div class="input_group">
+                                <input asp-for="FinanceForm.AccountBalance" type="number" class="input_group__field" placeholder="Örn: Hesap Bakiyesi (₺) 25000" min="0" step="0.01" />
+                            </div>
+
+                            <!-- Has Credit Card -->
+                            <div class="input_group">
+                                <select asp-for="FinanceForm.HasCreditCard" class="input_group__field input_group__field--select">
+                                    <option value="">Kredi Kartı Sahibi misiniz? Seçiniz</option>
+                                    <option value="true">Evet</option>
+                                    <option value="false">Hayır</option>
+                                </select>
+                            </div>
+
+                            <!-- Credit Card Limit -->
+                            <div class="input_group">
+                                <input asp-for="FinanceForm.CreditCardLimit" type="number" class="input_group__field" placeholder="Örn: Kredi Kartı Limiti (₺) 50000" min="0" step="0.01" />
+                            </div>
+
+                            <!-- Monthly Expenses -->
+                            <div class="input_group input_group--full">
+                                <input asp-for="FinanceForm.MonthlyExpenses" type="number" class="input_group__field" placeholder="Örn: Aylık Giderler (₺) 8000" min="0" step="0.01" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile_form__actions">
+                        <button type="submit" class="btn_primary" data-loading-text="Kaydediliyor...">
+                            Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/profile_tabs.js"></script>
+    <script>
+        // Restore active tab if returning from post
+        @if (!string.IsNullOrEmpty(Model.ActiveTab))
+        {
+            <text>
+            $(document).ready(function() {
+                switch_tab('@Model.ActiveTab');
+            });
+            </text>
+        }
+    </script>
+}
+
