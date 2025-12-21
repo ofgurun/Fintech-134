@@ -80,7 +80,7 @@ namespace InteraktifKredi.Web.Pages.Dashboard
                 var kvkkResponse = await _apiService.GetKvkkTextAsync(1);
 
                 if (kvkkResponse.Success && kvkkResponse.Value != null)
-                {
+            {
                     _logger.LogInformation("✅ KVKK text retrieved - ID: {Id}, Title: {Title}", 
                         kvkkResponse.Value.Id, kvkkResponse.Value.Title);
 
