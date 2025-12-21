@@ -36,6 +36,7 @@
 @use 'components/forms';
 @use 'components/cards';
 @use 'components/modal';
+@use 'components/sidebar';
 
 // ----------------------------------------------------------------------------
 // 5. PAGES
@@ -52,6 +53,7 @@
 @use 'pages/services';
 @use 'pages/faq';
 @use 'pages/report_detail';
+@use 'pages/help_center';
 
 // ============================================================================
 // GLOBAL UTILITIES (Optional - Gerekirse eklenebilir)
