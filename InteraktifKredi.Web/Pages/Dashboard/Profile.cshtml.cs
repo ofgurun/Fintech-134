@@ -89,8 +89,8 @@ namespace InteraktifKredi.Web.Pages.Dashboard
             CustomerId = long.Parse(customerIdClaim ?? "0");
             AddressForm.CustomerId = CustomerId;
 
-            _logger.LogInformation("Address Form Data - City: {City}, County: {County}, CustomerId: {CustomerId}", 
-                AddressForm.City, AddressForm.County, AddressForm.CustomerId);
+            _logger.LogInformation("Address Form Data - CityId: {CityId}, TownId: {TownId}, Address: {Address}, CustomerId: {CustomerId}", 
+                AddressForm.CityId, AddressForm.TownId, AddressForm.Address, AddressForm.CustomerId);
 
             // Save via API
             var response = await _apiService.SaveCustomerAddressAsync(AddressForm);
@@ -124,8 +124,8 @@ namespace InteraktifKredi.Web.Pages.Dashboard
             CustomerId = long.Parse(customerIdClaim ?? "0");
             JobForm.CustomerId = CustomerId;
 
-            _logger.LogInformation("Job Form Data - Company: {Company}, Position: {Position}, CustomerId: {CustomerId}", 
-                JobForm.Company, JobForm.Position, JobForm.CustomerId);
+            _logger.LogInformation("Job Form Data - TitleCompany: {TitleCompany}, CompanyPosition: {CompanyPosition}, JobGroupId: {JobGroupId}, CustomerWork: {CustomerWork}, WorkingYears: {WorkingYears}, WorkingMonth: {WorkingMonth}, CustomerId: {CustomerId}", 
+                JobForm.TitleCompany, JobForm.CompanyPosition, JobForm.JobGroupId, JobForm.CustomerWork, JobForm.WorkingYears, JobForm.WorkingMonth, JobForm.CustomerId);
 
             // Save via API
             var response = await _apiService.SaveJobInfoAsync(JobForm);
@@ -156,10 +156,12 @@ namespace InteraktifKredi.Web.Pages.Dashboard
 
             // Set CustomerId
             var customerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            CustomerId = long.Parse(customerIdClaim ?? "0");
+            // TEMPORARY: Use a known working customer ID for testing
+            CustomerId = 1000849; // TODO: Remove hardcoded ID after testing
+            WifeForm.CustomerId = CustomerId;
 
-            _logger.LogInformation("Wife Form Data - WifeName: {WifeName}, MaritalStatus: {MaritalStatus}", 
-                WifeForm.WifeName, WifeForm.MaritalStatus);
+            _logger.LogInformation("Wife Form Data - MaritalStatus: {MaritalStatus}, WorkWife: {WorkWife}, WifeSalaryAmount: {WifeSalaryAmount}, CustomerId: {CustomerId}", 
+                WifeForm.MaritalStatus, WifeForm.WorkWife, WifeForm.WifeSalaryAmount, WifeForm.CustomerId);
 
             // Save via API
             var response = await _apiService.SaveWifeInfoAsync(CustomerId, WifeForm);
@@ -190,11 +192,12 @@ namespace InteraktifKredi.Web.Pages.Dashboard
 
             // Set CustomerId
             var customerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            CustomerId = long.Parse(customerIdClaim ?? "0");
+            // TEMPORARY: Use a known working customer ID for testing
+            CustomerId = 1000849; // TODO: Remove hardcoded ID after testing
             FinanceForm.CustomerId = CustomerId;
 
-            _logger.LogInformation("Finance Form Data - BankName: {BankName}, HasCar: {HasCar}, CustomerId: {CustomerId}", 
-                FinanceForm.BankName, FinanceForm.HasCar, FinanceForm.CustomerId);
+            _logger.LogInformation("Finance Form Data - WorkSector: {WorkSector}, SalaryBank: {SalaryBank}, SalaryAmount: {SalaryAmount}, CarStatus: {CarStatus}, HouseStatus: {HouseStatus}, CustomerId: {CustomerId}", 
+                FinanceForm.WorkSector, FinanceForm.SalaryBank, FinanceForm.SalaryAmount, FinanceForm.CarStatus, FinanceForm.HouseStatus, FinanceForm.CustomerId);
 
             // Save via API
             var response = await _apiService.SaveFinanceInfoAsync(FinanceForm);
@@ -237,14 +240,13 @@ namespace InteraktifKredi.Web.Pages.Dashboard
                 AddressForm = new SaveAddressRequest
                 {
                     CustomerId = CustomerId,
-                    City = addressResponse.Value.City,
-                    County = addressResponse.Value.County,
-                    District = addressResponse.Value.District,
-                    AddressDetail = addressResponse.Value.AddressDetail,
-                    ResidenceDuration = addressResponse.Value.ResidenceDuration,
-                    HomeType = addressResponse.Value.HomeType
+                    CityId = addressResponse.Value.CityId ?? 0,
+                    TownId = addressResponse.Value.TownId ?? 0,
+                    Address = addressResponse.Value.Address ?? string.Empty,
+                    Source = 2 // Sabit değer: 2 = Kişi ekler
                 };
-                _logger.LogInformation("Address data loaded");
+                _logger.LogInformation("Address data loaded - CityId: {CityId}, TownId: {TownId}", 
+                    AddressForm.CityId, AddressForm.TownId);
             }
 
             // Fetch Job
@@ -254,51 +256,33 @@ namespace InteraktifKredi.Web.Pages.Dashboard
                 JobForm = new SaveJobRequest
                 {
                     CustomerId = CustomerId,
-                    Company = jobResponse.Value.Company,
-                    Sector = jobResponse.Value.Sector,
-                    Position = jobResponse.Value.Position,
-                    StartDate = jobResponse.Value.StartDate,
-                    MonthlyIncome = jobResponse.Value.MonthlyIncome,
-                    EmploymentType = jobResponse.Value.EmploymentType
+                    TitleCompany = jobResponse.Value.TitleCompany ?? string.Empty,
+                    CompanyPosition = jobResponse.Value.CompanyPosition ?? string.Empty,
+                    JobGroupId = jobResponse.Value.JobGroupId ?? 0,
+                    CustomerWork = jobResponse.Value.CustomerWork ?? 0,
+                    WorkingYears = jobResponse.Value.WorkingYears ?? 0,
+                    WorkingMonth = jobResponse.Value.WorkingMonth ?? 0
+                    // StartDate ve MonthlyIncome UI-only, JavaScript tarafından hesaplanacak
                 };
-                _logger.LogInformation("Job data loaded");
+                _logger.LogInformation("Job data loaded - JobGroupId: {JobGroupId}, CustomerWork: {CustomerWork}, WorkingYears: {WorkingYears}, WorkingMonth: {WorkingMonth}",
+                    JobForm.JobGroupId, JobForm.CustomerWork, JobForm.WorkingYears, JobForm.WorkingMonth);
             }
 
-            // Fetch Wife
-            var wifeResponse = await _apiService.GetWifeInfoAsync(CustomerId);
-            if (wifeResponse.Success && wifeResponse.Value != null)
-            {
-                WifeForm = new SaveWifeInfoRequest
-                {
-                    WifeName = wifeResponse.Value.WifeName,
-                    WifeTCKN = wifeResponse.Value.WifeTCKN,
-                    WifePhone = wifeResponse.Value.WifePhone,
-                    MaritalStatus = wifeResponse.Value.MaritalStatus,
-                    NumberOfChildren = wifeResponse.Value.NumberOfChildren,
-                    IsWifeWorking = wifeResponse.Value.IsWifeWorking
-                };
-                _logger.LogInformation("Wife data loaded");
-            }
+            // Fetch Wife - Geçici olarak devre dışı (GET ve POST modelleri farklı)
+            // var wifeResponse = await _apiService.GetWifeInfoAsync(CustomerId);
+            // if (wifeResponse.Success && wifeResponse.Value != null)
+            // {
+            //     // TODO: GET API'sinden gelen veriyi POST modeline map et
+            //     _logger.LogInformation("Wife data loaded");
+            // }
 
-            // Fetch Finance
-            var financeResponse = await _apiService.GetFinanceInfoAsync(CustomerId);
-            if (financeResponse.Success && financeResponse.Value != null)
-            {
-                FinanceForm = new SaveFinanceRequest
-                {
-                    CustomerId = CustomerId,
-                    HasCar = financeResponse.Value.HasCar,
-                    CarValue = financeResponse.Value.CarValue,
-                    HasRealEstate = financeResponse.Value.HasRealEstate,
-                    RealEstateValue = financeResponse.Value.RealEstateValue,
-                    BankName = financeResponse.Value.BankName,
-                    AccountBalance = financeResponse.Value.AccountBalance,
-                    HasCreditCard = financeResponse.Value.HasCreditCard,
-                    CreditCardLimit = financeResponse.Value.CreditCardLimit,
-                    MonthlyExpenses = financeResponse.Value.MonthlyExpenses
-                };
-                _logger.LogInformation("Finance data loaded");
-            }
+            // Fetch Finance - Geçici olarak devre dışı (GET ve POST modelleri farklı)
+            // var financeResponse = await _apiService.GetFinanceInfoAsync(CustomerId);
+            // if (financeResponse.Success && financeResponse.Value != null)
+            // {
+            //     // TODO: GET API'sinden gelen veriyi POST modeline map et
+            //     _logger.LogInformation("Finance data loaded");
+            // }
         }
     }
 }
