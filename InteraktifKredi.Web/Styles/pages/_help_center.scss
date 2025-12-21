@@ -1,0 +1,307 @@
+// ============================================================================
+// HELP CENTER PAGE - İNTERAKTİF KREDİ
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ============================================================================
+// HELP CENTER PAGE CONTAINER
+// ============================================================================
+
+.help_center_page {
+  padding: $spacing_8 $spacing_4;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @include respond_to(md) {
+    padding: $spacing_10 $spacing_6;
+  }
+}
+
+// ============================================================================
+// PAGE HEADER
+// ============================================================================
+
+.help_center_page__header {
+  margin-bottom: $spacing_8;
+  text-align: center;
+
+  @include respond_to(md) {
+    margin-bottom: $spacing_10;
+  }
+}
+
+.help_center_page__title {
+  font-size: $font_size_3xl;
+  font-weight: $font_weight_bold;
+  color: $color_navy;
+  margin-bottom: $spacing_2;
+  line-height: $line_height_tight;
+
+  @include respond_to(md) {
+    font-size: $font_size_4xl;
+  }
+}
+
+.help_center_page__subtitle {
+  font-size: $font_size_lg;
+  color: $text_light;
+  line-height: $line_height_relaxed;
+}
+
+// ============================================================================
+// CONTENT SECTIONS
+// ============================================================================
+
+.help_center_page__content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_12;
+}
+
+.help_section {
+  background-color: $bg_white;
+  border-radius: $border_radius_lg;
+  padding: $spacing_8;
+  box-shadow: $shadow_base;
+
+  @include respond_to(md) {
+    padding: $spacing_10;
+  }
+}
+
+.help_section__header {
+  margin-bottom: $spacing_8;
+  padding-bottom: $spacing_6;
+  border-bottom: 1px solid $border_light;
+}
+
+.help_section__title {
+  font-size: $font_size_2xl;
+  font-weight: $font_weight_bold;
+  color: #0056B3;
+  margin-bottom: $spacing_2;
+}
+
+.help_section__description {
+  font-size: $font_size_base;
+  color: $text_light;
+  line-height: $line_height_relaxed;
+}
+
+// ============================================================================
+// FAQ ACCORDION
+// ============================================================================
+
+.faq_accordion {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_8;
+}
+
+.faq_category {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_4;
+}
+
+.faq_category__title {
+  font-size: $font_size_xl;
+  font-weight: $font_weight_semibold;
+  color: #0056B3;
+  margin-bottom: $spacing_4;
+}
+
+.faq_items {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing_2;
+}
+
+.faq_item {
+  border: 1px solid $border_color;
+  border-radius: $border_radius_md;
+  background-color: $bg_white;
+  overflow: hidden;
+  transition: $transition_all;
+
+  &:hover {
+    border-color: rgba(0, 86, 179, 0.3);
+    box-shadow: $shadow_sm;
+  }
+
+  &--active {
+    border-color: #0056B3;
+    box-shadow: $shadow_md;
+
+    .faq_item__question {
+      color: #0056B3;
+      background-color: rgba(0, 86, 179, 0.1);
+
+      .faq_item__icon {
+        transform: rotate(180deg);
+      }
+    }
+
+    .faq_item__answer {
+      max-height: 1000px;
+      padding: $spacing_4 $spacing_6;
+      opacity: 1;
+    }
+  }
+}
+
+.faq_item__question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing_4 $spacing_6;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: $font_main;
+  font-size: $font_size_base;
+  font-weight: $font_weight_medium;
+  color: $text_dark;
+  transition: $transition_all;
+  border-radius: $border_radius_base;
+
+  &:hover {
+    color: #0056B3;
+    background-color: rgba(0, 86, 179, 0.1);
+  }
+
+  &:focus {
+    outline: 2px solid #0056B3;
+    outline-offset: -2px;
+  }
+}
+
+.faq_item__question_text {
+  flex: 1;
+  line-height: $line_height_normal;
+}
+
+.faq_item__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-left: $spacing_4;
+  color: $text_light;
+  transition: $transition_transform;
+}
+
+.faq_item__answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 $spacing_6;
+  opacity: 0;
+  transition: max-height $transition_slow, padding $transition_slow, opacity $transition_slow;
+}
+
+.faq_item__answer_content {
+  padding-top: $spacing_4;
+  padding-bottom: $spacing_4;
+
+  p {
+    font-size: $font_size_base;
+    color: $text_main;
+    line-height: $line_height_relaxed;
+    margin: 0;
+  }
+}
+
+// ============================================================================
+// GUIDE STEPS
+// ============================================================================
+
+.guide_steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing_6;
+
+  @include respond_to(md) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing_8;
+  }
+}
+
+.guide_step {
+  display: flex;
+  gap: $spacing_4;
+  padding: $spacing_6;
+  background-color: $bg_lighter;
+  border-radius: $border_radius_md;
+  border-left: 4px solid #0056B3;
+  transition: $transition_all;
+
+  &:hover {
+    box-shadow: $shadow_md;
+    transform: translateY(-2px);
+  }
+
+  @include respond_to(md) {
+    padding: $spacing_8;
+    gap: $spacing_6;
+  }
+}
+
+.guide_step__number {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0056B3;
+  color: $bg_white;
+  border-radius: $border_radius_full;
+  font-size: $font_size_xl;
+  font-weight: $font_weight_bold;
+
+  @include respond_to(md) {
+    width: 48px;
+    height: 48px;
+    font-size: $font_size_2xl;
+  }
+}
+
+.guide_step__content {
+  flex: 1;
+}
+
+.guide_step__title {
+  font-size: $font_size_lg;
+  font-weight: $font_weight_semibold;
+  color: #0056B3;
+  margin-bottom: $spacing_2;
+}
+
+.guide_step__description {
+  font-size: $font_size_base;
+  color: $text_main;
+  line-height: $line_height_relaxed;
+  margin: 0;
+}
+
+// ============================================================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================================================
+
+@include respond_to(sm) {
+  .help_center_page__title {
+    font-size: $font_size_2xl;
+  }
+
+  .help_section {
+    padding: $spacing_6;
+  }
+}
+
+// ============================================================================
+// END OF HELP CENTER PAGE
+// ============================================================================
+

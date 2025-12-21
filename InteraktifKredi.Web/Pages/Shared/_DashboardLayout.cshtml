@@ -10,18 +10,34 @@
     <!-- ========================================================================
          SIDEBAR (Sol Menü)
     ======================================================================== -->
-    <aside class="dashboard_sidebar">
+    <aside class="dashboard_sidebar" id="dashboard_sidebar">
         <!-- Logo -->
         <div class="dashboard_sidebar__logo">
-            <img src="~/img/logo.svg" alt="İnteraktif Kredi" class="dashboard_sidebar__logo_img" />
-            <span class="dashboard_sidebar__logo_text">İnteraktif Kredi</span>
+            <div class="dashboard_sidebar__logo_icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="20" fill="#0056B3"/>
+                    <path d="M12 20L18 26L28 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="dashboard_sidebar__logo_text_container">
+                <span class="dashboard_sidebar__logo_text_line1">interaktif</span>
+                <span class="dashboard_sidebar__logo_text_line2">kredi</span>
+            </div>
         </div>
 
         <!-- Navigation Menu -->
         <nav class="dashboard_sidebar__nav">
+            @{
+                var currentPagePath = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
+                var isHomeActive = currentPagePath.Equals("/Dashboard/Index", StringComparison.OrdinalIgnoreCase) || 
+                                  currentPagePath.Equals("/Dashboard", StringComparison.OrdinalIgnoreCase);
+                var isReportsActive = currentPagePath.Equals("/Dashboard/Reports", StringComparison.OrdinalIgnoreCase);
+                var isProfileActive = currentPagePath.Equals("/Dashboard/Profile", StringComparison.OrdinalIgnoreCase);
+                var isHelpActive = currentPagePath.Equals("/Dashboard/Help", StringComparison.OrdinalIgnoreCase);
+            }
             <ul class="dashboard_sidebar__menu">
-                <!-- Raporlarım -->
-                <li class="dashboard_sidebar__menu_item dashboard_sidebar__menu_item--active">
+                <!-- Ana Menü -->
+                <li class="dashboard_sidebar__menu_item @(isHomeActive ? "dashboard_sidebar__menu_item--active" : "")">
                     <a asp-page="/Dashboard/Index" class="dashboard_sidebar__menu_link">
                         <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M3 5C3 3.89543 3.89543 3 5 3H7C8.10457 3 9 3.89543 9 5V7C9 8.10457 8.10457 9 7 9H5C3.89543 9 3 8.10457 3 7V5Z" fill="currentColor"/>
@@ -29,12 +45,23 @@
                             <path d="M3 13C3 11.8954 3.89543 11 5 11H7C8.10457 11 9 11.8954 9 13V15C9 16.1046 8.10457 17 7 17H5C3.89543 17 3 16.1046 3 15V13Z" fill="currentColor"/>
                             <path d="M13 11C11.8954 11 11 11.8954 11 13V15C11 16.1046 11.8954 17 13 17H15C16.1046 17 17 16.1046 17 15V13C17 11.8954 16.1046 11 15 11H13Z" fill="currentColor"/>
                         </svg>
+                        <span class="dashboard_sidebar__menu_text">Ana Menü</span>
+                    </a>
+                </li>
+
+                <!-- Raporlarım -->
+                <li class="dashboard_sidebar__menu_item @(isReportsActive ? "dashboard_sidebar__menu_item--active" : "")">
+                    <a asp-page="/Dashboard/Reports" class="dashboard_sidebar__menu_link">
+                        <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 4C4 2.89543 4.89543 2 6 2H14C15.1046 2 16 2.89543 16 4V16C16 17.1046 15.1046 18 14 18H6C4.89543 18 4 17.1046 4 16V4Z" fill="currentColor"/>
+                            <path d="M6 6H14M6 9H14M6 12H10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
                         <span class="dashboard_sidebar__menu_text">Raporlarım</span>
                     </a>
                 </li>
 
                 <!-- Profil & Ayarlar -->
-                <li class="dashboard_sidebar__menu_item">
+                <li class="dashboard_sidebar__menu_item @(isProfileActive ? "dashboard_sidebar__menu_item--active" : "")">
                     <a asp-page="/Dashboard/Profile" class="dashboard_sidebar__menu_link">
                         <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M10 9C11.6569 9 13 7.65685 13 6C13 4.34315 11.6569 3 10 3C8.34315 3 7 4.34315 7 6C7 7.65685 8.34315 9 10 9ZM3 18C3 14.134 6.13401 11 10 11C13.866 11 17 14.134 17 18H3Z" fill="currentColor"/>
@@ -44,7 +71,7 @@
                 </li>
 
                 <!-- Yardım Merkezi -->
-                <li class="dashboard_sidebar__menu_item">
+                <li class="dashboard_sidebar__menu_item @(isHelpActive ? "dashboard_sidebar__menu_item--active" : "")">
                     <a asp-page="/Dashboard/Help" class="dashboard_sidebar__menu_link">
                         <svg class="dashboard_sidebar__menu_icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM11 6C11 6.55228 10.5523 7 10 7C9.44772 7 9 6.55228 9 6C9 5.44772 9.44772 5 10 5C10.5523 5 11 5.44772 11 6ZM9 9C8.44772 9 8 9.44772 8 10C8 10.5523 8.44772 11 9 11V14C9 14.5523 9.44772 15 10 15H11C11.5523 15 12 14.5523 12 14C12 13.4477 11.5523 13 11 13V10C11 9.44772 10.5523 9 10 9H9Z" fill="currentColor"/>
@@ -75,10 +102,22 @@
     <div class="dashboard_main">
         <!-- Top Header -->
         <header class="dashboard_header">
+            @{
+                var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
+                var isHomePage = currentPage.Equals("/Dashboard/Index", StringComparison.OrdinalIgnoreCase) || 
+                                 currentPage.Equals("/Dashboard", StringComparison.OrdinalIgnoreCase);
+            }
+            @if (isHomePage)
+            {
             <div class="dashboard_header__welcome">
                 <h1 class="dashboard_header__title">Hoşgeldiniz, @User.Identity?.Name</h1>
                 <p class="dashboard_header__subtitle">Kredi başvuru ve takip işlemlerinizi buradan yönetebilirsiniz.</p>
             </div>
+            }
+            else
+            {
+                <div class="dashboard_header__welcome"></div>
+            }
 
             <div class="dashboard_header__actions">
                 <!-- Bildirim (Opsiyonel) -->

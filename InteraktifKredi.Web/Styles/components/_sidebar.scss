@@ -1,0 +1,327 @@
+// ============================================================================
+// SIDEBAR COMPONENT - İNTERAKTİF KREDİ
+// ============================================================================
+// Collapsible sidebar with hover functionality
+// ============================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ============================================================================
+// SIDEBAR COLLAPSED STATE
+// ============================================================================
+
+.dashboard_sidebar {
+  transition: width 0.3s ease, transform 0.3s ease;
+
+  // Default collapsed state (desktop)
+  @media (min-width: 769px) {
+    &--collapsed {
+      width: 80px;
+
+      // Logo text container gizle
+      .dashboard_sidebar__logo_text_container {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        height: 0;
+      }
+
+      // Legacy logo text gizle
+      .dashboard_sidebar__logo_text {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      // Logo container - tam ortala ve optimize et
+      .dashboard_sidebar__logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: $spacing_6 0;
+        margin: 0 auto;
+        height: auto;
+        min-height: auto;
+        width: 100%;
+        box-sizing: border-box;
+        gap: 0;
+      }
+
+      // Logo icon - ikonların boyutunda (40px) ve tam ortala
+      .dashboard_sidebar__logo_icon {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(1);
+        transition: all 0.3s ease-in-out;
+
+        @include respond_to_max(md) {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      // Legacy logo image - panel genişliğinin %60-70'i kadar büyüt ve tam ortala
+      .dashboard_sidebar__logo_img {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+        display: block;
+        transform: scale(1);
+        transition: all 0.3s ease-in-out;
+
+        @include respond_to_max(md) {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      // Menu text gizle
+      .dashboard_sidebar__menu_text {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      // Menu link center - ikonları tam ortala
+      .dashboard_sidebar__menu_link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        position: relative;
+        
+        // Active indicator'ı gizle (collapsed state'de)
+        &::before {
+          display: none !important;
+        }
+        
+        // Gap'i kaldır (collapsed state'de)
+        gap: 0;
+      }
+
+      // İkon container - collapsed state'de 2 katı büyüt ve tam ortala
+      .dashboard_sidebar__menu_icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease;
+        display: block;
+      }
+      
+      // Active menu item - collapsed state'de farklı göster
+      .dashboard_sidebar__menu_item--active {
+        .dashboard_sidebar__menu_link {
+          background-color: rgba(white, 0.15);
+          
+          // Sol çizgi yerine arka plan rengi ile göster
+          &::before {
+            display: none !important;
+          }
+        }
+      }
+
+      // Logout button center - tam ortala
+      .dashboard_sidebar__logout_btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        position: relative;
+        
+        // Gap'i kaldır (collapsed state'de)
+        gap: 0;
+        
+        // Logout butonundaki ikonu da 2 katı büyüt ve tam ortala
+        .dashboard_sidebar__menu_icon {
+          width: 40px;
+          height: 40px;
+          margin: 0;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          display: block;
+        }
+      }
+    }
+
+    // Hover state - açılma (desktop)
+    &:hover:not(.dashboard_sidebar--collapsed),
+    &:not(.dashboard_sidebar--collapsed) {
+      width: 300px;
+      z-index: 1002;
+
+      .dashboard_sidebar__logo_text_container {
+        opacity: 1;
+        width: auto;
+        margin: 0;
+        padding: 0;
+        height: auto;
+      }
+
+      // Legacy logo text
+      .dashboard_sidebar__logo_text {
+        opacity: 1;
+        width: auto;
+        margin: 0;
+        padding: 0;
+      }
+
+      .dashboard_sidebar__logo {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: $spacing_8 $spacing_4;
+        min-height: auto;
+        margin: 0;
+        width: auto;
+        gap: $spacing_3;
+      }
+
+      .dashboard_sidebar__logo_icon {
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        transform: scale(1);
+        transition: all 0.3s ease-in-out;
+
+        @include respond_to_max(md) {
+          width: 36px;
+          height: 36px;
+        }
+      }
+
+      // Legacy logo image
+      .dashboard_sidebar__logo_img {
+        width: 64px;
+        height: 64px;
+        margin: 0;
+        transform: scale(1);
+        transition: all 0.3s ease-in-out;
+
+        @include respond_to_max(md) {
+          width: 56px;
+          height: 56px;
+        }
+      }
+
+      .dashboard_sidebar__menu_text {
+        opacity: 1;
+        width: auto;
+        margin: 0;
+        padding: 0;
+      }
+
+      .dashboard_sidebar__menu_link {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: $spacing_4 $spacing_5;
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+        box-sizing: border-box;
+      }
+
+      .dashboard_sidebar__menu_icon {
+        margin: 0;
+        position: static;
+        left: auto;
+        top: auto;
+        transform: none;
+        width: 20px;
+        height: 20px;
+        transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease;
+      }
+
+      .dashboard_sidebar__logout_btn {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: $spacing_4 $spacing_5;
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// MAIN CONTENT ADJUSTMENT
+// ============================================================================
+
+// Desktop'ta sidebar collapsed olduğunda main content margin ayarı
+body.sidebar_collapsed {
+  .dashboard_main {
+    margin-left: 80px;
+    transition: margin-left 0.3s ease;
+
+    @include respond_to_max(md) {
+      margin-left: 80px;
+    }
+
+    @include respond_to_max(sm) {
+      margin-left: 0;
+    }
+  }
+}
+
+// Sidebar hover'da açıldığında
+.dashboard_sidebar:hover ~ .dashboard_main,
+body:not(.sidebar_collapsed) .dashboard_main {
+  margin-left: 300px;
+  transition: margin-left 0.3s ease;
+
+  @include respond_to_max(md) {
+    margin-left: 260px;
+  }
+
+  @include respond_to_max(sm) {
+    margin-left: 0;
+  }
+}
+
+// ============================================================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================================================
+
+@include respond_to_max(sm) {
+  .dashboard_sidebar--collapsed {
+    width: 100%;
+    transform: translateX(-100%);
+  }
+}
+
+// ============================================================================
+// END OF SIDEBAR COMPONENT
+// ============================================================================
