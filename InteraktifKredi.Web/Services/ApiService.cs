@@ -785,7 +785,7 @@ namespace InteraktifKredi.Web.Services
                 _logger.LogInformation("Fetching report detail for ID: {ReportId}", reportId);
 
                 var baseUrl = _apiSettings.IdcApi.TrimEnd('/');
-                var requestUrl = $"{baseUrl}/GetReportDetail?code={_apiSettings.ReportDetailKey}&id={reportId}";
+                var requestUrl = $"{baseUrl}/GetReportDetail?code={_apiSettings.ReportDetailKey}&reportId={reportId}";
 
                 _logger.LogInformation("Report Detail URL: {Url}", requestUrl);
 
@@ -797,28 +797,119 @@ namespace InteraktifKredi.Web.Services
 
                 _logger.LogInformation("Report Detail Response: {StatusCode}, Body: {Body}",
                     response.StatusCode, responseContent);
+                Console.WriteLine($"[ApiService] Report Detail Response StatusCode: {response.StatusCode}");
+                Console.WriteLine($"[ApiService] Report Detail Response Body: {responseContent}");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var reportDetail = JsonSerializer.Deserialize<Models.Api.Reports.ReportDetail>(
-                        responseContent, _responseJsonOptions);
-
-                    if (reportDetail != null)
+                    try
                     {
-                        _logger.LogInformation("✅ Report detail retrieved successfully");
-                        return ServiceResponse<Models.Api.Reports.ReportDetail>.SuccessResponse(
-                            reportDetail,
-                            "Rapor detayı başarıyla getirildi.",
-                            200
+                        // Önce raw JSON'u dynamic olarak parse et ve logla
+                        var rawJson = JsonSerializer.Deserialize<JsonElement>(
+                            responseContent, _responseJsonOptions);
+                        Console.WriteLine($"[ApiService] Parsed JSON Element: {rawJson}");
+
+                        Models.Api.Reports.ReportDetail? reportDetail = null;
+
+                        // İlk önce ApiResponse wrapper ile deneyelim ({ "statusCode": 200, "value": {...} })
+                        try
+                        {
+                            var apiResponse = JsonSerializer.Deserialize<ApiResponse<Models.Api.Reports.ReportDetail>>(
+                                responseContent, _responseJsonOptions);
+
+                            Console.WriteLine($"[ApiService] Deserialized ApiResponse - StatusCode: {apiResponse?.StatusCode}, HasValue: {apiResponse?.Value != null}");
+                            
+                            // API'de success property yok, sadece statusCode var. statusCode 200 ise başarılı kabul et
+                            if (apiResponse != null && apiResponse.Value != null && (apiResponse.StatusCode == 200 || response.IsSuccessStatusCode))
+                            {
+                                reportDetail = apiResponse.Value;
+                                _logger.LogInformation("✅ Report detail retrieved successfully (with ApiResponse wrapper)");
+                                Console.WriteLine($"[ApiService] ✅ Report detail retrieved (wrapper) - ReportId: {reportDetail.ReportId}, CreditScore: {reportDetail.CreditScore}");
+                                var successResponse = ServiceResponse<Models.Api.Reports.ReportDetail>.SuccessResponse(
+                                    reportDetail,
+                                    apiResponse.Message ?? "Rapor detayı başarıyla getirildi.",
+                                    apiResponse.StatusCode > 0 ? apiResponse.StatusCode : 200
+                                );
+                                successResponse.RawResponse = responseContent;
+                                return successResponse;
+                            }
+                            else
+                            {
+                                _logger.LogWarning("API response Value is null. StatusCode: {StatusCode}, HasValue: {HasValue}",
+                                    apiResponse?.StatusCode, apiResponse?.Value != null);
+                                Console.WriteLine($"[ApiService] WARNING: ApiResponse wrapper - StatusCode={apiResponse?.StatusCode}, Value is null={apiResponse?.Value == null}");
+                            }
+                        }
+                        catch (JsonException wrapperEx)
+                        {
+                            _logger.LogWarning(wrapperEx, "Failed to deserialize as ApiResponse wrapper, trying direct deserialization");
+                            Console.WriteLine($"[ApiService] ApiResponse wrapper deserialization failed: {wrapperEx.Message}");
+                            Console.WriteLine($"[ApiService] Trying direct ReportDetail deserialization...");
+                        }
+
+                        // ApiResponse wrapper yoksa, doğrudan ReportDetail olarak deserialize et
+                        try
+                        {
+                            reportDetail = JsonSerializer.Deserialize<Models.Api.Reports.ReportDetail>(
+                                responseContent, _responseJsonOptions);
+                            
+                            if (reportDetail != null)
+                            {
+                                _logger.LogInformation("✅ Report detail retrieved successfully (direct deserialization)");
+                                Console.WriteLine($"[ApiService] ✅ Report detail retrieved (direct) - ReportId: {reportDetail.ReportId}, CreditScore: {reportDetail.CreditScore}");
+                                var successResponse = ServiceResponse<Models.Api.Reports.ReportDetail>.SuccessResponse(
+                                    reportDetail,
+                                    "Rapor detayı başarıyla getirildi.",
+                                    200
+                                );
+                                successResponse.RawResponse = responseContent;
+                                return successResponse;
+                            }
+                            else
+                            {
+                                _logger.LogError("Direct deserialization returned null");
+                                Console.WriteLine($"[ApiService] ERROR: Direct deserialization returned null");
+                            }
+                        }
+                        catch (JsonException directEx)
+                        {
+                            _logger.LogError(directEx, "Both ApiResponse wrapper and direct deserialization failed");
+                            Console.WriteLine($"[ApiService] ERROR: Direct deserialization also failed: {directEx.Message}");
+                            
+                            // Hata durumunda raw JSON'u da ekle
+                            var errorResponse = ServiceResponse<Models.Api.Reports.ReportDetail>.FailureResponse(
+                                $"JSON deserialization hatası: {directEx.Message}",
+                                500
+                            );
+                            errorResponse.RawResponse = responseContent;
+                            return errorResponse;
+                        }
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        _logger.LogError(jsonEx, "JSON deserialization failed. Response: {Response}", responseContent);
+                        Console.WriteLine($"[ApiService] JSON Exception: {jsonEx.Message}");
+                        Console.WriteLine($"[ApiService] JSON Response: {responseContent}");
+                        
+                        var errorResponse = ServiceResponse<Models.Api.Reports.ReportDetail>.FailureResponse(
+                            $"JSON deserialization hatası: {jsonEx.Message}",
+                            500
                         );
+                        errorResponse.RawResponse = responseContent;
+                        return errorResponse;
                     }
                 }
 
-                _logger.LogError("Failed to fetch report detail: {StatusCode}", response.StatusCode);
-                return ServiceResponse<Models.Api.Reports.ReportDetail>.FailureResponse(
-                    "Rapor detayı getirilemedi.",
+                _logger.LogError("Failed to fetch report detail: {StatusCode}, Response: {Response}",
+                    response.StatusCode, responseContent);
+                Console.WriteLine($"[ApiService] ERROR: StatusCode={response.StatusCode}, Response={responseContent}");
+                
+                var failureResponse = ServiceResponse<Models.Api.Reports.ReportDetail>.FailureResponse(
+                    $"Rapor detayı getirilemedi. HTTP Status: {response.StatusCode}",
                     (int)response.StatusCode
                 );
+                failureResponse.RawResponse = responseContent;
+                return failureResponse;
             }
             catch (Exception ex)
             {

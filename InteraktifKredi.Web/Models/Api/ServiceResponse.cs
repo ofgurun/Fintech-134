@@ -27,6 +27,11 @@ namespace InteraktifKredi.Web.Models.Api
         public int StatusCode { get; set; }
 
         /// <summary>
+        /// Raw JSON response from API (for debugging purposes)
+        /// </summary>
+        public string? RawResponse { get; set; }
+
+        /// <summary>
         /// Creates a successful response
         /// </summary>
         public static ServiceResponse<T> SuccessResponse(T value, string message = "Success", int statusCode = 200)
