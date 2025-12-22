@@ -95,724 +95,302 @@
 }
 
 <!-- ========================================================================
-     DASHBOARD CONTENT - Raporlarım (Modern Rapor Kütüphanesi)
+     ANA DASHBOARD - BİLGİLENDİRME ODAKLI SAYFA
 ======================================================================== -->
-
-<style>
-    /* ========================================================================
-       REPORTS LIBRARY - PREMIUM FINANCIAL REPORTS PAGE
-       ======================================================================== */
-    
-    /* Page Header & Toolbar */
-    .reports_library_header {
-        margin-bottom: 2rem;
-    }
-    
-    .reports_library_title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #111827;
-        margin: 0 0 0.5rem 0;
-    }
-    
-    .reports_library_subtitle {
-        font-size: 0.875rem;
-        color: #6B7280;
-        margin: 0 0 1.5rem 0;
-    }
-    
-    .reports_library_toolbar {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    @@media (min-width: 640px) {
-        .reports_library_toolbar {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-    }
-    
-    /* Search Input */
-    .reports_library_search {
-        position: relative;
-        flex: 1;
-        max-width: 400px;
-    }
-    
-    .reports_library_search_input {
-        width: 100%;
-        padding: 0.625rem 1rem 0.625rem 2.75rem;
-        font-size: 0.875rem;
-        color: #111827;
-        background-color: #FFFFFF;
-        border: 2px solid #E5E7EB;
-        border-radius: 0.5rem;
-        transition: all 0.2s;
-    }
-    
-    .reports_library_search_input:focus {
-        outline: none;
-        border-color: #2563EB;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    
-    .reports_library_search_icon {
-        position: absolute;
-        left: 0.875rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 18px;
-        height: 18px;
-        color: #9CA3AF;
-        pointer-events: none;
-    }
-    
-    /* Filter Button */
-    .reports_library_filter {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.625rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #374151;
-        background-color: #FFFFFF;
-        border: 2px solid #E5E7EB;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    
-    .reports_library_filter:hover {
-        border-color: #2563EB;
-        color: #2563EB;
-    }
-    
-    /* Reports Grid */
-    .reports_library_grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    @@media (min-width: 768px) {
-        .reports_library_grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @@media (min-width: 1024px) {
-        .reports_library_grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-    
-    /* Report Card */
-    .reports_library_card {
-        background-color: #FFFFFF;
-        border-radius: 0.75rem;
-        border: 1px solid #F3F4F6;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border-left: 4px solid #2563EB;
-    }
-    
-    .reports_library_card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
-    }
-    
-    /* Card Header */
-    .reports_library_card_header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-    }
-    
-    .reports_library_card_icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 0.75rem;
-        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-        color: #2563EB;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-    
-    .reports_library_card_icon svg {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .reports_library_card_badge {
-        padding: 0.375rem 0.875rem;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        background-color: #DBEAFE;
-        color: #1E40AF;
-    }
-    
-    /* Card Body */
-    .reports_library_card_body {
-        flex: 1;
-        margin-bottom: 1rem;
-    }
-    
-    .reports_library_card_title {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #111827;
-        margin: 0 0 0.75rem 0;
-        line-height: 1.4;
-    }
-    
-    .reports_library_card_date {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.875rem;
-        color: #6B7280;
-        margin: 0 0 0.75rem 0;
-    }
-    
-    .reports_library_card_date_icon {
-        width: 16px;
-        height: 16px;
-        color: #9CA3AF;
-    }
-    
-    .reports_library_card_number {
-        font-size: 0.75rem;
-        color: #6B7280;
-        font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
-        margin: 0;
-    }
-    
-    /* Card Footer */
-    .reports_library_card_footer {
-        border-top: 1px solid #E5E7EB;
-        padding-top: 1rem;
-        margin-top: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    
-    .reports_library_card_action {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #2563EB;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-    
-    .reports_library_card_action:hover {
-        color: #1E40AF;
-    }
-    
-    .reports_library_card_action_icon {
-        width: 16px;
-        height: 16px;
-    }
-    
-    .reports_library_card_download {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #6B7280;
-        border-radius: 0.375rem;
-        transition: all 0.2s;
-        cursor: pointer;
-        border: none;
-        background: none;
-    }
-    
-    .reports_library_card_download:hover {
-        color: #111827;
-        background-color: #F3F4F6;
-    }
-    
-    .reports_library_card_download svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    /* Empty State */
-    .reports_library_empty {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 4rem 2rem;
-        background-color: #FFFFFF;
-        border-radius: 1rem;
-        border: 1px solid #E5E7EB;
-    }
-    
-    .reports_library_empty_icon {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto 1.5rem;
-        color: #9CA3AF;
-    }
-    
-    .reports_library_empty_title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #111827;
-        margin: 0 0 0.5rem 0;
-    }
-    
-    .reports_library_empty_text {
-        font-size: 0.875rem;
-        color: #6B7280;
-        margin: 0 0 1.5rem 0;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    .reports_library_empty_button {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.625rem 1.25rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: #FFFFFF;
-        background-color: #2563EB;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-    
-    .reports_library_empty_button:hover {
-        background-color: #1E40AF;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-    }
-</style>
-
 <div class="dashboard_page">
-<<<<<<< HEAD
-    <!-- Page Header & Toolbar -->
-    <div class="reports_library_header">
-        <h1 class="reports_library_title">Geçmiş Raporlarınız</h1>
-        <p class="reports_library_subtitle">
-            Tüm kredi değerlendirme raporlarınızı buradan inceleyebilir ve indirebilirsiniz.
-        </p>
-        
-        <div class="reports_library_toolbar">
-            <div class="reports_library_search">
-                <svg class="reports_library_search_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="m21 21-4.35-4.35"/>
+    
+    <!-- ========================================================================
+         VİZYON KARTI (Hero Section)
+    ========================================================================= -->
+    <section class="dashboard_hero_section">
+        <div class="dashboard_hero_content">
+            <div class="dashboard_hero_icon">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="32" fill="url(#gradient-primary)"/>
+                    <path d="M20 32L28 40L44 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="gradient-primary" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#0055FF"/>
+                            <stop offset="1" stop-color="#3D7EFF"/>
+                        </linearGradient>
+                    </defs>
                 </svg>
-                <input type="text" 
-                       class="reports_library_search_input" 
-                       placeholder="Rapor no veya tarih ara..." 
-                       id="reports_search_input" />
+            </div>
+            <h1 class="dashboard_hero_title">İnteraktif Kredi'ye Hoş Geldiniz</h1>
+            <p class="dashboard_hero_subtitle">
+                Hız, şeffaflık ve güven odaklı finansal çözümlerle geleceğinizi şekillendirin. 
+                Kredi başvuru sürecinizi dakikalar içinde tamamlayın, anında sonuç alın.
+            </p>
+            <div class="dashboard_hero_features">
+                <div class="dashboard_hero_feature_item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" fill="#10B981"/>
+                        <path d="M7 10L9 12L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Hızlı Onay</span>
+                </div>
+                <div class="dashboard_hero_feature_item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M2 10H18M10 2V18" stroke="#0055FF" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>%100 Şeffaf</span>
+                </div>
+                <div class="dashboard_hero_feature_item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 2L12.09 7.26L18 8L14 12L15.18 18L10 15L4.82 18L6 12L2 8L7.91 7.26L10 2Z" fill="#F59E0B"/>
+                    </svg>
+                    <span>Güvenli İşlem</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================
+         SÜREÇ AKIŞI (12 Adımlık Workflow)
+    ========================================================================= -->
+    <section class="dashboard_workflow_section">
+        <h2 class="dashboard_section_title">Kredi Başvuru Süreci</h2>
+        <p class="dashboard_section_subtitle">12 basit adımda kredi başvurunuzu tamamlayın</p>
+        
+        <div class="dashboard_workflow_container">
+            <div class="dashboard_workflow_timeline">
+                @{
+                    var workflowSteps = new[]
+                    {
+                        new { Number = 1, Title = "Kimlik Doğrulama", Icon = "user-check", Description = "Kimlik bilgilerinizi girin" },
+                        new { Number = 2, Title = "KVKK Onayı", Icon = "shield-check", Description = "Gizlilik sözleşmesini onaylayın" },
+                        new { Number = 3, Title = "OTP Gönderimi", Icon = "message-circle", Description = "Telefonunuza kod gönderilir" },
+                        new { Number = 4, Title = "OTP Doğrulama", Icon = "lock", Description = "Gelen kodu doğrulayın" },
+                        new { Number = 5, Title = "Profil Bilgileri", Icon = "user", Description = "Kişisel bilgilerinizi güncelleyin" },
+                        new { Number = 6, Title = "Kredi Başvurusu", Icon = "file-text", Description = "Kredi türü ve tutar seçin" },
+                        new { Number = 7, Title = "Belge Yükleme", Icon = "upload", Description = "Gerekli belgeleri yükleyin" },
+                        new { Number = 8, Title = "Değerlendirme", Icon = "search", Description = "Başvurunuz değerlendirilir" },
+                        new { Number = 9, Title = "Kredi Raporu", Icon = "bar-chart", Description = "Rapor oluşturulur" },
+                        new { Number = 10, Title = "Onay Süreci", Icon = "check-circle", Description = "Onay süreci başlar" },
+                        new { Number = 11, Title = "Sonuç Bildirimi", Icon = "bell", Description = "Sonuç size bildirilir" },
+                        new { Number = 12, Title = "Para Transferi", Icon = "credit-card", Description = "Onay sonrası para transferi" }
+                    };
+                }
+                
+                @foreach (var step in workflowSteps)
+                {
+                    <div class="dashboard_workflow_step" data-step="@step.Number">
+                        <div class="dashboard_workflow_step_connector"></div>
+                        <div class="dashboard_workflow_step_card">
+                            <div class="dashboard_workflow_step_icon">
+                                @switch (step.Icon)
+                                {
+                                    case "user-check":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="9" cy="7" r="4"/>
+                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                                        </svg>
+                                        break;
+                                    case "shield-check":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                            <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        break;
+                                    case "message-circle":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                                        </svg>
+                                        break;
+                                    case "lock":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                        </svg>
+                                        break;
+                                    case "user":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                        break;
+                                    case "file-text":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                                        </svg>
+                                        break;
+                                    case "upload":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                                        </svg>
+                                        break;
+                                    case "search":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8"/>
+                                            <path d="m21 21-4.35-4.35"/>
+                                        </svg>
+                                        break;
+                                    case "bar-chart":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="20" x2="12" y2="10"/>
+                                            <line x1="18" y1="20" x2="18" y2="4"/>
+                                            <line x1="6" y1="20" x2="6" y2="16"/>
+                                        </svg>
+                                        break;
+                                    case "check-circle":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <path d="M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        break;
+                                    case "bell":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/>
+                                        </svg>
+                                        break;
+                                    case "credit-card":
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                            <line x1="1" y1="10" x2="23" y2="10"/>
+                                        </svg>
+                                        break;
+                                }
+                            </div>
+                            <div class="dashboard_workflow_step_number">@step.Number</div>
+                            <h3 class="dashboard_workflow_step_title">@step.Title</h3>
+                            <p class="dashboard_workflow_step_description">@step.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================
+         GÜVENLİK ROZETLERİ
+    ========================================================================= -->
+    <section class="dashboard_security_section">
+        <h2 class="dashboard_section_title">Güvenlik & Şeffaflık</h2>
+        <p class="dashboard_section_subtitle">Verileriniz en üst düzey güvenlik standartlarıyla korunuyor</p>
+        
+        <div class="dashboard_security_badges">
+            <div class="dashboard_security_badge">
+                <div class="dashboard_security_badge_icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="16" fill="#10B981" fill-opacity="0.1"/>
+                        <path d="M16 22s8-4 8-10V6l-8-3-8 3v6c0 6 8 10 8 10z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 16l3 3 6-6" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="dashboard_security_badge_title">Veri Maskeleme</h3>
+                <p class="dashboard_security_badge_text">
+                    Hassas bilgileriniz maskelenir: <strong>12*******90</strong>
+                </p>
             </div>
             
-            <button type="button" class="reports_library_filter" id="reports_filter_btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 6h18M7 12h10M11 18h2"/>
-                </svg>
-                <span>Tarihe Göre Sırala</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Reports Grid -->
-    <div class="reports_library_grid" id="reports_grid">
-        @if (Model.Reports == null || !Model.Reports.Any())
-        {
-            <!-- Empty State -->
-            <div class="reports_library_empty">
-                <svg class="reports_library_empty_icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 24H44M20 32H44M20 40H32M16 56H48C50.2091 56 52 54.2091 52 52V12C52 9.79086 50.2091 8 48 8H16C13.7909 8 12 9.79086 12 12V52C12 54.2091 13.7909 56 16 56Z" stroke-linecap="round"/>
-                </svg>
-                <h3 class="reports_library_empty_title">Henüz bir raporunuz bulunmuyor</h3>
-                <p class="reports_library_empty_text">
-                    Yeni başvuru yaparak rapor oluşturabilirsiniz.
+            <div class="dashboard_security_badge">
+                <div class="dashboard_security_badge_icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="16" fill="#0055FF" fill-opacity="0.1"/>
+                        <path d="M16 6v6l4 2M20 20a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" stroke="#0055FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 8a8 8 0 1 0 0 16 8 8 0 0 0 0-16z" stroke="#0055FF" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h3 class="dashboard_security_badge_title">Decimal Hassasiyeti</h3>
+                <p class="dashboard_security_badge_text">
+                    Tüm işlemler <strong>2 decimal</strong> hassasiyetinde yapılır
                 </p>
-                <a asp-page="/Loan/Apply" class="reports_library_empty_button">
-                    Kredi Başvurusu Yap
-                </a>
             </div>
-        }
-        else
-        {
-            <!-- Report Cards (API'den gelen veriler) -->
-            @foreach (var report in Model.Reports)
-            {
-                <div class="reports_library_card" data-report-number="@report.ReportNumber" data-report-date="@report.CreatedDate.ToString("yyyy-MM-dd")">
-                    <div class="reports_library_card_header">
-                        <div class="reports_library_card_icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 12H15M9 16H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L18.7071 8.70711C18.8946 8.89464 19 9.149 19 9.41421V19C19 20.1046 18.1046 21 17 21Z" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <span class="reports_library_card_badge">@report.StatusDisplay</span>
-                    </div>
-                    
-                    <div class="reports_library_card_body">
-                        <h3 class="reports_library_card_title">@report.ReportName</h3>
-                        
-                        <div class="reports_library_card_date">
-                            <svg class="reports_library_card_date_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="16" y1="2" x2="16" y2="6"/>
-                                <line x1="8" y1="2" x2="8" y2="6"/>
-                                <line x1="3" y1="10" x2="21" y2="10"/>
-                            </svg>
-                            <span>@report.CreatedDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</span>
-                        </div>
-                        
-                        <p class="reports_library_card_number">@report.ReportNumber</p>
-                    </div>
-                    
-                    <div class="reports_library_card_footer">
-                        <a asp-page="/ReportDetail" 
-                           asp-route-id="@report.Id"
-                           class="reports_library_card_action">
-                            <span>Raporu İncele</span>
-                            <svg class="reports_library_card_action_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <button type="button" class="reports_library_card_download" title="Raporu İndir">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
+            
+            <div class="dashboard_security_badge">
+                <div class="dashboard_security_badge_icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="16" fill="#F59E0B" fill-opacity="0.1"/>
+                        <path d="M16 6L8 10v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12v-6l-8-4z" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
-            }
-        }
-    </div>
-</div>
-
-<!-- ========================================================================
-     REPORT DETAIL MODAL
-======================================================================== -->
-<div id="reportDetailModal" class="modal-overlay" style="display: none;">
-    <div class="modal-container modal-container--large">
-        <div class="modal-header">
-            <h3 id="modal_report_title">Rapor Detayları</h3>
-            <button type="button" class="modal-close" onclick="close_report_detail()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
-        <div class="modal-body">
-            <!-- Loading State -->
-            <div id="report_loading" class="report_detail__loading">
-                <div class="spinner"></div>
-                <p>Rapor detayları yükleniyor...</p>
-            </div>
-
-            <!-- Report Content -->
-            <div id="report_content" class="report_detail" style="display: none;">
-                <!-- Report Header -->
-                <div class="report_detail__header">
-                    <div class="report_detail__header_left">
-                        <h4 id="detail_report_name">-</h4>
-                        <p id="detail_report_number" class="report_detail__meta">-</p>
-                    </div>
-                    <div class="report_detail__header_right">
-                        <span id="detail_status_badge" class="report_card__badge">-</span>
-                    </div>
-                </div>
-
-                <!-- Report Info Grid -->
-                <div class="report_detail__grid">
-                    <!-- Kredi Skoru -->
-                    <div class="report_detail__item">
-                        <label class="report_detail__label">Kredi Skoru</label>
-                        <div id="detail_credit_score" class="report_detail__value report_detail__value--highlight">-</div>
-                    </div>
-
-                    <!-- Oluşturma Tarihi -->
-                    <div class="report_detail__item">
-                        <label class="report_detail__label">Oluşturma Tarihi</label>
-                        <div id="detail_created_date" class="report_detail__value">-</div>
-                    </div>
-
-                    <!-- Kredi Tutarı -->
-                    <div class="report_detail__item">
-                        <label class="report_detail__label">Kredi Tutarı</label>
-                        <div id="detail_loan_amount" class="report_detail__value">-</div>
-                    </div>
-
-                    <!-- Vade -->
-                    <div class="report_detail__item">
-                        <label class="report_detail__label">Vade</label>
-                        <div id="detail_loan_term" class="report_detail__value">-</div>
-                    </div>
-
-                    <!-- Faiz Oranı -->
-                    <div class="report_detail__item">
-                        <label class="report_detail__label">Faiz Oranı</label>
-                        <div id="detail_interest_rate" class="report_detail__value">-</div>
-                    </div>
-
-                    <!-- Aylık Ödeme -->
-                    <div class="report_detail__item">
-                        <label class="report_detail__label">Aylık Ödeme</label>
-                        <div id="detail_monthly_payment" class="report_detail__value">-</div>
-                    </div>
-                </div>
-
-                <!-- Notes -->
-                <div id="report_notes_section" class="report_detail__notes" style="display: none;">
-                    <label class="report_detail__label">Notlar</label>
-                    <p id="detail_notes" class="report_detail__notes_text">-</p>
-        </div>
-
-                <!-- Approval Info -->
-                <div id="report_approval_section" class="report_detail__approval" style="display: none;">
-                    <div class="report_detail__approval_item">
-                        <span class="report_detail__label">Onaylayan:</span>
-                        <span id="detail_approved_by">-</span>
-                    </div>
-                    <div class="report_detail__approval_item">
-                        <span class="report_detail__label">Onay Tarihi:</span>
-                        <span id="detail_approved_date">-</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Error State -->
-            <div id="report_error" class="report_detail__error" style="display: none;">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                    <path d="M24 4C12.96 4 4 12.96 4 24C4 35.04 12.96 44 24 44C35.04 44 44 35.04 44 24C44 12.96 35.04 4 24 4ZM26 34H22V30H26V34ZM26 26H22V14H26V26Z" fill="currentColor"/>
-                </svg>
-                <p id="report_error_message">Rapor detayları yüklenirken bir hata oluştu.</p>
+                <h3 class="dashboard_security_badge_title">SSL Güvenliği</h3>
+                <p class="dashboard_security_badge_text">
+                    Tüm veri transferleri <strong>256-bit SSL</strong> ile şifrelenir
+                </p>
             </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn_secondary" onclick="close_report_detail()">
-                Kapat
-            </button>
+    </section>
+
+    <!-- ========================================================================
+         HIZLI ERİŞİM KARTLARI
+    ========================================================================= -->
+    <section class="dashboard_quick_access_section">
+        <h2 class="dashboard_section_title">Hızlı Erişim</h2>
+        <p class="dashboard_section_subtitle">Sık kullanılan işlemlerinize hızlıca erişin</p>
+        
+        <div class="dashboard_quick_access_grid">
+            <a asp-page="/Dashboard/Reports" class="dashboard_quick_access_card">
+                <div class="dashboard_quick_access_card_icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect x="6" y="8" width="28" height="24" rx="2" fill="url(#gradient-blue)" fill-opacity="0.1"/>
+                        <path d="M14 16h12M14 20h12M14 24h8" stroke="#0055FF" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="gradient-blue" x1="6" y1="8" x2="34" y2="32" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#0055FF"/>
+                                <stop offset="1" stop-color="#3D7EFF"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h3 class="dashboard_quick_access_card_title">Rapor Detayları</h3>
+                <p class="dashboard_quick_access_card_description">
+                    Kredi raporlarınızı inceleyin ve detaylı analizlere ulaşın
+                </p>
+                <div class="dashboard_quick_access_card_arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 14l6-6M13 8h-6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </a>
+            
+            <a asp-page="/Dashboard/Profile" class="dashboard_quick_access_card">
+                <div class="dashboard_quick_access_card_icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="14" r="6" fill="url(#gradient-purple)" fill-opacity="0.1"/>
+                        <path d="M10 32c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="gradient-purple" x1="14" y1="8" x2="26" y2="20" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#7C3AED"/>
+                                <stop offset="1" stop-color="#A78BFA"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h3 class="dashboard_quick_access_card_title">Profil Ayarları</h3>
+                <p class="dashboard_quick_access_card_description">
+                    Kişisel bilgilerinizi ve tercihlerinizi yönetin
+                </p>
+                <div class="dashboard_quick_access_card_arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 14l6-6M13 8h-6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </a>
         </div>
-    </div>
+    </section>
 </div>
 
 @section Scripts {
     <script>
-        // Dashboard specific JavaScript
-        console.log('Dashboard Index loaded - Reports:', @Model.Reports.Count);
-
-        // ====================================================================
-        // REPORT DETAIL MODAL
-        // ====================================================================
-
-        function open_report_detail(report_id) {
-            console.log('Opening report detail modal for report ID:', report_id);
-            
-            // Show modal
-            $('#reportDetailModal').fadeIn(300);
-            
-            // Show loading state
-            $('#report_loading').show();
-            $('#report_content').hide();
-            $('#report_error').hide();
-            
-            // Fetch report details via AJAX
-            $.ajax({
-                url: '/Dashboard/Index?handler=GetReportDetail',
-                type: 'GET',
-                data: { reportId: report_id },
-                success: function(response) {
-                    console.log('Report detail response:', response);
-                    populate_report_detail(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Report detail error:', error);
-                    show_report_error('Rapor detayları yüklenirken bir hata oluştu.');
-                }
-            });
-        }
-
-        function close_report_detail() {
-            $('#reportDetailModal').fadeOut(300);
-        }
-
-        function populate_report_detail(report) {
-            // Hide loading, show content
-            $('#report_loading').hide();
-            $('#report_content').show();
-
-            // Populate fields
-            $('#detail_report_name').text(report.reportName || '-');
-            $('#detail_report_number').text('Rapor No: ' + (report.reportNumber || '-'));
-            
-            // Status badge
-            var status_class = get_status_badge_class(report.status);
-            var status_text = get_status_display(report.status);
-            $('#detail_status_badge').attr('class', 'report_card__badge ' + status_class).text(status_text);
-
-            // Credit Score
-            $('#detail_credit_score').text(report.creditScore || '-');
-
-            // Created Date
-            var created_date = report.createdDate ? new Date(report.createdDate).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' }) : '-';
-            $('#detail_created_date').text(created_date);
-
-            // Loan Amount
-            $('#detail_loan_amount').text(report.loanAmount ? format_currency(report.loanAmount) : '-');
-
-            // Loan Term
-            $('#detail_loan_term').text(report.loanTerm ? report.loanTerm + ' Ay' : '-');
-
-            // Interest Rate
-            $('#detail_interest_rate').text(report.interestRate ? '%' + report.interestRate.toFixed(2) : '-');
-
-            // Monthly Payment
-            $('#detail_monthly_payment').text(report.monthlyPayment ? format_currency(report.monthlyPayment) : '-');
-
-            // Notes (optional)
-            if (report.notes) {
-                $('#detail_notes').text(report.notes);
-                $('#report_notes_section').show();
-            } else {
-                $('#report_notes_section').hide();
-            }
-
-            // Approval Info (if approved)
-            if (report.status === 'approved' && report.approvedBy) {
-                $('#detail_approved_by').text(report.approvedBy);
-                var approved_date = report.approvedDate ? new Date(report.approvedDate).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' }) : '-';
-                $('#detail_approved_date').text(approved_date);
-                $('#report_approval_section').show();
-            } else {
-                $('#report_approval_section').hide();
-            }
-        }
-
-        function show_report_error(message) {
-            $('#report_loading').hide();
-            $('#report_content').hide();
-            $('#report_error').show();
-            $('#report_error_message').text(message);
-        }
-
-        function get_status_badge_class(status) {
-            switch(status) {
-                case 'approved': return 'report_card__badge--success';
-                case 'pending': return 'report_card__badge--pending';
-                case 'rejected': return 'report_card__badge--error';
-                default: return 'report_card__badge--default';
-            }
-        }
-
-        function get_status_display(status) {
-            switch(status) {
-                case 'approved': return 'Onaylandı';
-                case 'pending': return 'İşlemde';
-                case 'rejected': return 'Reddedildi';
-                default: return 'Bilinmiyor';
-            }
-        }
-
-        function format_currency(amount) {
-            return new Intl.NumberFormat('tr-TR', {
-                style: 'currency',
-                currency: 'TRY',
-                minimumFractionDigits: 2
-            }).format(amount);
-        }
-
-        // Close modal on ESC key
-        $(document).on('keydown', function(e) {
-            if (e.key === 'Escape' && $('#reportDetailModal').is(':visible')) {
-                close_report_detail();
-            }
+        // Selector Caching
+        var $workflowSteps = $('.dashboard_workflow_step');
+        var $quickAccessCards = $('.dashboard_quick_access_card');
+        
+        // Workflow step hover effects
+        $workflowSteps.on('mouseenter', function() {
+            $(this).addClass('dashboard_workflow_step--active');
+        }).on('mouseleave', function() {
+            $(this).removeClass('dashboard_workflow_step--active');
         });
-
-        // Close modal on backdrop click
-        $('#reportDetailModal').on('click', function(e) {
-            if ($(e.target).is('#reportDetailModal')) {
-                close_report_detail();
-            }
-        });
-
-        // ====================================================================
-        // REPORTS SEARCH & FILTER
-        // ====================================================================
-
-        var $reportsGrid = $('#reports_grid');
-        var $searchInput = $('#reports_search_input');
-        var $filterBtn = $('#reports_filter_btn');
-        var sortOrder = 'desc'; // 'asc' or 'desc'
-
-        // Search functionality
-        $searchInput.on('input', function() {
-            var searchTerm = $(this).val().toLowerCase().trim();
-            var $cards = $reportsGrid.find('.reports_library_card');
-
-            $cards.each(function() {
-                var $card = $(this);
-                var reportNumber = $card.data('report-number') || '';
-                var reportDate = $card.data('report-date') || '';
-                var cardText = $card.text().toLowerCase();
-
-                if (searchTerm === '' || 
-                    reportNumber.toLowerCase().includes(searchTerm) || 
-                    reportDate.includes(searchTerm) ||
-                    cardText.includes(searchTerm)) {
-                    $card.show();
-                } else {
-                    $card.hide();
-                }
-            });
-        });
-
-        // Filter/Sort functionality
-        $filterBtn.on('click', function() {
-            sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
-            var $cards = $reportsGrid.find('.reports_library_card:visible').toArray();
-
-            $cards.sort(function(a, b) {
-                var dateA = $(a).data('report-date') || '';
-                var dateB = $(b).data('report-date') || '';
-                
-                if (sortOrder === 'desc') {
-                    return dateB.localeCompare(dateA);
-                } else {
-                    return dateA.localeCompare(dateB);
-                }
-            });
-
-            $reportsGrid.empty();
-            $reportsGrid.append($cards);
-            
-            // Update button text
-            $(this).find('span').text(sortOrder === 'desc' ? 'Tarihe Göre Sırala (Yeni → Eski)' : 'Tarihe Göre Sırala (Eski → Yeni)');
-        });
-
-        // Download button (placeholder)
-        $('.reports_library_card_download').on('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            // TODO: Implement download functionality
-            alert('İndirme özelliği yakında eklenecektir.');
+        
+        // Quick access card hover effects
+        $quickAccessCards.on('mouseenter', function() {
+            $(this).addClass('dashboard_quick_access_card--hover');
+        }).on('mouseleave', function() {
+            $(this).removeClass('dashboard_quick_access_card--hover');
         });
     </script>
 }
