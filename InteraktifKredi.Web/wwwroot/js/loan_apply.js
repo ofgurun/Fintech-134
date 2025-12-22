@@ -86,20 +86,13 @@
             $submit_btn_loading.show();
         });
 
-        // Input group focus states
-        $('.input_group__field').on('focus', function () {
-            $(this).closest('.input_group').addClass('input_group--focus');
+        // Input focus states (yeni class isimleriyle)
+        $('.loan_apply_input, .loan_apply_select, .loan_apply_textarea').on('focus', function () {
+            $(this).addClass('loan_apply_input--focus');
         });
 
-        $('.input_group__field').on('blur', function () {
-            $(this).closest('.input_group').removeClass('input_group--focus');
-        });
-
-        // Select change - remove error
-        $('.input_group__field--select').on('change', function () {
-            var $group = $(this).closest('.input_group');
-            $group.removeClass('input_group--error');
-            $group.find('.input_group__error').text('');
+        $('.loan_apply_input, .loan_apply_select, .loan_apply_textarea').on('blur', function () {
+            $(this).removeClass('loan_apply_input--focus');
         });
     }
 

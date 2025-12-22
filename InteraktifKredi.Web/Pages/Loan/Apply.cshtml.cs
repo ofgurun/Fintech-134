@@ -49,8 +49,8 @@ namespace InteraktifKredi.Web.Pages.Loan
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during loan application submission");
-                ErrorMessage = "Başvuru gönderilirken bir hata oluştu. Lütfen tekrar deneyin.";
-                return Page();
+                TempData["ErrorMessage"] = "Başvuru gönderilirken bir hata oluştu. Lütfen tekrar deneyin.";
+                return RedirectToPage("/Loan/Result");
             }
         }
     }

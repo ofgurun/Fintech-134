@@ -7,21 +7,22 @@
 
 <style>
     /* ========================================================================
-       REPORT DETAIL PAGE - PREMIUM FINANCIAL DASHBOARD
+       REPORT DETAIL PAGE - WIDE PROFESSIONAL FINANCIAL DASHBOARD
        ======================================================================== */
     
-    /* Genel Stil */
+    /* Genel Stil - Wide & Fluid */
     .report_detail {
         font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: #F3F4F6;
-        min-height: 100vh;
-        padding: 2rem 1rem;
+        background-color: #F8FAFC;
+        min-height: calc(100vh - 80px);
+        padding: 2rem 1.5rem;
     }
     
-    /* Container */
-    .report_detail > * {
-        max-width: 1200px;
+    /* Container - Geniş */
+    .report_detail__container {
+        max-width: 1400px;
         margin: 0 auto;
+        width: 100%;
     }
     
     /* ========================================================================
@@ -29,18 +30,7 @@
        ======================================================================== */
     
     .report_detail__header {
-        background-color: #FFFFFF;
-        border-radius: 12px;
-        padding: 1.5rem;
         margin-bottom: 2rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.08);
-        border: 1px solid #E5E7EB;
-    }
-    
-    .report_detail__header_content {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
     }
     
     .report_detail__back_btn {
@@ -49,205 +39,320 @@
         gap: 0.5rem;
         padding: 0.5rem 0.75rem;
         margin-bottom: 1rem;
-        color: #374151;
+        color: #64748B;
         text-decoration: none;
         font-size: 0.875rem;
         font-weight: 500;
-        border-radius: 6px;
+        border-radius: 0.5rem;
         transition: all 0.2s;
     }
     
     .report_detail__back_btn:hover {
-        color: #2563EB;
-        background-color: #EFF6FF;
+        color: #1E40AF;
+        background-color: #F1F5F9;
     }
     
-    .report_detail__title {
-        font-size: 1.875rem;
+    .report_detail__header_info {
+        margin-bottom: 2rem;
+    }
+    
+    .report_detail__header_title {
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #111827;
+        color: #0F172A;
         margin: 0 0 0.5rem 0;
-        line-height: 1.2;
     }
     
-    .report_detail__date {
-        font-size: 1rem;
-        color: #6B7280;
+    .report_detail__header_meta {
+        font-size: 0.875rem;
+        color: #64748B;
         margin: 0;
     }
     
     /* ========================================================================
-       SUMMARY CARDS SECTION (3 Cards - Flexbox)
+       HERO SECTION (Grid 12 Columns)
        ======================================================================== */
     
-    .report_detail__summary_cards {
-        display: flex;
+    .report_detail__hero_grid {
+        display: grid;
+        grid-template-columns: 1fr;
         gap: 1.5rem;
         margin-bottom: 2rem;
-        flex-wrap: wrap;
     }
     
-    @@media (min-width: 768px) {
-        .report_detail__summary_cards {
-            flex-wrap: nowrap;
+    @@media (min-width: 1024px) {
+        .report_detail__hero_grid {
+            grid-template-columns: 4fr 8fr;
+            gap: 2rem;
         }
     }
     
-    /* Base Card Styles - Premium Shadows */
-    .report_detail__summary_card {
-        flex: 1;
-        min-width: 250px;
-        background-color: #FFFFFF;
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.08);
-        border: 1px solid #E5E7EB;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .report_detail__summary_card:hover {
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 20px 40px rgba(0, 0, 0, 0.08);
-        transform: translateY(-4px);
-    }
-    
-    /* Hero Card (Kredi Notu) - Modern Gradient */
-    .report_detail__summary_card--hero {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        border: none;
+    /* SOL BLOK - Kredi Notu (Gauge/Speedometer) */
+    .report_detail__credit_score_card {
+        background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+        border-radius: 1.5rem;
+        padding: 2.5rem 2rem;
         color: #FFFFFF;
-    }
-    
-    .report_detail__summary_card--hero:hover {
-        box-shadow: 0 20px 25px rgba(30, 64, 175, 0.25), 0 10px 10px rgba(30, 64, 175, 0.15);
-    }
-    
-    .report_detail__summary_card_content {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
-    }
-    
-    /* Card Label */
-    .report_detail__summary_card_label {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #6B7280;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .report_detail__summary_card--hero .report_detail__summary_card_label {
-        color: rgba(255, 255, 255, 0.9);
-    }
-    
-    /* Hero Card Value - Çok Büyük */
-    .report_detail__summary_card_value--hero {
-        font-size: 3rem;
-        font-weight: 700;
-        line-height: 1;
-        color: #FFFFFF;
-        margin: 0.5rem 0;
-    }
-    
-    @@media (max-width: 640px) {
-        .report_detail__summary_card_value--hero {
-            font-size: 2.5rem;
-        }
-    }
-    
-    /* Large Card Value (Limit ve Borç) */
-    .report_detail__summary_card_value--large {
-        font-size: 1.75rem;
-        font-weight: 600;
-        color: #111827;
-        line-height: 1.2;
-    }
-    
-    /* Progress Bar (Hero Card) */
-    .report_detail__progress_bar {
-        width: 100%;
-        height: 8px;
-        background-color: rgba(255, 255, 255, 0.25);
-        border-radius: 9999px;
-        margin: 1rem 0;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        position: relative;
         overflow: hidden;
     }
     
-    .report_detail__progress_bar_fill {
-        width: 70%;
-        height: 100%;
-        background: linear-gradient(90deg, #FCD34D 0%, #10B981 100%);
-        border-radius: 9999px;
-        transition: width 0.6s ease-out;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+    .report_detail__credit_score_card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        pointer-events: none;
     }
     
-    /* Hero Card Badge */
-    .report_detail__summary_card_badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.25rem 1rem;
-        border-radius: 9999px;
+    .report_detail__credit_score_label {
         font-size: 0.875rem;
         font-weight: 500;
-        background-color: rgba(255, 255, 255, 0.2);
-        color: #FFFFFF;
-        margin-top: 0.5rem;
-        align-self: flex-start;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
     }
     
-    /* Card Icon - Premium Styled */
-    .report_detail__summary_card_icon {
-        width: 56px;
-        height: 56px;
+    /* Gauge/Speedometer Effect */
+    .report_detail__gauge_wrapper {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 1rem 0 2rem;
+    }
+    
+    .report_detail__gauge {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    
+    .report_detail__gauge_svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+    
+    .report_detail__gauge_bg {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.2);
+        stroke-width: 12;
+    }
+    
+    .report_detail__gauge_fill {
+        fill: none;
+        stroke: #FFFFFF;
+        stroke-width: 12;
+        stroke-linecap: round;
+        stroke-dasharray: 565.48;
+        stroke-dashoffset: 113.1;
+        transition: stroke-dashoffset 1s ease-out;
+    }
+    
+    .report_detail__gauge_score {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1;
+    }
+    
+    .report_detail__credit_score_badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1.25rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #FFFFFF;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* SAĞ BLOK - Finansal Özet (4 İstatistik Kartı) */
+    .report_detail__metrics_card {
+        background-color: #FFFFFF;
+        border-radius: 1.5rem;
+        padding: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #E2E8F0;
+    }
+    
+    .report_detail__metrics_grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        height: 100%;
+    }
+    
+    @@media (max-width: 1023px) {
+        .report_detail__metrics_grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .report_detail__metric_item {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        border-right: 1px solid #E2E8F0;
+    }
+    
+    .report_detail__metric_item:last-child {
+        border-right: none;
+    }
+    
+    @@media (max-width: 1023px) {
+        .report_detail__metric_item {
+            border-right: none;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 1.5rem;
+        }
+        .report_detail__metric_item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+    }
+    
+    .report_detail__metric_icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 0.75rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 14px;
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
     }
     
-    /* Limit Card Icon - Açık Mavi */
-    .report_detail__summary_card:nth-child(2) .report_detail__summary_card_icon {
+    .report_detail__metric_icon--limit {
         background-color: #EFF6FF;
         color: #2563EB;
     }
     
-    /* Debt Card Icon - Açık Kırmızı */
-    .report_detail__summary_card:nth-child(3) .report_detail__summary_card_icon {
+    .report_detail__metric_icon--debt {
         background-color: #FEE2E2;
         color: #DC2626;
     }
     
-    .report_detail__summary_card_icon svg {
-        width: 28px;
-        height: 28px;
+    .report_detail__metric_icon--ratio {
+        background-color: #F0FDF4;
+        color: #10B981;
+    }
+    
+    .report_detail__metric_icon--accounts {
+        background-color: #FEF3C7;
+        color: #D97706;
+    }
+    
+    .report_detail__metric_label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #64748B;
+        margin-bottom: 0.5rem;
+    }
+    
+    .report_detail__metric_value {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #0F172A;
+        line-height: 1.2;
+        margin-bottom: 0.25rem;
+    }
+    
+    .report_detail__metric_subtext {
+        font-size: 0.75rem;
+        color: #94A3B8;
+        margin: 0;
+    }
+    
+    .report_detail__metric_progress {
+        width: 100%;
+        height: 8px;
+        background-color: #E2E8F0;
+        border-radius: 9999px;
+        margin-top: 0.75rem;
+        overflow: hidden;
+    }
+    
+    .report_detail__metric_progress_fill {
+        height: 100%;
+        background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+        border-radius: 9999px;
+        transition: width 0.6s ease-out;
     }
     
     /* ========================================================================
-       TABLE SECTION (Modern Data Table)
+       TABLE SECTION (Wide Data Grid)
        ======================================================================== */
     
     .report_detail__table_wrapper {
         background-color: #FFFFFF;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.08);
-        border: 1px solid #E5E7EB;
+        border-radius: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #E2E8F0;
         margin-bottom: 2rem;
         overflow: hidden;
     }
     
     .report_detail__table_header_section {
-        padding: 1.5rem;
-        border-bottom: 1px solid #E5E7EB;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #E2E8F0;
         background-color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     
     .report_detail__table_title {
         font-size: 1.25rem;
         font-weight: 600;
-        color: #111827;
+        color: #0F172A;
         margin: 0;
+    }
+    
+    .report_detail__table_actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .report_detail__table_action_btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748B;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        cursor: pointer;
+        border: none;
+        background: none;
+    }
+    
+    .report_detail__table_action_btn:hover {
+        color: #1E40AF;
+        background-color: #F1F5F9;
+    }
+    
+    .report_detail__table_action_btn svg {
+        width: 20px;
+        height: 20px;
     }
     
     .report_detail__table_container {
@@ -262,15 +367,15 @@
     
     /* Table Header */
     .report_detail__table_head {
-        background-color: #F9FAFB;
+        background-color: #F8FAFC;
     }
     
     .report_detail__table_header {
-        padding: 1rem 1.25rem;
+        padding: 1rem 1.5rem;
         text-align: left;
         font-size: 0.75rem;
         font-weight: 600;
-        color: #374151;
+        color: #475569;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         white-space: nowrap;
@@ -282,7 +387,8 @@
     
     /* Table Body */
     .report_detail__table_row {
-        border-bottom: 1px solid #E5E7EB;
+        border-bottom: 1px solid #E2E8F0;
+        transition: background-color 0.2s;
     }
     
     .report_detail__table_row:last-child {
@@ -290,25 +396,41 @@
     }
     
     .report_detail__table_body .report_detail__table_row {
-        transition: background-color 0.2s;
         background-color: #FFFFFF;
+        cursor: pointer;
     }
     
     .report_detail__table_body .report_detail__table_row:hover {
-        background-color: #F3F4F6;
+        background-color: rgba(37, 99, 235, 0.05);
     }
     
     .report_detail__table_cell {
-        padding: 1.25rem 1.5rem;
+        padding: 1.5rem;
         font-size: 0.875rem;
-        color: #374151;
+        color: #475569;
         vertical-align: middle;
     }
     
-    /* Bank Name - Bold */
+    /* Bank Name with Logo Placeholder */
     .report_detail__table_cell--bank {
         font-weight: 600;
-        color: #111827;
+        color: #0F172A;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .report_detail__bank_logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        flex-shrink: 0;
     }
     
     .report_detail__table_cell--numeric {
@@ -320,12 +442,12 @@
         font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
         font-variant-numeric: tabular-nums;
         font-weight: 600;
-        color: #111827;
+        color: #0F172A;
     }
     
     .report_detail__table_currency {
         font-size: 0.75rem;
-        color: #6B7280;
+        color: #64748B;
         margin-left: 0.25rem;
         font-weight: 400;
     }
@@ -334,7 +456,7 @@
     .report_detail__payment_history {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
         flex-wrap: wrap;
     }
 
@@ -343,32 +465,38 @@
         height: 12px;
         border-radius: 50%;
         cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
         position: relative;
         flex-shrink: 0;
+        opacity: 0.9;
     }
 
     .report_detail__payment_history_item:hover {
-        transform: scale(1.3);
+        transform: scale(1.4);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         z-index: 10;
+        opacity: 1;
     }
 
     /* Renk Varyasyonları - Strict Mapping */
     .report_detail__payment_history_item--success {
         background-color: #10B981;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
     .report_detail__payment_history_item--danger {
         background-color: #EF4444;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
     }
 
     .report_detail__payment_history_item--warning {
         background-color: #F59E0B;
+        box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
     }
 
     .report_detail__payment_history_item--neutral {
         background-color: #D1D5DB;
+        box-shadow: 0 0 0 2px rgba(209, 213, 219, 0.2);
     }
 
     /* Veri Yok Placeholder */
@@ -378,52 +506,9 @@
         border-radius: 4px;
         font-size: 0.75rem;
         font-weight: 500;
-        background-color: #F3F4F6;
-        color: #6B7280;
-        border: 1px solid #E5E7EB;
-    }
-    
-    /* ========================================================================
-       ACTIONS SECTION (Back Button)
-       ======================================================================== */
-    
-    .report_detail__actions {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 2.5rem;
-        padding-top: 2rem;
-    }
-    
-    @@media (max-width: 640px) {
-        .report_detail__actions {
-            justify-content: center;
-        }
-    }
-    
-    .report_detail__back_to_list_btn {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        border-radius: 6px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background-color: #2563EB;
-        color: #FFFFFF;
-        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2), 0 2px 4px rgba(37, 99, 235, 0.1);
-    }
-    
-    .report_detail__back_to_list_btn:hover {
-        background-color: #1E40AF;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px rgba(37, 99, 235, 0.3), 0 4px 6px rgba(37, 99, 235, 0.2);
-    }
-    
-    .report_detail__back_to_list_btn:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        background-color: #F1F5F9;
+        color: #64748B;
+        border: 1px solid #E2E8F0;
     }
     
     /* ========================================================================
@@ -437,11 +522,12 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 3rem 1rem;
-        min-height: 400px;
+        padding: 4rem 2rem;
+        min-height: 500px;
         background-color: #FFFFFF;
-        border-radius: 12px;
+        border-radius: 1.5rem;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #E2E8F0;
     }
     
     .report_detail__error_icon {
@@ -493,174 +579,258 @@
 ======================================================================== -->
 
 <div class="report_detail">
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <!-- Error State -->
-        <div class="report_detail__error">
-            <div class="report_detail__error_icon">
-                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                    <path d="M32 24V32M32 40H32.04M56 32C56 45.2548 45.2548 56 32 56C18.7452 56 8 45.2548 8 32C8 18.7452 18.7452 8 32 8C45.2548 8 56 18.7452 56 32Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+    <div class="report_detail__container">
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <!-- Error State -->
+            <div class="report_detail__error">
+                <div class="report_detail__error_icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <path d="M32 24V32M32 40H32.04M56 32C56 45.2548 45.2548 56 32 56C18.7452 56 8 45.2548 8 32C8 18.7452 18.7452 8 32 8C45.2548 8 56 18.7452 56 32Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="report_detail__error_title">Rapor Yüklenemedi</h3>
+                <div class="report_detail__error_message" style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-x: auto;">
+                    @Model.ErrorMessage
+                </div>
+                <p class="report_detail__error_hint" style="font-size: 0.875rem; color: #6B7280; margin-top: 1rem;">
+                    Lütfen tarayıcı konsolunu (F12) açarak detaylı hata mesajlarını kontrol edin.
+                </p>
+                <a asp-page="/Dashboard/Index" class="btn_primary" style="margin-top: 1.5rem;">Dashboard'a Geri Dön</a>
             </div>
-            <h3 class="report_detail__error_title">Rapor Yüklenemedi</h3>
-            <div class="report_detail__error_message" style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-x: auto;">
-                @Model.ErrorMessage
+        }
+        else if (Model.ReportDetail == null)
+        {
+            <!-- Loading State -->
+            <div class="report_detail__loading">
+                <div class="report_detail__loading_spinner"></div>
+                <p class="report_detail__loading_text">Rapor yükleniyor...</p>
             </div>
-            <p class="report_detail__error_hint" style="font-size: 0.875rem; color: #6B7280; margin-top: 1rem;">
-                Lütfen tarayıcı konsolunu (F12) açarak detaylı hata mesajlarını kontrol edin.
-            </p>
-            <a asp-page="/Dashboard/Index" class="btn_primary" style="margin-top: 1.5rem;">Dashboard'a Geri Dön</a>
-        </div>
-    }
-    else if (Model.ReportDetail == null)
-    {
-        <!-- Loading State -->
-        <div class="report_detail__loading">
-            <div class="report_detail__loading_spinner"></div>
-            <p class="report_detail__loading_text">Rapor yükleniyor...</p>
-        </div>
-    }
-    else
-    {
-        <!-- Report Content -->
-        <!-- Header Section -->
-        <div class="report_detail__header">
-            <div class="report_detail__header_content">
+        }
+        else
+        {
+            <!-- Report Content -->
+            <!-- Header Section -->
+            <div class="report_detail__header">
                 <a asp-page="/Dashboard/Index" class="report_detail__back_btn">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     <span>Geri Dön</span>
                 </a>
-                <h1 class="report_detail__title">Kredi Değerlendirme Raporu</h1>
-                <p class="report_detail__date">Rapor No: @Model.ReportDetail.DisplayReportNumber | Tarih: @DateTime.Now.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</p>
+                <div class="report_detail__header_info">
+                    <h1 class="report_detail__header_title">Kredi Değerlendirme Raporu</h1>
+                    <p class="report_detail__header_meta">Rapor No: @Model.ReportDetail.DisplayReportNumber | Tarih: @DateTime.Now.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</p>
+                </div>
             </div>
-        </div>
 
-        <!-- Summary Cards Section (3 Cards - Grid) -->
-        <div class="report_detail__summary_cards">
-            <!-- Card 1: Kredi Notu (Koyu Mavi - Vurgulu) -->
-            @if (Model.ReportDetail.CreditScore.HasValue)
-            {
-                <div class="report_detail__summary_card report_detail__summary_card--hero">
-                    <div class="report_detail__summary_card_content">
-                        <div class="report_detail__summary_card_label">KKB Kredi Notunuz</div>
-                        <div class="report_detail__summary_card_value--hero">@Model.ReportDetail.CreditScore</div>
-                        <!-- Progress Bar -->
-                        <div class="report_detail__progress_bar">
-                            <div class="report_detail__progress_bar_fill"></div>
+            <!-- Hero Section (Grid 12 Columns) -->
+            <div class="report_detail__hero_grid">
+                <!-- SOL BLOK - Kredi Notu (Gauge) -->
+                @if (Model.ReportDetail.CreditScore.HasValue)
+                {
+                    var score = Model.ReportDetail.CreditScore.Value;
+                    var maxScore = 1900;
+                    var percentage = Math.Min((score / (double)maxScore) * 100, 100);
+                    var gaugeOffset = 565.48 - (percentage / 100 * 565.48);
+                    <div class="report_detail__credit_score_card">
+                        <div class="report_detail__credit_score_label">KKB Kredi Notunuz</div>
+                        
+                        <!-- Gauge/Speedometer -->
+                        <div class="report_detail__gauge_wrapper">
+                            <div class="report_detail__gauge">
+                                <svg class="report_detail__gauge_svg" viewBox="0 0 200 200">
+                                    <circle class="report_detail__gauge_bg" cx="100" cy="100" r="90"/>
+                                    <circle class="report_detail__gauge_fill" 
+                                            cx="100" cy="100" r="90"
+                                            style="stroke-dashoffset: @gaugeOffset;" />
+                                </svg>
+                                <div class="report_detail__gauge_score">@score</div>
+                            </div>
                         </div>
-                        <div class="report_detail__summary_card_badge">
+                        
+                        <div class="report_detail__credit_score_badge">
                             Risk Grubu: @Model.ReportDetail.RiskGroup
                         </div>
                     </div>
-                </div>
-            }
+                }
 
-            <!-- Card 2: Toplam Limit (Beyaz, İkonlu) -->
-            @if (Model.ReportDetail.Limit.HasValue)
-            {
-                <div class="report_detail__summary_card">
-                    <div class="report_detail__summary_card_content">
-                        <div class="report_detail__summary_card_icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="8" width="18" height="12" rx="2"/>
-                                <path d="M3 10c0-2 2-4 5-4h8c3 0 5 2 5 4"/>
-                                <path d="M12 14v4M8 16h8"/>
-                            </svg>
+                <!-- SAĞ BLOK - Finansal Özet (4 İstatistik) -->
+                <div class="report_detail__metrics_card">
+                    <div class="report_detail__metrics_grid">
+                        <!-- Toplam Limit -->
+                        @if (Model.ReportDetail.Limit.HasValue)
+                        {
+                            <div class="report_detail__metric_item">
+                                <div class="report_detail__metric_icon report_detail__metric_icon--limit">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="8" width="18" height="12" rx="2"/>
+                                        <path d="M3 10c0-2 2-4 5-4h8c3 0 5 2 5 4"/>
+                                        <path d="M12 14v4M8 16h8"/>
+                                    </svg>
+                                </div>
+                                <div class="report_detail__metric_label">Toplam Limit</div>
+                                <div class="report_detail__metric_value">@Model.ReportDetail.Limit.Value.ToString("N0", new System.Globalization.CultureInfo("tr-TR")) TL</div>
+                            </div>
+                        }
+
+                        <!-- Güncel Borç -->
+                        @if (Model.ReportDetail.Risk.HasValue)
+                        {
+                            <div class="report_detail__metric_item">
+                                <div class="report_detail__metric_icon report_detail__metric_icon--debt">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                    </svg>
+                                </div>
+                                <div class="report_detail__metric_label">Güncel Borç</div>
+                                <div class="report_detail__metric_value">@Model.ReportDetail.Risk.Value.ToString("N0", new System.Globalization.CultureInfo("tr-TR")) TL</div>
+                            </div>
+                        }
+
+                        <!-- Limit Doluluk Oranı -->
+                        @if (Model.ReportDetail.Limit.HasValue && Model.ReportDetail.Risk.HasValue)
+                        {
+                            var limitDoluluk = Model.ReportDetail.Limit.Value > 0 
+                                ? (Model.ReportDetail.Risk.Value / Model.ReportDetail.Limit.Value * 100) 
+                                : 0;
+                            <div class="report_detail__metric_item">
+                                <div class="report_detail__metric_icon report_detail__metric_icon--ratio">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                    </svg>
+                                </div>
+                                <div class="report_detail__metric_label">Limit Doluluk Oranı</div>
+                                <div class="report_detail__metric_value">%@limitDoluluk.ToString("F1", new System.Globalization.CultureInfo("tr-TR"))</div>
+                                <div class="report_detail__metric_progress">
+                                    <div class="report_detail__metric_progress_fill" style="width: @Math.Min(limitDoluluk, 100)%"></div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Aktif Hesap -->
+                        @{ var aktifHesapSayisi = Model.ReportDetail.BireyselDetails?.Count ?? 0; }
+                        <div class="report_detail__metric_item">
+                            <div class="report_detail__metric_icon report_detail__metric_icon--accounts">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                            </div>
+                            <div class="report_detail__metric_label">Aktif Hesap</div>
+                            <div class="report_detail__metric_value">@aktifHesapSayisi</div>
+                            <p class="report_detail__metric_subtext">Aktif kredi hesabı</p>
                         </div>
-                        <div class="report_detail__summary_card_label">Toplam Limit</div>
-                        <div class="report_detail__summary_card_value--large">@Model.ReportDetail.Limit.Value.ToString("N0", new System.Globalization.CultureInfo("tr-TR")) TL</div>
                     </div>
-                </div>
-            }
-
-            <!-- Card 3: Toplam Borç (Beyaz, İkonlu) -->
-            @if (Model.ReportDetail.Risk.HasValue)
-            {
-                <div class="report_detail__summary_card">
-                    <div class="report_detail__summary_card_content">
-                        <div class="report_detail__summary_card_icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                            </svg>
-                        </div>
-                        <div class="report_detail__summary_card_label">Toplam Güncel Borç</div>
-                        <div class="report_detail__summary_card_value--large">@Model.ReportDetail.Risk.Value.ToString("N0", new System.Globalization.CultureInfo("tr-TR")) TL</div>
-                    </div>
-                </div>
-            }
-        </div>
-
-        <!-- Details Table Section -->
-        @if (Model.ReportDetail.BireyselDetails != null && Model.ReportDetail.BireyselDetails.Any())
-        {
-            <div class="report_detail__table_wrapper">
-                <div class="report_detail__table_header_section">
-                    <h2 class="report_detail__table_title">Aktif Hesap Detayları</h2>
-                </div>
-                <div class="report_detail__table_container">
-                    <table class="report_detail__table">
-                        <thead class="report_detail__table_head">
-                            <tr class="report_detail__table_row">
-                                <th class="report_detail__table_header">Banka</th>
-                                <th class="report_detail__table_header">Tür</th>
-                                <th class="report_detail__table_header report_detail__table_header--right">Limit</th>
-                                <th class="report_detail__table_header report_detail__table_header--right">Borç</th>
-                                <th class="report_detail__table_header">Durum</th>
-                            </tr>
-                        </thead>
-                        <tbody class="report_detail__table_body">
-                            @foreach (var detail in Model.ReportDetail.BireyselDetails)
-                            {
-                                <tr class="report_detail__table_row">
-                                    <td class="report_detail__table_cell report_detail__table_cell--bank">
-                                        @(!string.IsNullOrEmpty(detail.BkKurumRumuzuKarsiligi) ? detail.BkKurumRumuzuKarsiligi : detail.BkKurumRumuzu)
-                                    </td>
-                                    <td class="report_detail__table_cell">
-                                        @detail.BkKrediTuru
-                                    </td>
-                                    <td class="report_detail__table_cell report_detail__table_cell--numeric">
-                                        @if (decimal.TryParse(detail.BkKrediTutariLimiti, out var limit))
-                                        {
-                                            <span class="report_detail__table_number">@limit.ToString("N0", new System.Globalization.CultureInfo("tr-TR"))</span> <span class="report_detail__table_currency">TL</span>
-                                        }
-                                        else
-                                        {
-                                            @detail.BkKrediTutariLimiti
-                                        }
-                                    </td>
-                                    <td class="report_detail__table_cell report_detail__table_cell--numeric">
-                                        @if (decimal.TryParse(detail.BkToplamBakiye, out var bakiye))
-                                        {
-                                            <span class="report_detail__table_number">@bakiye.ToString("N0", new System.Globalization.CultureInfo("tr-TR"))</span> <span class="report_detail__table_currency">TL</span>
-                                        }
-                                        else
-                                        {
-                                            @detail.BkToplamBakiye
-                                        }
-                                    </td>
-                                    <td class="report_detail__table_cell">
-                                        <div class="report_detail__payment_history" 
-                                             data-payment-history="@(!string.IsNullOrEmpty(detail.BkOdemePerformansiTarihcesi) ? detail.BkOdemePerformansiTarihcesi : "")">
-                                            <!-- JavaScript ile dinamik olarak render edilecek -->
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
                 </div>
             </div>
-        }
 
-        <!-- Back to List Button -->
-        <div class="report_detail__actions">
-            <a asp-page="/Dashboard/Index" class="report_detail__back_to_list_btn">
-                Listeye Dön
-            </a>
-        </div>
-    }
+            <!-- Details Table Section -->
+            @if (Model.ReportDetail.BireyselDetails != null && Model.ReportDetail.BireyselDetails.Any())
+            {
+                <div class="report_detail__table_wrapper">
+                    <div class="report_detail__table_header_section">
+                        <h2 class="report_detail__table_title">Aktif Hesaplar & Ödeme Geçmişi</h2>
+                        <div class="report_detail__table_actions">
+                            <button type="button" class="report_detail__table_action_btn" title="Filtrele">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6h18M7 12h10M11 18h2"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="report_detail__table_action_btn" title="Dışa Aktar">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="report_detail__table_container">
+                        <table class="report_detail__table">
+                            <thead class="report_detail__table_head">
+                                <tr class="report_detail__table_row">
+                                    <th class="report_detail__table_header">Banka</th>
+                                    <th class="report_detail__table_header">Tür</th>
+                                    <th class="report_detail__table_header report_detail__table_header--right">Limit</th>
+                                    <th class="report_detail__table_header report_detail__table_header--right">Borç</th>
+                                    <th class="report_detail__table_header">Ödeme Tarihçesi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="report_detail__table_body">
+                                @foreach (var detail in Model.ReportDetail.BireyselDetails)
+                                {
+                                    var bankaAdi = !string.IsNullOrEmpty(detail.BkKurumRumuzuKarsiligi) 
+                                        ? detail.BkKurumRumuzuKarsiligi 
+                                        : detail.BkKurumRumuzu;
+                                    var bankaIlkHarf = !string.IsNullOrEmpty(bankaAdi) ? bankaAdi[0].ToString().ToUpper() : "?";
+                                    var logoRenkler = new[] { "#2563EB", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899" };
+                                    var logoRenk = logoRenkler[Math.Abs(bankaAdi.GetHashCode()) % logoRenkler.Length];
+                                    
+                                    var krediTuruMap = new Dictionary<string, string>
+                                    {
+                                        { "02", "İhtiyaç Kredisi" },
+                                        { "03", "Konut Kredisi" },
+                                        { "04", "Taşıt Kredisi" },
+                                        { "05", "Esnaf Kredisi" },
+                                        { "06", "Tarım Kredisi" },
+                                        { "07", "KOBİ Kredisi" },
+                                        { "08", "Ticari Kredi" },
+                                        { "23", "Kredi Kartı" },
+                                        { "26", "Kredi Kartı" },
+                                        { "29", "Kredi Kartı" },
+                                        { "99", "Diğer Kredi Türleri" }
+                                    };
+                                    var krediTuruAdi = krediTuruMap.ContainsKey(detail.BkKrediTuru) 
+                                        ? krediTuruMap[detail.BkKrediTuru] 
+                                        : $"Kredi Türü {detail.BkKrediTuru}";
+                                    
+                                    <tr class="report_detail__table_row">
+                                        <td class="report_detail__table_cell report_detail__table_cell--bank">
+                                            <div class="report_detail__bank_logo" style="background-color: @logoRenk;">
+                                                @bankaIlkHarf
+                                            </div>
+                                        </td>
+                                        <td class="report_detail__table_cell">
+                                            @krediTuruAdi
+                                        </td>
+                                        <td class="report_detail__table_cell report_detail__table_cell--numeric">
+                                            @if (decimal.TryParse(detail.BkKrediTutariLimiti, out var limit))
+                                            {
+                                                <span class="report_detail__table_number">@limit.ToString("N0", new System.Globalization.CultureInfo("tr-TR"))</span> <span class="report_detail__table_currency">TL</span>
+                                            }
+                                            else
+                                            {
+                                                @detail.BkKrediTutariLimiti
+                                            }
+                                        </td>
+                                        <td class="report_detail__table_cell report_detail__table_cell--numeric">
+                                            @if (decimal.TryParse(detail.BkToplamBakiye, out var bakiye))
+                                            {
+                                                <span class="report_detail__table_number">@bakiye.ToString("N0", new System.Globalization.CultureInfo("tr-TR"))</span> <span class="report_detail__table_currency">TL</span>
+                                            }
+                                            else
+                                            {
+                                                @detail.BkToplamBakiye
+                                            }
+                                        </td>
+                                        <td class="report_detail__table_cell">
+                                            <div class="report_detail__payment_history" 
+                                                 data-payment-history="@(!string.IsNullOrEmpty(detail.BkOdemePerformansiTarihcesi) ? detail.BkOdemePerformansiTarihcesi : "")">
+                                                <!-- JavaScript ile dinamik olarak render edilecek -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 </div>
 
 @section Scripts {
